@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>从 JavaScript 到 TypeScript 1 - 什么是 TypeScript | 听说 - 世界很大，风住过这里</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="随着应用的庞大，项目中 JavaScript 的代码也会越来越臃肿，这时候许多 JavaScript 的语言弊端就会愈发明显，而 TypeScript 的出现，就是着力于解决 JavaScript 语言天生的弱势：静态类型。  前端开发 QQ 群：377786580  这篇文章首发于我的个人博客 《听说》，系列目录：  《从 JavaScript 到 TypeScript 1 - 什么是 Type">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 JavaScript 到 TypeScript 1 - 什么是 TypeScript">
+<meta property="og:url" content="http://example.com/posts/7dbfff02/index.html">
+<meta property="og:site_name" content="听说 - 世界很大，风住过这里">
+<meta property="og:description" content="随着应用的庞大，项目中 JavaScript 的代码也会越来越臃肿，这时候许多 JavaScript 的语言弊端就会愈发明显，而 TypeScript 的出现，就是着力于解决 JavaScript 语言天生的弱势：静态类型。  前端开发 QQ 群：377786580  这篇文章首发于我的个人博客 《听说》，系列目录：  《从 JavaScript 到 TypeScript 1 - 什么是 Type">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://static.tasaid.com/blogs/8e5603f8b97de041f81698251c5cc94a.jpeg">
+<meta property="og:image" content="http://static.tasaid.com/blogs/0488223f3b2ffbc24eb68ae4c6197540.png">
+<meta property="article:published_time" content="2017-10-11T15:19:00.000Z">
+<meta property="article:modified_time" content="2018-07-31T08:36:54.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="TypeScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://static.tasaid.com/blogs/8e5603f8b97de041f81698251c5cc94a.jpeg">
+  
+    <link rel="alternate" href="/atom.xml" title="听说 - 世界很大，风住过这里" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">听说 - 世界很大，风住过这里</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-blogs/从JavaScript到TypeScript1-什么是TypeScript" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/posts/7dbfff02/" class="article-date">
+  <time class="dt-published" datetime="2017-10-11T15:19:00.000Z" itemprop="datePublished">2017-10-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tech/">tech</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      从 JavaScript 到 TypeScript 1 - 什么是 TypeScript
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>随着应用的庞大，项目中 JavaScript 的代码也会越来越臃肿，这时候许多 JavaScript 的语言弊端就会愈发明显，而 TypeScript 的出现，就是着力于解决 JavaScript 语言天生的弱势：静态类型。</p>
+<blockquote>
+<p>前端开发 QQ 群：377786580</p>
+</blockquote>
+<p>这篇文章首发于我的个人博客 《<a target="_blank" rel="noopener" href="http://tasaid.com/">听说</a>》，系列目录：</p>
+<ul>
+<li>《从 JavaScript 到 TypeScript 1 - 什么是 TypeScript》</li>
+<li>《<a target="_blank" rel="noopener" href="http://tasaid.com/Blog/20171011232755.html">从 JavaScript 到 TypeScript 2 - 基础特性和类型推导</a>》</li>
+<li>《<a target="_blank" rel="noopener" href="http://tasaid.com/Blog/20171011232938.html">从 JavaScript 到 TypeScript 3 - 引入和编译</a>》</li>
+<li>《<a target="_blank" rel="noopener" href="http://tasaid.com/Blog/20171011233014.html">从 JavaScript 到 TypeScript 4 - 装饰器和反射</a>》</li>
+<li>《<a target="_blank" rel="noopener" href="http://tasaid.com/Blog/20171011233051.html">从 JavaScript 到 TypeScript 5 - express 路由进化</a>》</li>
+<li>《<a target="_blank" rel="noopener" href="http://tasaid.com/Blog/20171011233132.html">从 JavaScript 到 TypeScript 6 - vue 引入 TypeScript</a>》</li>
+</ul>
+<h2 id="为什么选择-TypeScript"><a href="#为什么选择-TypeScript" class="headerlink" title="为什么选择 TypeScript"></a>为什么选择 TypeScript</h2><p>几个月前，团队里觉得很多项目跑的越来越臃肿，团队协作遇到了一个很大的难题：如何让一个别人提供的方法产出一个一目了然的文档？因为一个项目总会涉及到多人协作：<strong>同学 A</strong> 编写了函数 a()，而 <strong>同学 B</strong> 在调用函数 a() 的时候得一直撸着 API 文档才能知道 a() 需要什么参数，会返回什么参数。</p>
+<p>而 <strong>同学 A</strong> 后续又改动了函数 a()，但是却忘记了更新文档，这时候新接手项目的 <strong>同学 C</strong> 看着 API 文档和函数 a() 一脸懵逼，问题浮出水面：团队协作中，提供的接口如何描述自身？</p>
+<p>这其中涉及到的问题有：</p>
+<ol>
+<li>接口如何描述自己的参数和返回值？</li>
+<li>接口参数和返回值在无数需求迭代中改变了多次，而这个 API 对应的文档该如何更新？</li>
+<li>数据格式如何描述</li>
+</ol>
+<p>我们意识到 JavaScript 在逐渐复杂的 Web 应用中缺少一个很重要的东西：静态类型。</p>
+<p>因为需要有静态类型我们才可以知道这个函数需要的参数是什么，有什么类型，返回值是什么类型，哪些字段是可能空，哪些字段又需要什么样的格式。</p>
+<p>我们首先找到了业界融合于 JavaScript 的方案：<a target="_blank" rel="noopener" href="https://zhenyong.github.io/flowtype/">Flow</a></p>
+<p>后来对比之后发现：</p>
+<ol>
+<li>生态圈，TypeScript 的生态圈明显在 Flow 之上，各大主流类库都提供了 TypeScript 的类型声明文件，配合 visual studio code 编码体验上比 Flow 强太多。</li>
+<li>Flow 是侵入 JavaScript 的，对 JavaScript 做了一层增强；而 TypeScript 则为 JavaScript 超集，在 JavaScript 之上进行的语言抽象，最终编译成 JavaScript。</li>
+</ol>
+<p>其中第二点很重要，因为团队成员对添加了 Flow 的 JavaScript 语法想当排斥，而我个人同样觉得 Flow 侵入 JavaScript 太过强烈，不如 TypeScript 直接做语言超集好，虽然二者出发点上没有太大区别，但从设计思想上来说 TypeScript 更吸引人。</p>
+<p>TypeScript 的定位是做静态类型语言，而 Flow 的定位是类型检查器。</p>
+<p>毕竟写着 Flow 的时候心里想的是我在写 JavaScript，而写 TypeScript 心里想的是我在写 TypeScript 🤣。</p>
+<h2 id="什么是-TypeScript"><a href="#什么是-TypeScript" class="headerlink" title="什么是 TypeScript"></a>什么是 TypeScript</h2><p>TypeScript 简称 TS。TypeScript 是 JavaScript 的超集，就是在 JavaScript 上做了一层封装，封装出 TypeScript 的特性，当然最终代码可以编译为 JavaScript。</p>
+<p>TypeScript 早期的目标是为了让习惯编写强类型语言的后端程序员，能够快速的编写出前端应用（微软大法好），因为 JavaScript 没有强数据类型，所以 TypeScript 提供了静态数据类型，这是 TypeScript 的核心。</p>
+<p>随着项目工程越来越大，越来越多的前端意识到静态数据类型的重要性，随着 TypeScript 的逐渐完善，支持者越来越多，静态数据类型的需求越来越强。于此同时， <code>angular 2.x</code> 这个领头羊率先使用 <code>AtScript</code> 开辟了静态数据类型战场。</p>
+<p>JavaScript 行至今日，灵活，动态让它活跃在编程语言界一线。而灵活，动态使得它又十分神秘，只有运行才能得到答案。类型的补充填充了 JavaScript 的缺点，从 TypeScript 编译到 JavaScript，多了静态类型检查，而又保留了 JavaScript 的灵活动态。</p>
+<p>简单来说：动态代码一时爽，重构全家火葬场。</p>
+<h3 id="静态类型"><a href="#静态类型" class="headerlink" title="静态类型"></a>静态类型</h3><p>TypeScript 凭借 Microsoft 深厚的语言设计功底，设计的十分优雅和简单易用，学习成本非常低。</p>
+<p>上面我们所说了，TypeScript 的核心就是静态数据类型，我们来简单了解一下静态数据类型和简单的类型推导，TypeScript 是以 <code>*.ts</code> 作为文件后缀的，我们创建一个 <code>demo.ts</code> 文件，写下这段代码：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">num</span>: <span class="built_in">number</span></span><br></pre></td></tr></table></figure>
+
+<p>从上面的代码中，我们可以知道变量 <code>num</code> 是 <code>number</code> 类型的，如果我们给 <code>num</code> 赋其他类型的值，则会报错：</p>
+<p><img src="//static.tasaid.com/blogs/8e5603f8b97de041f81698251c5cc94a.jpeg" alt="类型报错"></p>
+<p>是不是很简单？是的，这就是 TypeScript 的核心。</p>
+<p>我们再来看看一个函数该如何表达：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fetch = <span class="keyword">function</span> (<span class="params">url: <span class="built_in">string</span></span>): <span class="title class_">Promise</span> &#123; &#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>fetch()</code> 函数接收一个 <code>string</code> 类型的参数 <code>url</code>，返回一个 <code>Promise</code>。</p>
+<p>以下是一个 JavaScript 的函数，不看方法内的写法我们完全不知道这个 API 会有哪些坑。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> fetch = <span class="keyword">function</span> (<span class="params">url, params, user</span>) &#123;</span><br><span class="line">  <span class="comment">// dosomething</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">http</span>(options).<span class="title function_">then</span>(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line">  &#125;).<span class="title function_">catch</span>(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> err</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是 TypeScript 的写法：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> fetch = <span class="keyword">function</span> (<span class="params">url: <span class="built_in">string</span> | <span class="built_in">object</span>, params?: <span class="built_in">any</span>, user?: User</span>): <span class="title class_">Promise</span>&lt;<span class="built_in">object</span> | <span class="title class_">Error</span>&gt; &#123;</span><br><span class="line">  <span class="comment">// dosomething</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">http</span>(options).<span class="title function_">then</span>(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line">  &#125;).<span class="title function_">catch</span>(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> err</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个 TypeScript 包含了很多信息：</p>
+<ol>
+<li><code>url</code> 可能是 <code>string</code> 或 <code>object</code> 类型</li>
+<li><code>params</code> 是可以不传的，也可以传递任何类型</li>
+<li><code>user</code> 要求是 <code>User</code> 类型的，当然也是可以不传</li>
+<li>返回了一个 <code>Promise</code>，<code>Promise</code> 的求值结果可能是 <code>object</code>，也有可能是 <code>Error</code></li>
+</ol>
+<p>看到上面的信息后，我们大概知道可以这么调用并处理 <code>fetch</code> 的返回结果：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">let</span> result = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">&#x27;https://tasaid.com&#x27;</span>, &#123; <span class="attr">id</span>: <span class="number">1</span> &#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// fetch 可能会返回 Error</span></span><br><span class="line"><span class="keyword">if</span> (result <span class="keyword">instanceof</span> <span class="title class_">Error</span>) &#123;</span><br><span class="line">  <span class="comment">// 错误处理</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>是不是很有意思？鹅妹子嘤！TypeScript 在说话，TypeScript 在让代码描述自身。</p>
+<p><img src="//static.tasaid.com/blogs/0488223f3b2ffbc24eb68ae4c6197540.png" alt="类型在说话"></p>
+<p>这就是静态数据类型的意义。静态类型在越复杂的应用中，需求越强烈。</p>
+<p>这是 <code>react</code> 对于数据类型的约束：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">PropTypes</span> <span class="keyword">from</span> <span class="string">&#x27;prop-types&#x27;</span></span><br><span class="line"></span><br><span class="line">component.<span class="property">propTypes</span> = &#123;</span><br><span class="line">  <span class="attr">optionalArray</span>: <span class="title class_">PropTypes</span>.<span class="property">array</span>,</span><br><span class="line">  <span class="attr">optionalBool</span>: <span class="title class_">PropTypes</span>.<span class="property">bool</span>,</span><br><span class="line">  <span class="attr">optionalFunc</span>: <span class="title class_">PropTypes</span>.<span class="property">func</span>,</span><br><span class="line">  <span class="attr">requiredFunc</span>: <span class="title class_">PropTypes</span>.<span class="property">func</span>.<span class="property">isRequired</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是 <code>vue</code> 对于数据类型的约束：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Vue</span>.<span class="title function_">component</span>(<span class="string">&#x27;component&#x27;</span>, &#123;</span><br><span class="line">  <span class="attr">props</span>: &#123;</span><br><span class="line">    <span class="attr">optionalArray</span>: <span class="title class_">Array</span>,</span><br><span class="line">    <span class="attr">optionalBool</span>: <span class="title class_">Boolean</span>,</span><br><span class="line">    <span class="attr">optionalFunc</span>: <span class="title class_">Function</span>,</span><br><span class="line">    <span class="attr">requiredFunc</span>: &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="title class_">Function</span>,</span><br><span class="line">      <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>而引入了 TypeScript 之后，就会感受到真正流畅的数据类型约束：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Component</span> &#123;</span><br><span class="line">  optionalArray?: <span class="title class_">Array</span>&lt;<span class="built_in">string</span>&gt; <span class="comment">// string 类型的 数组</span></span><br><span class="line">  optionalBool?: <span class="built_in">boolean</span> <span class="comment">// 写上 ? 号，就表示着这个属性可能为空</span></span><br><span class="line">  optionalFunc?: <span class="function">(<span class="params">foo: <span class="built_in">string</span>, bar: <span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">boolean</span> <span class="comment">// 函数的参数，返回值都一目了然</span></span><br><span class="line">  <span class="attr">requiredFunc</span>: <span class="function">() =&gt;</span> <span class="built_in">void</span> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="和-ECMAScript-相比"><a href="#和-ECMAScript-相比" class="headerlink" title="和 ECMAScript 相比"></a>和 ECMAScript 相比</h2><p>TypeScript 是 JavaScript 的超集，目标也是对齐 ECMAScript 的标准规范和提案对齐，最终 TypeScript 也是编译为 JavaScript。</p>
+<p>同时，和 JavaScript 规范标准 <a target="_blank" rel="noopener" href="https://github.com/tc39/ecma262">ECMAScript 提案</a> 相比，TypeScript 也一直在跟进 ECMAScript 的许多新特性。</p>
+<p>例如当前来说比较深受大家喜爱的新特性：</p>
+<ul>
+<li>import() 动态表达式</li>
+<li>decorators 装饰器</li>
+<li>async&#x2F;await 异步</li>
+</ul>
+<p>而这些都可以编译到 <code>ECMAScript 3</code>（少数细节存在兼容性问题）。</p>
+<h2 id="小-tips"><a href="#小-tips" class="headerlink" title="小 tips"></a>小 tips</h2><ul>
+<li>使用 <a target="_blank" rel="noopener" href="https://code.visualstudio.com/">visual studio code</a> 编辑器会体验到 TypeScript 强大的类型推导，毕竟两个都是微软亲儿子</li>
+<li>一些 JavaScript 编写的大型的第三方库，都提供了 TypeScript 的类型声明文件（<code>*.d.ts</code> 文件）, 一般都放在包目录的 <code>types</code> 文件夹中。或者在 <code>@types/*</code> 仓库名下可以找到</li>
+<li><code>babel</code> 是将高级版本的 JavaScript 编译为目标版本的 JavaScript，<code>TypeScript</code> 是将 TypeScript 编译为目标版本的 JavaScript。它们的编译是重叠的，也就是说 <code>TypeScript</code> 可以不再依赖 <code>babel</code> 编译。</li>
+</ul>
+<p>下一篇：《<a target="_blank" rel="noopener" href="http://tasaid.com/Blog/20171011232755.html">从 JavaScript 到 TypeScript 2 - 基础特性和类型推导</a>》</p>
+<p>&nbsp;</p>
+<p>TypeScript 中文网：<a target="_blank" rel="noopener" href="https://tslang.cn/">https://tslang.cn/</a> </p>
+<p>TypeScript 视频教程：《<a target="_blank" rel="noopener" href="https://nodelover.me/course/ts-basic">TypeScript 精通指南</a>》</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/posts/7dbfff02/" data-id="cloizszv2001fxww64c6hegf5" data-title="从 JavaScript 到 TypeScript 1 - 什么是 TypeScript" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/posts/29102f33/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          从 JavaScript 到 TypeScript 2 - 基础特性和类型推导
+        
+      </div>
+    </a>
+  
+  
+    <a href="/posts/829c6f4e/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">有了 indexOf，为什么 ECMAScript 7 还添加了 Array.prototype.includes</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/article/">article</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/" rel="tag">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Said/" rel="tag">Said</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTPS/" style="font-size: 12.5px;">HTTPS</a> <a href="/tags/JavaScript/" style="font-size: 17.5px;">JavaScript</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/Said/" style="font-size: 15px;">Said</a> <a href="/tags/TypeScript/" style="font-size: 20px;">TypeScript</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/posts/cfe1281/">一段职业生涯的总结</a>
+          </li>
+        
+          <li>
+            <a href="/posts/8127ee4b/">一段旅程</a>
+          </li>
+        
+          <li>
+            <a href="/posts/29a0bec0/">折旧</a>
+          </li>
+        
+          <li>
+            <a href="/posts/75b36508/">一无所知</a>
+          </li>
+        
+          <li>
+            <a href="/posts/688d139e/">TypeScript 中的多种 import 解义</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

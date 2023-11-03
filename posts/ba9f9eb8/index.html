@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>JavaScript 下的 setTimeout(fn, 0) 意味着什么？ | 听说 - 世界很大，风住过这里</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="近期在研究异步编程的我对于 setTimeout 之类的东西异常敏感。在 SegmentFault 上看到了一个问题《关于SetTimeout时间设为0时》：提问者读了一篇文章，原文解释 setTimeout 延迟时间为 0 时会发生的事情，提问者提出了几个文章中的几个疑点。读了那篇文章之后发现原文的作者对于 setTimeout 的理解和自己的认知有点出入，于是编写了相关测试的代码以求答案。最终">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript 下的 setTimeout(fn, 0) 意味着什么？">
+<meta property="og:url" content="http://example.com/posts/ba9f9eb8/index.html">
+<meta property="og:site_name" content="听说 - 世界很大，风住过这里">
+<meta property="og:description" content="近期在研究异步编程的我对于 setTimeout 之类的东西异常敏感。在 SegmentFault 上看到了一个问题《关于SetTimeout时间设为0时》：提问者读了一篇文章，原文解释 setTimeout 延迟时间为 0 时会发生的事情，提问者提出了几个文章中的几个疑点。读了那篇文章之后发现原文的作者对于 setTimeout 的理解和自己的认知有点出入，于是编写了相关测试的代码以求答案。最终">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://static.tasaid.com/blogs/5a35c42e2b2e99c46bc55c54e0208bba.png">
+<meta property="og:image" content="http://static.tasaid.com/blogs/5557c3e7198b9c0e8b62635fff5a1a61.png">
+<meta property="og:image" content="http://static.tasaid.com/blogs/2d470b0a4239a7da491bd9ab9bb68fe5.png">
+<meta property="og:image" content="http://static.tasaid.com/blogs/8a126fe4c8ca10319f20f31aa6a21f4b.png">
+<meta property="og:image" content="http://static.tasaid.com/blogs/6ba3d8bb53b4e99d98b71c4b32221ece.png">
+<meta property="og:image" content="http://static.tasaid.com/blogs/fac72a4cc4eaa7752123906a09959db9.png">
+<meta property="article:published_time" content="2016-09-07T09:09:00.000Z">
+<meta property="article:modified_time" content="2018-03-07T09:15:06.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://static.tasaid.com/blogs/5a35c42e2b2e99c46bc55c54e0208bba.png">
+  
+    <link rel="alternate" href="/atom.xml" title="听说 - 世界很大，风住过这里" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">听说 - 世界很大，风住过这里</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-blogs/JavaScript下的setTimeout0意味着什么？" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/posts/ba9f9eb8/" class="article-date">
+  <time class="dt-published" datetime="2016-09-07T09:09:00.000Z" itemprop="datePublished">2016-09-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tech/">tech</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      JavaScript 下的 setTimeout(fn, 0) 意味着什么？
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>近期在研究异步编程的我对于 setTimeout 之类的东西异常敏感。在 SegmentFault 上看到了一个问题《关于SetTimeout时间设为0时》：提问者读了一篇文章，原文解释 setTimeout 延迟时间为 0 时会发生的事情，提问者提出了几个文章中的几个疑点。读了那篇文章之后发现原文的作者对于 setTimeout 的理解和自己的认知有点出入，于是编写了相关测试的代码以求答案。最终编写了这篇文章。</p>
+<blockquote>
+<p><strong>JavaScript - 前端开发交流群：377786580</strong></p>
+</blockquote>
+<h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>上午在SegmentFault上看到了这个问题 《<a target="_blank" rel="noopener" href="http://segmentfault.net/q/1010000002590298">关于SetTimeout 时间设为 0 时</a>》 ，原提问者注明了问题来源：《<a target="_blank" rel="noopener" href="http://blog.csdn.net/lsk_jd/article/details/6080772">JS setTimeout 延迟时间为 0 的详解</a>》。这个问题来源也是转载的，我后来找到了 <a target="_blank" rel="noopener" href="http://www.cnblogs.com/xieex/archive/2008/07/11/1241137.html">出处</a>。</p>
+<p>在问题来源的那篇的文章中（后者），讲述了JS是单线程引擎：它把任务放到队列中，不会同步去执行，必须在完成一个任务后才开始另外一个任务。</p>
+<p>而后，转载的那篇文章列出并补充了原文的栗子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">HTML</span> <span class="keyword">PUBLIC</span> <span class="string">&quot;-//W3C//DTD HTML 4.01//EN&quot;</span> <span class="string">&quot;http://www.w3.org/TR/html4/strict.dtd&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;Content-Type&quot;</span> <span class="attr">content</span>=<span class="string">&quot;text/html; charset=UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>setTimeout<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">function</span> <span class="title function_">get</span>(<span class="params">id</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">return</span> <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(id);</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">window</span>.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="comment">//第一个例子：未使用setTimeout</span></span></span><br><span class="line"><span class="language-javascript">            <span class="title function_">get</span>(<span class="string">&#x27;makeinput&#x27;</span>).<span class="property">onmousedown</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">var</span> input = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;input&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;type&#x27;</span>, <span class="string">&#x27;text&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;value&#x27;</span>, <span class="string">&#x27;test1&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                <span class="title function_">get</span>(<span class="string">&#x27;inpwrapper&#x27;</span>).<span class="title function_">appendChild</span>(input);</span></span><br><span class="line"><span class="language-javascript">                input.<span class="title function_">focus</span>();</span></span><br><span class="line"><span class="language-javascript">                input.<span class="title function_">select</span>();</span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">            <span class="comment">//第二个例子：使用setTimeout</span></span></span><br><span class="line"><span class="language-javascript">            <span class="title function_">get</span>(<span class="string">&#x27;makeinput2&#x27;</span>).<span class="property">onmousedown</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">var</span> input = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;input&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;type&#x27;</span>, <span class="string">&#x27;text&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;value&#x27;</span>, <span class="string">&#x27;test1&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                <span class="title function_">get</span>(<span class="string">&#x27;inpwrapper2&#x27;</span>).<span class="title function_">appendChild</span>(input);</span></span><br><span class="line"><span class="language-javascript">                <span class="comment">//setTimeout</span></span></span><br><span class="line"><span class="language-javascript">                <span class="built_in">setTimeout</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">                    input.<span class="title function_">focus</span>();</span></span><br><span class="line"><span class="language-javascript">                    input.<span class="title function_">select</span>();</span></span><br><span class="line"><span class="language-javascript">                &#125;, <span class="number">0</span>);</span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">            <span class="comment">//第三个例子，onkeypress输入的时候少了一个值</span></span></span><br><span class="line"><span class="language-javascript">            <span class="title function_">get</span>(<span class="string">&#x27;input&#x27;</span>).<span class="property">onkeypress</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="title function_">get</span>(<span class="string">&#x27;preview&#x27;</span>).<span class="property">innerHTML</span> = <span class="variable language_">this</span>.<span class="property">value</span>;</span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span><span class="tag">&lt;<span class="name">code</span>&gt;</span>setTimeout<span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span>1、未使用 <span class="tag">&lt;<span class="name">code</span>&gt;</span>setTimeout<span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;makeinput&quot;</span>&gt;</span>生成 input<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">id</span>=<span class="string">&quot;inpwrapper&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span>2、使用 <span class="tag">&lt;<span class="name">code</span>&gt;</span>setTimeout<span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;makeinput2&quot;</span>&gt;</span>生成 input<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">id</span>=<span class="string">&quot;inpwrapper2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span>3、另一个例子<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">id</span>=<span class="string">&quot;input&quot;</span> <span class="attr">value</span>=<span class="string">&quot;&quot;</span> /&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">&quot;preview&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这是代码实例：</p>
+<iframe width="100%" height="300" src="//jsrun.net/drKKp/embedded/all/light/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<p>原文中有这么一段话，描述的有点抽象：</p>
+<blockquote>
+<p> JavaScript引擎在执行 onmousedown 时，由于没有多线程的同步执行，不可能同时去处理刚创建元素的 focus 和 select 方法，由于这两个方法都不在队列中，在完成 onmousedown 后，JavaScript 引擎已经丢弃了这两个任务，正如第一种情况。而在第二种情况中，由于setTimeout 可以把任务从某个队列中跳脱成为新队列，因而能够得到期望的结果。 </p>
+</blockquote>
+<p>我看到这里就觉得非常不对劲了。因为按照这种任务会被丢弃的说法，那么只要在事件触发的函数中再触发其他的事件都会被丢弃，浏览器是绝对不会这么做的，于是我编写了测试代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">//第一个例子：未使用setTimeout</span></span><br><span class="line">    <span class="title function_">get</span>(<span class="string">&#x27;makeinput&#x27;</span>).<span class="property">onmousedown</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">var</span> input = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;input&#x27;</span>);</span><br><span class="line">        input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;type&#x27;</span>, <span class="string">&#x27;text&#x27;</span>);</span><br><span class="line">        input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;value&#x27;</span>, <span class="string">&#x27;test1&#x27;</span>);</span><br><span class="line">        <span class="title function_">get</span>(<span class="string">&#x27;inpwrapper&#x27;</span>).<span class="title function_">appendChild</span>(input);</span><br><span class="line">        <span class="comment">//按照文中的理论，这里的click不会被触发，但它却成功触发了</span></span><br><span class="line">        <span class="title function_">get</span>(<span class="string">&#x27;inpwrapper&#x27;</span>).<span class="title function_">click</span>();<span class="comment">//触发了inpwrapper的onclick事件</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">get</span>(<span class="string">&#x27;inpwrapper&#x27;</span>).<span class="property">onclick</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="title function_">alert</span>(<span class="string">&#x27;linkFly&#x27;</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面的 onclick() 最终是执行了：弹出了 “linkFly”。</p>
+<p>而在转载的文中为了引人深思，又提出了第三个例子：</p>
+<blockquote>
+<p>在此，你可以看看例子 3，它的任务是实时更新输入的文本，现在请试试，你会发现预览区域总是落后一拍，比如你输 a, 预览区并没有出现 a, 在紧接输入 b 时，a 才不慌不忙地出现。</p>
+</blockquote>
+<p>而文中最后留给大家的思考的问题，解决方案就是使用 setTimeout 再次调整浏览器的代码任务运行队列。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> domInput = <span class="title function_">get</span>(<span class="string">&#x27;input&#x27;</span>);</span><br><span class="line">domInput.<span class="property">onkeypress</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="comment">//第三个例子的问题就这样就会被解决</span></span><br><span class="line">        <span class="title function_">get</span>(<span class="string">&#x27;preview&#x27;</span>).<span class="property">innerHTML</span> = domInput.<span class="property">value</span>;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原文和转载的文章中都对 setTimeout(fn,0) 进行了思考，但原文指出的问题本质漏洞百出，所以才出了这篇文章，我们的正文，现在开始。</p>
+<h2 id="单线程的JavaScript"><a href="#单线程的JavaScript" class="headerlink" title="单线程的JavaScript"></a>单线程的JavaScript</h2><p>首先我们来看浏览器下的 JavaScript：</p>
+<p>浏览器的内核是多线程的，它们在内核制控下相互配合以保持同步，一个浏览器至少实现三个常驻线程：javascript 引擎线程，GUI 渲染线程，浏览器事件触发线程。</p>
+<blockquote>
+<ul>
+<li>javascript 引擎是基于事件驱动单线程执行的，JS 引擎一直等待着任务队列中任务的到来，然后加以处理，浏览器无论什么时候都只有一个JS线程在运行 JS 程序。</li>
+<li>GUI 渲染线程负责渲染浏览器界面，当界面需要重绘 (Repaint) 或由于某种操作引发回流 (reflow) 时,该线程就会执行。但需要注意 GUI 渲染线程与 JS 引擎是互斥的，当 JS 引擎执行时 GUI 线程会被挂起，GUI 更新会被保存在一个队列中等到 JS 引擎空闲时立即被执行。</li>
+<li>事件触发线程，当一个事件被触发时该线程会把事件添加到待处理队列的队尾，等待 JS 引擎的处理。这些事件可来自 JavaScript 引擎当前执行的代码块如 setTimeOut 、也可来自浏览器内核的其他线程如鼠标点击、AJAX 异步请求等，但由于 JS 的单线程关系所有这些事件都得排队等待 JS 引擎处理。（当线程中没有执行任何同步代码的前提下才会执行异步代码）</li>
+</ul>
+</blockquote>
+<p>js的单线程在这一段面试代码中尤为明显（理解即可，请不要尝试…浏览器会假死的）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> isEnd = <span class="literal">true</span>;</span><br><span class="line"><span class="variable language_">window</span>.<span class="built_in">setTimeout</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    isEnd = <span class="literal">false</span>;<span class="comment">//1s后，改变isEnd的值</span></span><br><span class="line">&#125;, <span class="number">1000</span>);</span><br><span class="line"><span class="comment">//这个while永远的占用了js线程，所以setTimeout里面的函数永远不会执行</span></span><br><span class="line"><span class="keyword">while</span> (isEnd);</span><br><span class="line"><span class="comment">//alert也永远不会弹出</span></span><br><span class="line"><span class="title function_">alert</span>(<span class="string">&#x27;end&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<p>在我工作中对 js 的认识，个人认为 js 的任务单位是函数。即，一个函数表示着一个任务，这个函数没有执行结束，则在浏览器中当前的任务即没有结束。</p>
+<p>上面的代码中，当前任务因为 while 的执行而造成永远无法执行，所以后面的 setTimeout 也永远不会被执行。它在浏览器的任务队列中如图所示：</p>
+<p><img src="//static.tasaid.com/blogs/5a35c42e2b2e99c46bc55c54e0208bba.png" alt="Browser Event"></p>
+<h2 id="setTimeout背后意味着什么"><a href="#setTimeout背后意味着什么" class="headerlink" title="setTimeout背后意味着什么"></a>setTimeout背后意味着什么</h2><p>这篇文章一直在使用 setTimeout 为我们展现和理解js单线程的设计，只是它错误的使用了 Event 来进行演示，并过度解读了 Event。<br>这里原文和转载的文章忽略了这些基础的事件触发，而且也偏偏挑了两套本身设计就比较复杂的API：onmouseXXX 系列和 onkeyXXX 系列。</p>
+<p>onKeyXXX 系列的API触发顺序如图：</p>
+<p><img src="//static.tasaid.com/blogs/5557c3e7198b9c0e8b62635fff5a1a61.png" alt="onKeyXXX"></p>
+<p>而我个人所理解它们对应的功能：</p>
+<blockquote>
+<ul>
+<li>onkeydown - 主要获取和处理当前按下按键，例如按下 Enter 后进行提交。在这一层，并没有更新相关 DOM 元素的值。</li>
+<li>onkeypress - 主要获取和处理长按键，因为 onkeypress 在长按键盘的情况下会反复触发直到释放，这里并没有更新相关 DOM 元素的值，值得注意的是：keypress 之后才会更新值，所以在长按键盘反复触发 onkeypress 事件的时候，后一个触发的 onkeypress 能得到上一个onkeypress 的值。所以出现了 onkeypress 每次取值都会是上一次的值而不是最新值。</li>
+<li>onkeyup - 触发 onkeyup 的 DOM 元素的值在这里已经更新，可以拿到最新的值，所以这里主要处理相关 DOM 元素的值。</li>
+</ul>
+</blockquote>
+<p>流程就是上面的图画的那样：</p>
+<blockquote>
+<p>onkeydown &#x3D;&gt;  onkeypress &#x3D;&gt; onkeyup</p>
+</blockquote>
+<p>使用了setTimeout之后，流程应该是下面这样子的：</p>
+<blockquote>
+<p>onkeydown &#x3D;&gt; onkeypress &#x3D;&gt; function &#x3D;&gt; onkeyup</p>
+</blockquote>
+<p>使用 setTimeout(fn,0) 之后，在 onkeypress 后面插入了我们的函数 function。上面所说，浏览器在 onkeypress 之后就会更新相关 DOM 元素的状态 (input[type&#x3D;text] 的 value)，所以我们的 function 里面可以拿到最新的值。</p>
+<p>所以我们在 onkeypress 里面挂起 setTimeout 能拿到正确的值，下面的代码可以测试使用 setTimeout(fn,0) 之后的流程：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> domInput = <span class="title function_">get</span>(<span class="string">&#x27;input&#x27;</span>), view = <span class="title function_">get</span>(<span class="string">&#x27;preview&#x27;</span>);</span><br><span class="line">    <span class="comment">//onkeypress兼容性和说明：http://www.w3school.com.cn/jsref/jsref_events.asp</span></span><br><span class="line">    domInput.<span class="property">onkeypress</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="built_in">setTimeout</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">            <span class="comment">//这个函数在keypress之后，keyup之前执行</span></span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;linkFly&#x27;</span>);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;;</span><br><span class="line">    domInput.<span class="property">onkeyup</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;up&#x27;</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们再来谈谈原代码中的示例 1 和示例 2，示例 1 和示例 2 的区别在这里：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//示例1</span></span><br><span class="line">input.<span class="title function_">focus</span>();</span><br><span class="line">input.<span class="title function_">select</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">//示例2</span></span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    input.<span class="title function_">focus</span>();</span><br><span class="line">    input.<span class="title function_">select</span>();</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<p>原文章中说示例 1 的 focus() 和 select() 在 onmousedown 事件中被丢弃，从而导致了没有选中，但原文的作者忽略了他注册的事件是： onmousedown。</p>
+<p>我们暂且不讨论 onmouseXXX 系的其他 API，我们仅关注和点击相关的，它们的执行顺序是：</p>
+<blockquote>
+<ul>
+<li>mousedown - 鼠标按钮按下</li>
+<li>mouseup - 鼠标按钮释放</li>
+<li>click - 完成单击</li>
+</ul>
+</blockquote>
+<p>我们在 onmousedown 里面新建了 input ，并且选中 input 的值（调用了 input.focus(), input.select()）。<br>那么为什么没有被选中呢？这样，我们来做一次测试，看看我们的 onfocus 到底是被丢弃了，还是触发了。我们把原文的代码进行改写：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> makeBtn = <span class="title function_">get</span>(<span class="string">&#x27;makeinput&#x27;</span>);</span><br><span class="line">    <span class="comment">//观察onmouseXXX系完成整个单击的顺序</span></span><br><span class="line">    makeBtn.<span class="property">onmousedown</span> = <span class="keyword">function</span> (<span class="params">e</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(e.<span class="property">type</span>);</span><br><span class="line">        <span class="keyword">var</span> input = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;input&#x27;</span>);</span><br><span class="line">        input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;type&#x27;</span>, <span class="string">&#x27;text&#x27;</span>);</span><br><span class="line">        input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;value&#x27;</span>, <span class="string">&#x27;test1&#x27;</span>);</span><br><span class="line">        <span class="title function_">get</span>(<span class="string">&#x27;inpwrapper&#x27;</span>).<span class="title function_">appendChild</span>(input);</span><br><span class="line">        input.<span class="property">onfocus</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;<span class="comment">//观察我们新生成的input什么时候获取焦点的，或者它有没有像原文作者说的那样被丢弃了</span></span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">info</span>(<span class="string">&#x27;input focus&#x27;</span>);</span><br><span class="line">        &#125;;</span><br><span class="line">        input.<span class="title function_">focus</span>();</span><br><span class="line">        input.<span class="title function_">select</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    makeBtn.<span class="property">onclick</span> = <span class="keyword">function</span> (<span class="params">e</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(e.<span class="property">type</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">    makeBtn.<span class="property">onmouseup</span> = <span class="keyword">function</span> (<span class="params">e</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(e.<span class="property">type</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">    makeBtn.<span class="property">onfocus</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;<span class="comment">//观察我们生成按钮什么时候获取焦点的</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;makeBtn focus&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>代码运行的结果是这样的：<br><img src="//static.tasaid.com/blogs/2d470b0a4239a7da491bd9ab9bb68fe5.png" alt="onmouseXXX &amp; focus"></p>
+<p>我们的 input focus 执行了——那么它为什么没有获取到焦点呢？我们再看看后面执行的函数：我们点击的按钮，在 mousedown 之后，才获得焦点，也就是说：我们的 input 本来已经得到了 focus()，但在 onmousedown 之后，我们点击的按钮才迟迟触发了自己的 onfocus()，导致我们的 input 被覆盖。<br>我们再加上 setTimeout 进行测试：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> makeBtn = <span class="title function_">get</span>(<span class="string">&#x27;makeinput&#x27;</span>);</span><br><span class="line">    makeBtn.<span class="property">onmousedown</span> = <span class="keyword">function</span> (<span class="params">e</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(e.<span class="property">type</span>);</span><br><span class="line">        <span class="keyword">var</span> input = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;input&#x27;</span>);</span><br><span class="line">        input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;type&#x27;</span>, <span class="string">&#x27;text&#x27;</span>);</span><br><span class="line">        input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;value&#x27;</span>, <span class="string">&#x27;test1&#x27;</span>);</span><br><span class="line">        <span class="title function_">get</span>(<span class="string">&#x27;inpwrapper&#x27;</span>).<span class="title function_">appendChild</span>(input);</span><br><span class="line">        input.<span class="property">onfocus</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">info</span>(<span class="string">&#x27;input focus&#x27;</span>);</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">//我们加上setTimeout，看看会发生什么</span></span><br><span class="line">        <span class="built_in">setTimeout</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">            input.<span class="title function_">focus</span>();</span><br><span class="line">            input.<span class="title function_">select</span>();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    makeBtn.<span class="property">onclick</span> = <span class="keyword">function</span> (<span class="params">e</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(e.<span class="property">type</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">    makeBtn.<span class="property">onmouseup</span> = <span class="keyword">function</span> (<span class="params">e</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(e.<span class="property">type</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">    makeBtn.<span class="property">onfocus</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;makeBtn focus&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>执行结果是这样：<br><img src="//static.tasaid.com/blogs/8a126fe4c8ca10319f20f31aa6a21f4b.png" alt="onmouseXXX and settimeout"></p>
+<p>可以看见当我们点击 “生成” 按钮的时候，按钮的 focus 正确的执行了，然后才执行了 input focus。<br>在示例 1 中，我们在 onmousedown() 中执行了 input.focus() 导致 input 得到焦点，而 onmousedown 之后，我们点击的按钮才迟迟得到了自己的焦点，造成了我们 input 刚拿到手还没焐热的焦点被转移。</p>
+<p>而示例 2 中的代码，我们延迟了焦点，当按钮获得焦点之后，我们的 input 再把焦点抢过来，所以，使用 setTimeout(fn,0) 之后，我们的 input 可以得到焦点并选中文本。<br>这里值得思考的 focus() 的执行时机，根据这次测试观察，发现 focus 事件好像挂载在 mousedown 之内的最后面，而不是直接挂在 mousedown 的后面。它和 mousedown 仿佛是一体的。<br>我们使用 setTimeout 之前的任务流程是这样的（-&gt;表示在上一个任务中，&#x3D;&gt;表示在上一个任务后）：</p>
+<blockquote>
+<p>onmousedown -&gt; onmousedown中执行了input.focus() -&gt; button.onfocus &#x3D;&gt; onmouseup &#x3D;&gt; onclick</p>
+</blockquote>
+<p><img src="//static.tasaid.com/blogs/6ba3d8bb53b4e99d98b71c4b32221ece.png" alt="onmouseXXX事件流程"></p>
+<p>而我们使用了 setTimeout 之后的任务流程是这样的：</p>
+<blockquote>
+<p>onmousedown -&gt; button.onfocus &#x3D;&gt; input.focus &#x3D;&gt; onmouseup &#x3D;&gt; onclick</p>
+</blockquote>
+<p><img src="//static.tasaid.com/blogs/fac72a4cc4eaa7752123906a09959db9.png" alt="onmouseXXX+setTimeout事件流程"></p>
+<p>而从上面的流程上我们得知了另外的消息，我们还可以把 input.focus 挂在 mouseup 和 click 下，因为在这些事件之前，我们的按钮已经得到过焦点了，不会再抢我们的焦点了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">makeBtn.<span class="property">click</span> = <span class="keyword">function</span> (<span class="params">e</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(e.<span class="property">type</span>);</span><br><span class="line">    <span class="keyword">var</span> input = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;input&#x27;</span>);</span><br><span class="line">    input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;type&#x27;</span>, <span class="string">&#x27;text&#x27;</span>);</span><br><span class="line">    input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;value&#x27;</span>, <span class="string">&#x27;test1&#x27;</span>);</span><br><span class="line">    <span class="title function_">get</span>(<span class="string">&#x27;inpwrapper&#x27;</span>).<span class="title function_">appendChild</span>(input);</span><br><span class="line">    input.<span class="property">onfocus</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;<span class="comment">//观察我们新生成的input什么时候获取焦点的</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">info</span>(<span class="string">&#x27;input focus&#x27;</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">    input.<span class="title function_">focus</span>();</span><br><span class="line">    input.<span class="title function_">select</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们应该认识到，利用 setTimeout(fn,0) 的特性，可以帮助我们在某些极端场景下，修正浏览器的下一个任务。</p>
+<p>到了这里，我们已经可以否定原文所说的： “JavaScript引擎已经丢弃了这两个任务”。</p>
+<p>我仍然相信，浏览器是爱我们的（除了 IE6 和移动端一些 XXOO 的浏览器！！！！）浏览器并不会平白无故的丢弃我们辛劳写下的代码，多数时候，只是因为我们没有看见背后的真相而已。</p>
+<p>当我们踏进计算机的世界写下 “hello world” 的时候就应该坚信，这个二进制的世界里，永远存在真相。</p>
+<h2 id="参考和引用"><a href="#参考和引用" class="headerlink" title="参考和引用"></a>参考和引用</h2><ul>
+<li><a target="_blank" rel="noopener" href="http://www.cnblogs.com/zhaodongyu/p/3922961.html">JavaScript异步机制</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2013/10/event_loop://www.cnblogs.com/zhaodongyu/p/3922961.html">什么是 Event Loop</a></li>
+<li><a target="_blank" rel="noopener" href="http://blog.csdn.net/kongls08/article/details/6996518">javascript线程解释</a></li>
+</ul>
+<blockquote>
+<p><strong>JavaScript - 前端开发交流群：377786580</strong></p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/posts/ba9f9eb8/" data-id="cloizszut0001xww6g0y1dzk1" data-title="JavaScript 下的 setTimeout(fn, 0) 意味着什么？" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/posts/b4ea1707/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          在空中
+        
+      </div>
+    </a>
+  
+  
+    <a href="/posts/8b08fc90/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">JavaScript - 如果...没有方法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/article/">article</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/" rel="tag">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Said/" rel="tag">Said</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTPS/" style="font-size: 12.5px;">HTTPS</a> <a href="/tags/JavaScript/" style="font-size: 17.5px;">JavaScript</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/Said/" style="font-size: 15px;">Said</a> <a href="/tags/TypeScript/" style="font-size: 20px;">TypeScript</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/posts/cfe1281/">一段职业生涯的总结</a>
+          </li>
+        
+          <li>
+            <a href="/posts/8127ee4b/">一段旅程</a>
+          </li>
+        
+          <li>
+            <a href="/posts/29a0bec0/">折旧</a>
+          </li>
+        
+          <li>
+            <a href="/posts/75b36508/">一无所知</a>
+          </li>
+        
+          <li>
+            <a href="/posts/688d139e/">TypeScript 中的多种 import 解义</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

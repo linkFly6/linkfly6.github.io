@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Node.js 部署免费/自动续订 HTTPS | 听说 - 世界很大，风住过这里</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="随着互联网快速发展，互联网信息安全越来越受到大家重视，HTTPS 应该是近两年各大厂商都在尽力普及的技术之一。国内大厂基本上已经全面普及了 HTTPS。  前端开发 QQ 群：377786580  HTTPS 现状早在 2016 年底，我就写过 《 从 HTTP 到 HTTPS 系列 》文章来讲解 HTTPS。当时结合本站的部署经验，给大家详细介绍了 《 IIS 部署免费 HTTPS 》。 这篇文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Node.js 部署免费&#x2F;自动续订 HTTPS">
+<meta property="og:url" content="http://example.com/posts/4f3c3fec/index.html">
+<meta property="og:site_name" content="听说 - 世界很大，风住过这里">
+<meta property="og:description" content="随着互联网快速发展，互联网信息安全越来越受到大家重视，HTTPS 应该是近两年各大厂商都在尽力普及的技术之一。国内大厂基本上已经全面普及了 HTTPS。  前端开发 QQ 群：377786580  HTTPS 现状早在 2016 年底，我就写过 《 从 HTTP 到 HTTPS 系列 》文章来讲解 HTTPS。当时结合本站的部署经验，给大家详细介绍了 《 IIS 部署免费 HTTPS 》。 这篇文">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://static.tasaid.com/blogs/91192a101e2d0a8e0c3ed72419bae957.png">
+<meta property="og:image" content="http://static.tasaid.com/blogs/8217d50d1f9d089a16973dfe8851e1c0.png">
+<meta property="og:image" content="http://static.tasaid.com/blogs/38da874f165cb7326fdd3653eee3f202.png">
+<meta property="article:published_time" content="2018-03-14T07:09:00.000Z">
+<meta property="article:modified_time" content="2018-08-23T11:45:12.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Node.js">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://static.tasaid.com/blogs/91192a101e2d0a8e0c3ed72419bae957.png">
+  
+    <link rel="alternate" href="/atom.xml" title="听说 - 世界很大，风住过这里" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">听说 - 世界很大，风住过这里</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-blogs/Node-js部署免费-自动续订HTTPS" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/posts/4f3c3fec/" class="article-date">
+  <time class="dt-published" datetime="2018-03-14T07:09:00.000Z" itemprop="datePublished">2018-03-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tech/">tech</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Node.js 部署免费/自动续订 HTTPS
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>随着互联网快速发展，互联网信息安全越来越受到大家重视，<code>HTTPS</code> 应该是近两年各大厂商都在尽力普及的技术之一。国内大厂基本上已经全面普及了 HTTPS。</p>
+<blockquote>
+<p>前端开发 QQ 群：377786580</p>
+</blockquote>
+<h2 id="HTTPS-现状"><a href="#HTTPS-现状" class="headerlink" title="HTTPS 现状"></a>HTTPS 现状</h2><p>早在 2016 年底，我就写过 《 <a target="_blank" rel="noopener" href="https://tasaid.com/blog/20161003001126.html">从 HTTP 到 HTTPS 系列</a> 》文章来讲解 <code>HTTPS</code>。当时结合本站的部署经验，给大家详细介绍了 《 <a target="_blank" rel="noopener" href="https://tasaid.com/Blog/20161005024923.html">IIS 部署免费 HTTPS</a> 》。</p>
+<p>这篇文章就跟大家介绍一下 <code>Node.js</code> 如何部署免费 <code>HTTPS</code> 以及简单的部署 <code>HTTP/2</code>。</p>
+<p>截止 2018 年 03 月 13 日，由 <a target="_blank" rel="noopener" href="https://letsencrypt.org/stats/">Let’s Encrypt 实时统计报告</a> 显示，在统计的 6930 多万活跃网站中，已经有 5350 万（约 77%）的站点部署了 <code>HTTPS</code> 证书服务。</p>
+<p><img src="//static.tasaid.com/blogs/91192a101e2d0a8e0c3ed72419bae957.png" alt="lets encrypt stats"></p>
+<p>同时 <a target="_blank" rel="noopener" href="https://transparencyreport.google.com/https/overview">Google 透明度报告 - 网络上的 HTTPS 加密</a> 中，统计了使用 Chrome 浏览器，访问的站点统计中，HTTPS 使用率的增长情况：</p>
+<p><img src="//static.tasaid.com/blogs/8217d50d1f9d089a16973dfe8851e1c0.png" alt="google stats"></p>
+<p>而在今年 2 月份，Chrome 团队也<a target="_blank" rel="noopener" href="https://blog.chromium.org/2018/02/a-secure-web-is-here-to-stay.html">宣布</a>，将在 2018 年 7 月份发布的 Chrome 68 中，将没有部署 HTTPS 的网站标记为 “不安全”。</p>
+<p><img src="//static.tasaid.com/blogs/38da874f165cb7326fdd3653eee3f202.png" alt="chrome 68 status"></p>
+<p>简而言之，HTTPS 大势所趋。</p>
+<h2 id="Node-js-部署-HTTPS"><a href="#Node-js-部署-HTTPS" class="headerlink" title="Node.js 部署 HTTPS"></a>Node.js 部署 HTTPS</h2><p>早在 《 <a target="_blank" rel="noopener" href="https://tasaid.com/Blog/20161005024923.html">从 HTTP 到 HTTPS - IIS 部署免费 HTTPS</a> 》一文中，我就指出了 <a target="_blank" rel="noopener" href="https://letsencrypt.org/">Let’s Encrypt</a> 免费证书的优势：</p>
+<blockquote>
+<p>由 ISRG（Internet Security Research Group，互联网安全研究小组）提供服务，免费、访问速度快，稳定等。</p>
+</blockquote>
+<p>所以这次部署的证书也是围绕 <code>Let&#39;s Encrypt</code> 展开。</p>
+<h3 id="greenlock-express"><a href="#greenlock-express" class="headerlink" title="greenlock-express"></a>greenlock-express</h3><p>由于 js 生态圈的繁华，所以想找一个现有的包是件很轻松的事情，<a target="_blank" rel="noopener" href="https://github.com/Daplie/greenlock-express">greenlock-express</a> 这个包就帮助我们封装了 <code>Let&#39;s Enctrypt</code> 证书的部署，只需要引入这个包并使用，就可以：</p>
+<ol>
+<li>自动注册 <code>Let&#39;s Encrypt</code> 证书</li>
+<li>自动续订( 80 天左右)，且服务器无需重启</li>
+<li>支持虚拟主机</li>
+</ol>
+<p>并且 <code>greenlock</code> 相关的证书生态圈十分完善，同样有支持 <code>koa</code> 的 <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/greenlock-koa">greenlock-koa</a>。</p>
+<p>注意：<code>greenlock-express</code> 在 <code>2.1.1</code> 之后开始支持由 Let’s Encrypt 2018 年开始发布的  ACME v2 协议证书。</p>
+<p>从 2.1.1 之前升级上来的 <code>greenlock-express</code> 会有 API 变动，如果直接升级会报证书错误：</p>
+<blockquote>
+<p>Let’s Encrypt v1 is deprecated.<br>Please update to Let’s Encrypt v2 (ACME draft 12)</p>
+</blockquote>
+<p>如果想要继续使用 v1的证书服务，请先安装包：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save le-acme-core</span><br></pre></td></tr></table></figure>
+
+<p>然后修改以下代码：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">&#x27;greenlock-express&#x27;</span>).<span class="title function_">create</span>(&#123;</span><br><span class="line">	<span class="comment">// 指定使用 v1 版本</span></span><br><span class="line">	<span class="attr">version</span>: <span class="string">&#x27;v01&#x27;</span>,</span><br><span class="line">    <span class="comment">// v1 证书服务</span></span><br><span class="line">    <span class="attr">server</span>: <span class="string">&#x27;https://acme-v01.api.letsencrypt.org/directory&#x27;</span>,</span><br><span class="line">	<span class="comment">// 其他配置</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>使用 ACME draft 12 证书有个非常好的用处，就是 <strong>支持通配符证书</strong> 了。</p>
+<h3 id="安装和使用"><a href="#安装和使用" class="headerlink" title="安装和使用"></a>安装和使用</h3><p>通过 <code>npm</code> 安装 <code>greenlock-express</code>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm install --save greenlock-express@2.x</span></span><br></pre></td></tr></table></figure>
+
+<p>使用起来非常简单，这是 <code>greenlock-express</code> 默认提供的 demo：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> greenlock = <span class="built_in">require</span>(<span class="string">&#x27;greenlock-express&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">require</span>(<span class="string">&#x27;greenlock-express&#x27;</span>).<span class="title function_">create</span>(&#123;</span><br><span class="line">  <span class="comment">// 证书服务，开发测试使用这个</span></span><br><span class="line">  <span class="comment">// 线上使用 https://acme-v02.api.letsencrypt.org/directory</span></span><br><span class="line">  <span class="attr">server</span>: <span class="string">&#x27;https://acme-staging-v02.api.letsencrypt.org/directory&#x27;</span>,</span><br><span class="line">  <span class="comment">// 联系邮箱</span></span><br><span class="line">  <span class="attr">email</span>: <span class="string">&#x27;john.doe@example.com&#x27;</span>,</span><br><span class="line">  <span class="comment">// 是否同意 Let&#x27;s Encrypt 条款... 这必须为 true 啊，不然走不下去</span></span><br><span class="line">  <span class="attr">agreeTos</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="comment">// 申请的域名列表，不支持通配符</span></span><br><span class="line">  <span class="attr">approveDomains</span>: [ <span class="string">&#x27;tasaid.com&#x27;</span>, <span class="string">&#x27;www.tasaid.com&#x27;</span> ],</span><br><span class="line">  <span class="comment">// 绑定 express app</span></span><br><span class="line">  <span class="attr">app</span>: <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>)().<span class="title function_">use</span>(<span class="string">&#x27;/&#x27;</span>, <span class="keyword">function</span> (<span class="params">req, res</span>) &#123;</span><br><span class="line">    res.<span class="title function_">end</span>(<span class="string">&#x27;Hello, World!&#x27;</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;).<span class="title function_">listen</span>(<span class="number">80</span>, <span class="number">443</span>)</span><br></pre></td></tr></table></figure>
+
+<p>证书存在 <code>~/letsencrypt</code>。</p>
+<p>当然上面代码只能用于测试&#x2F;开发环境，因为它并没有申请一个有效的证书，而是生成了一个自签名的证书（跟以前的 12306 自签证书一样），用于在开发环境中调试。</p>
+<h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><p><code>greenlock-express</code> 的 <code>create(options)</code> 函数参数签名如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Options</span> &#123;</span><br><span class="line">  <span class="comment">// greenlock-express@2.1.1 新增，draft-11 表示 ACME v2 证书（推荐），v01 表示 v1 证书</span></span><br><span class="line">  <span class="attr">version</span>: <span class="string">&#x27;draft-11&#x27;</span> | <span class="string">&#x27;v01&#x27;</span></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Express app</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="attr">app</span>: <span class="title class_">Express</span></span><br><span class="line">  <span class="comment">/*</span></span><br><span class="line"><span class="comment">   * 远程证书服务器</span></span><br><span class="line"><span class="comment">   * 测试环境中可用为 https://acme-staging-v02.api.letsencrypt.org/directory</span></span><br><span class="line"><span class="comment">   * 生产环境中为 https://acme-v02.api.letsencrypt.org/directory</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="attr">server</span>: <span class="built_in">string</span></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 用于接收 let&#x27;s encrypt 协议的邮箱</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="attr">email</span>: <span class="built_in">string</span></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 是否同意协议</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="attr">agreeTos</span>: <span class="built_in">boolean</span></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 在注册域名获取证书前，会执行这个回调函数</span></span><br><span class="line"><span class="comment">   * string[]: 一组需要注册证书的域名</span></span><br><span class="line"><span class="comment">   * 函数: 第一个参数跟 Options 格式差不多，第二个参数是当前自动获取的域名信息，第三个参数是在处理完之后传递的回调函数</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="attr">approveDomains</span>: <span class="built_in">string</span>[] | <span class="function">(<span class="params">opts, certs: cb</span>) =&gt;</span> <span class="built_in">any</span></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 更新证书最大天数 （以毫秒为单位）</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="attr">renewWithin</span>: <span class="built_in">number</span></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 更新证书的最小天数（以毫秒为单位）</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="attr">renewBy</span>: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>经过测试，在真实的生产环境中， <code>approveDomains</code> 必须为函数，传数组的话不会生效。</p>
+<h3 id="生产环境"><a href="#生产环境" class="headerlink" title="生产环境"></a>生产环境</h3><p>生产环境中部署还需要做一些配置改动和引入一些包。</p>
+<p>更新包：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm i --save greenlock-express@2.x</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm i --save ursa</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm i --save le-challenge-fs</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm i --save le-store-certbot</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm i --save redirect-https</span></span><br></pre></td></tr></table></figure>
+
+<p>生产代码：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> greenlock = <span class="built_in">require</span>(<span class="string">&#x27;greenlock-express&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> lex = greenlock.<span class="title function_">create</span>(&#123;</span><br><span class="line">  <span class="attr">version</span>: <span class="string">&#x27;draft-11&#x27;</span>,</span><br><span class="line">  <span class="comment">// 注意这里要成这个固定地址</span></span><br><span class="line">  <span class="attr">server</span>: <span class="string">&#x27;https://acme-v02.api.letsencrypt.org/directory&#x27;</span>,</span><br><span class="line">  <span class="attr">challenges</span>: &#123; </span><br><span class="line">    <span class="string">&#x27;http-01&#x27;</span>: <span class="built_in">require</span>(<span class="string">&#x27;le-challenge-fs&#x27;</span>).<span class="title function_">create</span>(&#123; <span class="attr">webrootPath</span>: <span class="string">&#x27;~/letsencrypt/var/acme-challenges&#x27;</span> &#125;) </span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">store</span>: <span class="built_in">require</span>(<span class="string">&#x27;le-store-certbot&#x27;</span>).<span class="title function_">create</span>(&#123; </span><br><span class="line">    <span class="attr">webrootPath</span>: <span class="string">&#x27;~/letsencrypt/srv/www/:hostname/.well-known/acme-challenge&#x27;</span> </span><br><span class="line">  &#125;),</span><br><span class="line">  <span class="attr">approveDomains</span>: <span class="function">(<span class="params">opts: <span class="built_in">any</span>, certs: <span class="built_in">any</span>, cb: <span class="built_in">any</span></span>) =&gt;</span> &#123;</span><br><span class="line">    appLog.<span class="title function_">info</span>(<span class="string">&#x27;approveDomains&#x27;</span>, &#123; opts, certs &#125;)</span><br><span class="line">    <span class="keyword">if</span> (certs) &#123;</span><br><span class="line">      <span class="comment">/*</span></span><br><span class="line"><span class="comment">       * 注意这里如果是这样写的话，一定要对域名做校验</span></span><br><span class="line"><span class="comment">       * 否则其他人可以通过将域名指向你的服务器地址，导致你注册了其他域名的证书</span></span><br><span class="line"><span class="comment">       * 从而造成安全性问题</span></span><br><span class="line"><span class="comment">       */</span></span><br><span class="line">      <span class="comment">// opts.domains = certs.altnames</span></span><br><span class="line">      <span class="comment">// domains 已经支持通配符了（基于 ACME v2）</span></span><br><span class="line">      opts.<span class="property">domains</span> = [ <span class="string">&#x27;tasaid.com&#x27;</span>, <span class="string">&#x27;www.tasaid.com&#x27;</span> ]</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      opts.<span class="property">email</span> = <span class="string">&#x27;你的邮箱@live.com&#x27;</span></span><br><span class="line">      opts.<span class="property">agreeTos</span> = <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">cb</span>(<span class="literal">null</span>, &#123; <span class="attr">options</span>: opts, <span class="attr">certs</span>: certs &#125;)</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这里的 redirect-https 用于自动将 HTTP 请求跳到 HTTPS 上</span></span><br><span class="line"><span class="built_in">require</span>(<span class="string">&#x27;http&#x27;</span>).<span class="title function_">createServer</span>(</span><br><span class="line">  lex.<span class="title function_">middleware</span>(</span><br><span class="line">    <span class="built_in">require</span>(<span class="string">&#x27;redirect-https&#x27;</span>)()</span><br><span class="line">   )</span><br><span class="line">  ).<span class="title function_">listen</span>(<span class="number">80</span>, <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Listening&#x27;</span>, <span class="string">`for ACME http-01 challenges on: <span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(<span class="variable language_">this</span>.address())&#125;</span>`</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// 绑定 HTTPS 端口</span></span><br><span class="line"><span class="built_in">require</span>(<span class="string">&#x27;https&#x27;</span>).<span class="title function_">createServer</span>(</span><br><span class="line">	lex.<span class="property">httpsOptions</span>, </span><br><span class="line">	lex.<span class="title function_">middleware</span>(app)</span><br><span class="line">  ).<span class="title function_">listen</span>(<span class="number">443</span>, <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>((<span class="string">&#x27;App is running at http://localhost:%d in %s mode&#x27;</span>), app.<span class="title function_">get</span>(<span class="string">&#x27;port&#x27;</span>), app.<span class="title function_">get</span>(<span class="string">&#x27;env&#x27;</span>))</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Press CTRL-C to stop\n&#x27;</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>如果没有生效，可以检查下 <code>~/letsencrypt</code> 的证书信息，和 443 端口是否打开。</p>
+<h2 id="部署-HTTP-2"><a href="#部署-HTTP-2" class="headerlink" title="部署 HTTP&#x2F;2"></a>部署 HTTP&#x2F;2</h2><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/HTTP/2">HTTP&#x2F;2</a> 是 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%B6%85%E6%96%87%E6%9C%AC%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE">HTTP&#x2F;1.1</a> 的升级版，主要来说改进了这些地方：</p>
+<ol>
+<li>二进制协议：采用二进制流</li>
+<li>多路复用：一次请求多次复用管道</li>
+<li>服务器推送：解决 HTTP&#x2F;1.x 时代最大的痛点</li>
+</ol>
+<p>值的注意的是，HTTP&#x2F;2 是支持 HTTP 协议的，只不过浏览器厂商都不愿意支持 HTTP，所以基本上可以认为，用上 HTTP&#x2F;2 的前置条件是必须部署 HTTPS。</p>
+<h3 id="SPDY"><a href="#SPDY" class="headerlink" title="SPDY"></a>SPDY</h3><p>早在 2009 年，Google 开发了一个实验性协议，叫做 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/SPDY">SPDY</a>，目的解决 HTTP&#x2F;1.x 中的一些设计缺陷。在 SPDY 发布几年后，这个新的实验性协议得到了 Chrome、Firefox 和 Opera 的支持，应用越来越广泛。然后 HTTP 工作组 (HTTP-WG)  在这个 SPDY 的基础上，设计了 HTTP&#x2F;2，所以可以说 SPDY 是 HTTP&#x2F;2 的前身。</p>
+<p>关于 HTTP&#x2F;2 的详情可以参考 <a target="_blank" rel="noopener" href="https://developers.google.com/web/fundamentals/performance/http2/?hl=zh-cn">这篇文章</a>。</p>
+<h3 id="部署-HTTP-2-1"><a href="#部署-HTTP-2-1" class="headerlink" title="部署 HTTP&#x2F;2"></a>部署 HTTP&#x2F;2</h3><p>引入 <code>HTTP/2</code> 在 <code>Node.js</code> 中也十分简单，只需要引入 <code>spdy</code> 包即可：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm i --save spdy</span></span><br></pre></td></tr></table></figure>
+
+<p>然后我们把上一节的代码做一点修改即可支持 HTTP&#x2F;2：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> greenlock = <span class="built_in">require</span>(<span class="string">&#x27;greenlock-express&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>)</span><br><span class="line"><span class="comment">// HTTP/2</span></span><br><span class="line"><span class="keyword">const</span> spdy = <span class="built_in">require</span>(<span class="string">&#x27;spdy&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> lex = greenlock.<span class="title function_">create</span>(&#123;</span><br><span class="line">  <span class="attr">version</span>: <span class="string">&#x27;draft-11&#x27;</span>,</span><br><span class="line">  <span class="comment">// 注意这里要成这个固定地址</span></span><br><span class="line">  <span class="attr">server</span>: <span class="string">&#x27;https://acme-v02.api.letsencrypt.org/directory&#x27;</span>,</span><br><span class="line">  <span class="attr">challenges</span>: &#123; </span><br><span class="line">    <span class="string">&#x27;http-01&#x27;</span>: <span class="built_in">require</span>(<span class="string">&#x27;le-challenge-fs&#x27;</span>).<span class="title function_">create</span>(&#123; <span class="attr">webrootPath</span>: <span class="string">&#x27;~/letsencrypt/var/acme-challenges&#x27;</span> &#125;) </span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">store</span>: <span class="built_in">require</span>(<span class="string">&#x27;le-store-certbot&#x27;</span>).<span class="title function_">create</span>(&#123; </span><br><span class="line">    <span class="attr">webrootPath</span>: <span class="string">&#x27;~/letsencrypt/srv/www/:hostname/.well-known/acme-challenge&#x27;</span> </span><br><span class="line">  &#125;),</span><br><span class="line">  <span class="attr">approveDomains</span>: <span class="function">(<span class="params">opts: <span class="built_in">any</span>, certs: <span class="built_in">any</span>, cb: <span class="built_in">any</span></span>) =&gt;</span> &#123;</span><br><span class="line">    appLog.<span class="title function_">info</span>(<span class="string">&#x27;approveDomains&#x27;</span>, &#123; opts, certs &#125;)</span><br><span class="line">    <span class="keyword">if</span> (certs) &#123;</span><br><span class="line">      <span class="comment">/*</span></span><br><span class="line"><span class="comment">       * 注意这里如果是这样写的话，一定要对域名做校验</span></span><br><span class="line"><span class="comment">       * 否则其他人可以通过将域名指向你的服务器地址，导致你注册了其他域名的证书</span></span><br><span class="line"><span class="comment">       * 从而造成安全性问题</span></span><br><span class="line"><span class="comment">       */</span></span><br><span class="line">      <span class="comment">// opts.domains = certs.altnames</span></span><br><span class="line">      <span class="comment">// domains 已经支持通配符了（基于 ACME v2）</span></span><br><span class="line">      opts.<span class="property">domains</span> = [ <span class="string">&#x27;tasaid.com&#x27;</span>, <span class="string">&#x27;www.tasaid.com&#x27;</span> ]</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      opts.<span class="property">email</span> = <span class="string">&#x27;你的邮箱@live.com&#x27;</span></span><br><span class="line">      opts.<span class="property">agreeTos</span> = <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">cb</span>(<span class="literal">null</span>, &#123; <span class="attr">options</span>: opts, <span class="attr">certs</span>: certs &#125;)</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这里的 redirect-https 用于自动将 HTTP 请求跳到 HTTPS 上</span></span><br><span class="line"><span class="built_in">require</span>(<span class="string">&#x27;http&#x27;</span>).<span class="title function_">createServer</span>(</span><br><span class="line">  lex.<span class="title function_">middleware</span>(</span><br><span class="line">    <span class="built_in">require</span>(<span class="string">&#x27;redirect-https&#x27;</span>)()</span><br><span class="line">   )</span><br><span class="line">  ).<span class="title function_">listen</span>(<span class="number">80</span>, <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Listening&#x27;</span>, <span class="string">`for ACME http-01 challenges on: <span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(<span class="variable language_">this</span>.address())&#125;</span>`</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// HTTP/2</span></span><br><span class="line">spdy.<span class="title function_">createServer</span>(lex.<span class="property">httpsOptions</span>, lex.<span class="title function_">middleware</span>(app)).<span class="title function_">listen</span>(<span class="number">443</span>, <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Listening https&#x27;</span>, <span class="string">`for ACME tls-sni-01 challenges and serve app on: <span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(<span class="variable language_">this</span>.address())&#125;</span>`</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>至于 HTTP&#x2F;2 相关的技术应用，会在后续篇幅中再为大家讲解。</p>
+<blockquote>
+<p>2018-08-23，今天无意中发现 log4js 没有写请求入口的 access 日志，经排查发现是因为开启了 HTTP&#x2F;2 导致的</p>
+</blockquote>
+<p>通过 <code>spdy</code> 启动了 HTTP&#x2F;2 的服务之后，log4js 使用 <code>connectLogger</code> 注入 <code>express</code> 中间件的时候，在入口处不会写 access 日志：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 日志不会写</span></span><br><span class="line">app.<span class="title function_">use</span>(log.<span class="property">Log4js</span>.<span class="title function_">connectLogger</span>(log.<span class="property">accessLogger</span>, &#123; <span class="attr">level</span>: log.<span class="property">accessLogger</span>.<span class="property">level</span> &#125;))</span><br></pre></td></tr></table></figure>
+
+<p>具体的现象比较怪异：在浏览器中访问的时候没有 access 日志，但是搜索引擎抓取的时候却有 access 日志，于是怀疑是不是 HTTP&#x2F;2 导致的问题。</p>
+<p>查到 <a target="_blank" rel="noopener" href="https://github.com/log4js-node/log4js-node/blob/v3.0.5/lib/connect-logger.js#L244-L260">log4js&#x2F;lib&#x2F;connect-logger.js</a> 源码之后，发现 <code>log4js</code> 在注入 <code>express</code> 中间件的时候，监听了 <code>express</code> 的 <code>finish</code> 事件，搜索引擎抓取的时候会主动关闭 HTTP&#x2F;2 的长连接，所以自然就执行了 <code>finish</code> 事件。</p>
+<p>而开启了 HTTP&#x2F;2 之后在浏览器中打开页面是不会触发 <code>finish</code> 事件的，从而导致 <code>log4js</code> 没有写 access 日志。</p>
+<p>最终我选择的解决方案是下掉 HTTP&#x2F;2。因为 HTTP&#x2F;2 的 server push 和多路复用，在现代 web 中大部分只适用于 CDN 场景，said 项目本身用不到这些特性。</p>
+<blockquote>
+<p>前端开发 QQ 群：377786580</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/posts/4f3c3fec/" data-id="cloizszuw0006xww62crh4935" data-title="Node.js 部署免费/自动续订 HTTPS" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/posts/f18e40a8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          长大
+        
+      </div>
+    </a>
+  
+  
+    <a href="/posts/67e55b26/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Said 2.0 的一些开发经验</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/article/">article</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/" rel="tag">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Said/" rel="tag">Said</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTPS/" style="font-size: 12.5px;">HTTPS</a> <a href="/tags/JavaScript/" style="font-size: 17.5px;">JavaScript</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/Said/" style="font-size: 15px;">Said</a> <a href="/tags/TypeScript/" style="font-size: 20px;">TypeScript</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/posts/cfe1281/">一段职业生涯的总结</a>
+          </li>
+        
+          <li>
+            <a href="/posts/8127ee4b/">一段旅程</a>
+          </li>
+        
+          <li>
+            <a href="/posts/29a0bec0/">折旧</a>
+          </li>
+        
+          <li>
+            <a href="/posts/75b36508/">一无所知</a>
+          </li>
+        
+          <li>
+            <a href="/posts/688d139e/">TypeScript 中的多种 import 解义</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

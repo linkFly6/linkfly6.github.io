@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>从 JavaScript 到 TypeScript 6 - Vue 引入 TypeScript | 听说 - 世界很大，风住过这里</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="随着应用的庞大，项目中 JavaScript 的代码也会越来越臃肿，这时候许多 JavaScript 的语言弊端就会愈发明显，而 TypeScript 的出现，就是着力于解决 JavaScript 语言天生的弱势：静态类型。  前端开发 QQ 群：377786580  这篇文章首发于我的个人博客 《听说》，系列目录：  《从 JavaScript 到 TypeScript 1 - 什么是 Type">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 JavaScript 到 TypeScript 6 - Vue 引入 TypeScript">
+<meta property="og:url" content="http://example.com/posts/7e42a592/index.html">
+<meta property="og:site_name" content="听说 - 世界很大，风住过这里">
+<meta property="og:description" content="随着应用的庞大，项目中 JavaScript 的代码也会越来越臃肿，这时候许多 JavaScript 的语言弊端就会愈发明显，而 TypeScript 的出现，就是着力于解决 JavaScript 语言天生的弱势：静态类型。  前端开发 QQ 群：377786580  这篇文章首发于我的个人博客 《听说》，系列目录：  《从 JavaScript 到 TypeScript 1 - 什么是 Type">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-10-11T15:31:00.000Z">
+<meta property="article:modified_time" content="2018-03-07T09:58:28.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="TypeScript">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="听说 - 世界很大，风住过这里" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">听说 - 世界很大，风住过这里</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-blogs/从JavaScript到TypeScript6-Vue引入TypeScript" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/posts/7e42a592/" class="article-date">
+  <time class="dt-published" datetime="2017-10-11T15:31:00.000Z" itemprop="datePublished">2017-10-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tech/">tech</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      从 JavaScript 到 TypeScript 6 - Vue 引入 TypeScript
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>随着应用的庞大，项目中 JavaScript 的代码也会越来越臃肿，这时候许多 JavaScript 的语言弊端就会愈发明显，而 TypeScript 的出现，就是着力于解决 JavaScript 语言天生的弱势：静态类型。</p>
+<blockquote>
+<p>前端开发 QQ 群：377786580</p>
+</blockquote>
+<p>这篇文章首发于我的个人博客 《<a target="_blank" rel="noopener" href="http://tasaid.com/">听说</a>》，系列目录：</p>
+<ul>
+<li>《<a target="_blank" rel="noopener" href="http://tasaid.com/Blog/20171011231943.html">从 JavaScript 到 TypeScript 1 - 什么是 TypeScript</a>》</li>
+<li>《<a target="_blank" rel="noopener" href="http://tasaid.com/Blog/20171011232755.html">从 JavaScript 到 TypeScript 2 - 基础特性和类型推导</a>》</li>
+<li>《<a target="_blank" rel="noopener" href="http://tasaid.com/Blog/20171011232938.html">从 JavaScript 到 TypeScript 3 - 引入和编译</a>》</li>
+<li>《<a target="_blank" rel="noopener" href="http://tasaid.com/Blog/20171011233014.html">从 JavaScript 到 TypeScript 4 - 装饰器和反射</a>》</li>
+<li>《<a target="_blank" rel="noopener" href="http://tasaid.com/Blog/20171011233051.html">从 JavaScript 到 TypeScript 5 - express 路由进化</a>》</li>
+<li>《从 JavaScript 到 TypeScript 6 - vue 引入 TypeScript》</li>
+</ul>
+<p>在上一篇文章 《<a target="_blank" rel="noopener" href="http://tasaid.com/Blog/20171011233051.html">从 JavaScript 到 TypeScript 5 - express 路由进化</a>》 我们介绍了如何使用装饰器将 <code>express</code> 的 <code>router</code> 实现的更加优雅。在这篇文章中，我们将介绍如何在 Vue 中引入 TypeScript。</p>
+<h2 id="Vue-引入-TypeScript"><a href="#Vue-引入-TypeScript" class="headerlink" title="Vue 引入 TypeScript"></a>Vue 引入 TypeScript</h2><p>Vue 在 <a target="_blank" rel="noopener" href="https://cn.vuejs.org/v2/guide/typescript.html#main">官方文档中有一节简单的介绍了如何引入 TypeScript</a>，可惜文档太过简单，真正投入生产还有许多的细节没有介绍。</p>
+<p>我们对此进行了一系列探索，最后我们的风格是这样的：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Component</span>, <span class="title class_">Prop</span>, <span class="title class_">Vue</span>, <span class="title class_">Watch</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;vue-property-decorator&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">State</span>, <span class="title class_">Action</span>, <span class="title class_">Mutation</span>, <span class="keyword">namespace</span> &#125; from &#x27;vuex-class&#x27;</span><br><span class="line">import <span class="title class_">Toast</span> from &#x27;components/<span class="title class_">Toast</span>.vue&#x27;</span><br><span class="line"></span><br><span class="line">const userState = <span class="keyword">namespace</span>(&#x27;business/user&#x27;, <span class="title class_">State</span>)</span><br><span class="line"></span><br><span class="line">@<span class="title class_">Component</span>(&#123;</span><br><span class="line">  <span class="attr">components</span>: &#123; <span class="title class_">Toast</span> &#125;,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> <span class="title class_">extends</span> <span class="title class_">Vue</span> &#123;</span><br><span class="line">  <span class="comment">// data</span></span><br><span class="line">  title = <span class="string">&#x27;demo&#x27;</span></span><br><span class="line"></span><br><span class="line">  <span class="meta">@Prop</span>(&#123; <span class="attr">default</span>: <span class="string">&#x27;&#x27;</span> &#125;)</span><br><span class="line">  <span class="attr">text</span>: <span class="built_in">string</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// store</span></span><br><span class="line">  <span class="meta">@userState</span> userId</span><br><span class="line"></span><br><span class="line">  <span class="comment">// computed</span></span><br><span class="line">  get name (): <span class="built_in">boolean</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">title</span> + <span class="variable language_">this</span>.<span class="property">text</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// watch</span></span><br><span class="line">  <span class="meta">@Watch</span>(<span class="string">&#x27;text&#x27;</span>)</span><br><span class="line">  onChangeText () &#123; &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// hooks</span></span><br><span class="line">  <span class="title function_">mounted</span>(<span class="params"></span>) &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>大体来说，Vue 引入 TypeScript 可以用到这些生态库：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/vuejs/vue-class-component">vue-class-component</a>：强化 Vue 组件，使用 TypeScript&#x2F;装饰器 增强 Vue 组件</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kaorun343/vue-property-decorator">vue-property-decorator</a>：在 <code>vue-class-component</code> 上增强更多的结合 Vue 特性的装饰器</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ktsn/vuex-class">vuex-class</a>：在 <code>vue-class-component</code> 提供 <code>Vuex</code> 的绑定</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/snaptopixel/vuex-ts-decorators">vuex-ts-decorators</a>：让 <code>Vuex</code> 和 TypeScript 结合</li>
+</ul>
+<p>下面我们一步步来介绍 Vue 如何引入 TypeScript</p>
+<h2 id="webpack-和-tsconfig-json-配置"><a href="#webpack-和-tsconfig-json-配置" class="headerlink" title="webpack 和 tsconfig.json 配置"></a>webpack 和 tsconfig.json 配置</h2><p>TypeScript 为 Webpack 提供了 <code>ts-loader</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i ts-loader --save-dev</span><br></pre></td></tr></table></figure>
+
+<p>webpack 配置如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">module</span>: &#123;</span><br><span class="line">    <span class="attr">rules</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">test</span>: <span class="regexp">/\.vue$/</span>,</span><br><span class="line">        <span class="attr">loader</span>: <span class="string">&#x27;vue-loader&#x27;</span>,</span><br><span class="line">        <span class="attr">options</span>: &#123; <span class="comment">/* ... */</span> &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">test</span>: <span class="regexp">/\.ts$/</span>,</span><br><span class="line">        <span class="attr">loader</span>: <span class="string">&#x27;ts-loader&#x27;</span>,</span><br><span class="line">        <span class="attr">options</span>: &#123;</span><br><span class="line">          <span class="attr">appendTsSuffixTo</span>: [<span class="regexp">/\.vue$/</span>],</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>ts-loader</code> 会检索当前目录下的 <code>tsconfig.json</code> 文件，如果找不到会一层层往上找。</p>
+<p>这里有一份参考的 <code>tsconfig.json</code> 配置：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="comment">// 编译选项</span></span><br><span class="line">  <span class="string">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="comment">// 输出目录</span></span><br><span class="line">    <span class="string">&quot;outDir&quot;</span>: <span class="string">&quot;./output&quot;</span>,</span><br><span class="line">    <span class="comment">// 是否包含可以用于 debug 的 sourceMap</span></span><br><span class="line">    <span class="string">&quot;sourceMap&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 以严格模式解析</span></span><br><span class="line">    <span class="string">&quot;strict&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 采用的模块系统</span></span><br><span class="line">    <span class="string">&quot;module&quot;</span>: <span class="string">&quot;esnext&quot;</span>,</span><br><span class="line">    <span class="comment">// 如何处理模块</span></span><br><span class="line">    <span class="string">&quot;moduleResolution&quot;</span>: <span class="string">&quot;node&quot;</span>,</span><br><span class="line">    <span class="comment">// 编译输出目标 ES 版本</span></span><br><span class="line">    <span class="string">&quot;target&quot;</span>: <span class="string">&quot;es5&quot;</span>,</span><br><span class="line">    <span class="comment">// 允许从没有设置默认导出的模块中默认导入</span></span><br><span class="line">    <span class="string">&quot;allowSyntheticDefaultImports&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 将每个文件作为单独的模块</span></span><br><span class="line">    <span class="string">&quot;isolatedModules&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="comment">// 启用装饰器</span></span><br><span class="line">    <span class="string">&quot;experimentalDecorators&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 启用设计类型元数据（用于反射）</span></span><br><span class="line">    <span class="string">&quot;emitDecoratorMetadata&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 在表达式和声明上有隐含的any类型时报错</span></span><br><span class="line">    <span class="string">&quot;noImplicitAny&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="comment">// 不是函数的所有返回路径都有返回值时报错。</span></span><br><span class="line">    <span class="string">&quot;noImplicitReturns&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 从 tslib 导入外部帮助库: 比如__extends，__rest等</span></span><br><span class="line">    <span class="string">&quot;importHelpers&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 编译过程中打印文件名</span></span><br><span class="line">    <span class="string">&quot;listFiles&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 移除注释</span></span><br><span class="line">    <span class="string">&quot;removeComments&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">&quot;suppressImplicitAnyIndexErrors&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 允许编译javascript文件</span></span><br><span class="line">    <span class="string">&quot;allowJs&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 解析非相对模块名的基准目录</span></span><br><span class="line">    <span class="string">&quot;baseUrl&quot;</span>: <span class="string">&quot;./&quot;</span>,</span><br><span class="line">    <span class="comment">// 指定特殊模块的路径</span></span><br><span class="line">    <span class="string">&quot;paths&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;jquery&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;node_modules/jquery/dist/jquery&quot;</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 编译过程中需要引入的库文件的列表</span></span><br><span class="line">    <span class="string">&quot;lib&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;dom&quot;</span>,</span><br><span class="line">      <span class="string">&quot;es2015&quot;</span>,</span><br><span class="line">      <span class="string">&quot;es2015.promise&quot;</span></span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于 TypeScript 默认并不支持 <code>*.vue</code> 后缀的文件，所以在 vue 项目中引入的时候需要创建一个 <code>vue-shims.d.ts</code> 文件，放在项目项目对应使用目录下，例如 <code>src/vue-shims.d.ts</code></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="variable language_">module</span> <span class="string">&quot;*.vue&quot;</span> &#123;</span><br><span class="line">  <span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">Vue</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>意思是告诉 TypeScript <code>*.vue</code> 后缀的文件可以交给 <code>vue</code> 模块来处理。</p>
+<p>而在代码中导入 <code>*.vue</code> 文件的时候，需要写上 <code>.vue</code> 后缀。原因还是因为 TypeScript 默认只识别 <code>*.ts</code> 文件，不识别 <code>*.vue</code> 文件：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">Component</span> <span class="keyword">from</span> <span class="string">&#x27;components/component.vue&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="vue-class-component"><a href="#vue-class-component" class="headerlink" title="vue-class-component"></a>vue-class-component</h2><p><a target="_blank" rel="noopener" href="https://github.com/vuejs/vue-class-component">vue-class-component</a>  对 Vue 组件进行了一层封装，让 Vue 的组件语法在结合了 TypeScript 语法之后更加扁平化：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">v-model</span>=<span class="string">&quot;msg&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>msg: &#123;&#123; msg &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>computed msg: &#123;&#123; computedMsg &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;greet&quot;</span>&gt;</span>Greet<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">lang</span>=<span class="string">&quot;ts&quot;</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">import</span> <span class="title class_">Component</span> <span class="keyword">from</span> <span class="string">&#x27;vue-class-component&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  @<span class="title class_">Component</span></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> <span class="title class_">App</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Vue</span> &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 初始化数据</span></span></span><br><span class="line"><span class="language-javascript">    msg = <span class="number">123</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 声明周期钩子</span></span></span><br><span class="line"><span class="language-javascript">    mounted () &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">this</span>.<span class="title function_">greet</span>()</span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 计算属性</span></span></span><br><span class="line"><span class="language-javascript">    get computedMsg () &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">return</span> <span class="string">&#x27;computed &#x27;</span> + <span class="variable language_">this</span>.<span class="property">msg</span></span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 方法</span></span></span><br><span class="line"><span class="language-javascript">    greet () &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="title function_">alert</span>(<span class="string">&#x27;greeting: &#x27;</span> + <span class="variable language_">this</span>.<span class="property">msg</span>)</span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript">  &#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的代码和下面没有引入 <code>vue-class-component</code> 的语法一样：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  data () &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="attr">msg</span>: <span class="number">123</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 声明周期钩子</span></span><br><span class="line">  mounted () &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="title function_">greet</span>()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 计算属性</span></span><br><span class="line">  <span class="attr">computed</span>: &#123;</span><br><span class="line">    computedMsg () &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">&#x27;computed &#x27;</span> + <span class="variable language_">this</span>.<span class="property">msg</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 方法</span></span><br><span class="line">  <span class="attr">methods</span>: &#123;</span><br><span class="line">    greet () &#123;</span><br><span class="line">      <span class="title function_">alert</span>(<span class="string">&#x27;greeting: &#x27;</span> + <span class="variable language_">this</span>.<span class="property">msg</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="vue-property-decorator"><a href="#vue-property-decorator" class="headerlink" title="vue-property-decorator"></a>vue-property-decorator</h2><p><a target="_blank" rel="noopener" href="https://github.com/kaorun343/vue-property-decorator">vue-property-decorator</a> 是在 <code>vue-class-component</code> 上增强了更多的结合 Vue 特性的装饰器，新增了这 7 个装饰器：</p>
+<ul>
+<li><code>@Emit</code></li>
+<li><code>@Inject</code></li>
+<li><code>@Model</code></li>
+<li><code>@Prop</code></li>
+<li><code>@Provide</code></li>
+<li><code>@Watch</code></li>
+<li><code>@Component</code> (从 <code>vue-class-component</code> 继承)</li>
+</ul>
+<p>这里仅列举常用的 <code>@Prop/@Watch/@Component</code>：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Component</span>, <span class="title class_">Emit</span>, <span class="title class_">Inject</span>, <span class="title class_">Model</span>, <span class="title class_">Prop</span>, <span class="title class_">Provide</span>, <span class="title class_">Vue</span>, <span class="title class_">Watch</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;vue-property-decorator&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">MyComponent</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Vue</span> &#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Prop</span>()</span><br><span class="line">  <span class="attr">propA</span>: <span class="built_in">number</span> = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">  <span class="meta">@Prop</span>(&#123; <span class="attr">default</span>: <span class="string">&#x27;default value&#x27;</span> &#125;)</span><br><span class="line">  <span class="attr">propB</span>: <span class="built_in">string</span></span><br><span class="line"></span><br><span class="line">  <span class="meta">@Prop</span>([<span class="title class_">String</span>, <span class="title class_">Boolean</span>])</span><br><span class="line">  <span class="attr">propC</span>: <span class="built_in">string</span> | <span class="built_in">boolean</span></span><br><span class="line"></span><br><span class="line">  <span class="meta">@Prop</span>(&#123; <span class="attr">type</span>: <span class="literal">null</span> &#125;)</span><br><span class="line">  <span class="attr">propD</span>: <span class="built_in">any</span></span><br><span class="line"></span><br><span class="line">  <span class="meta">@Watch</span>(<span class="string">&#x27;child&#x27;</span>)</span><br><span class="line">  <span class="title function_">onChildChanged</span>(<span class="params">val: <span class="built_in">string</span>, oldVal: <span class="built_in">string</span></span>) &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>相当于：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">props</span>: &#123;</span><br><span class="line">    <span class="attr">checked</span>: <span class="title class_">Boolean</span>,</span><br><span class="line">    <span class="attr">propA</span>: <span class="title class_">Number</span>,</span><br><span class="line">    <span class="attr">propB</span>: &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">      <span class="attr">default</span>: <span class="string">&#x27;default value&#x27;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">propC</span>: [<span class="title class_">String</span>, <span class="title class_">Boolean</span>],</span><br><span class="line">    <span class="attr">propD</span>: &#123; <span class="attr">type</span>: <span class="literal">null</span> &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="attr">methods</span>: &#123;</span><br><span class="line">    <span class="title function_">onChildChanged</span>(<span class="params">val, oldVal</span>) &#123; &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">watch</span>: &#123;</span><br><span class="line">    <span class="string">&#x27;child&#x27;</span>: &#123;</span><br><span class="line">      <span class="attr">handler</span>: <span class="string">&#x27;onChildChanged&#x27;</span>,</span><br><span class="line">      <span class="attr">immediate</span>: <span class="literal">false</span>,</span><br><span class="line">      <span class="attr">deep</span>: <span class="literal">false</span></span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="vuex-class"><a href="#vuex-class" class="headerlink" title="vuex-class"></a>vuex-class</h2><p><a target="_blank" rel="noopener" href="https://github.com/ktsn/vuex-class">vuex-class</a> 在 <code>vue-class-component</code> 上，提供了 <code>Vuex</code> 的绑定的装饰器语法。</p>
+<p>我们编写一个简单的 Vuex store：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Vuex</span> <span class="keyword">from</span> <span class="string">&#x27;vuex&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// vuex</span></span><br><span class="line"><span class="keyword">const</span> store = <span class="keyword">new</span> <span class="title class_">Vuex</span>.<span class="title class_">Store</span>(&#123;</span><br><span class="line">  <span class="attr">state</span>: &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;linkFly&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="attr">modules</span>: &#123;</span><br><span class="line">    <span class="attr">demo</span>: &#123;</span><br><span class="line">      <span class="comment">// 带命名空间</span></span><br><span class="line">      <span class="attr">namespaced</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">state</span>: &#123;</span><br><span class="line">        <span class="attr">count</span>: <span class="number">0</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">mutations</span>: &#123;</span><br><span class="line">        increment (state, n?: <span class="built_in">number</span>) &#123;</span><br><span class="line">          <span class="keyword">if</span> (n != <span class="literal">null</span> ) </span><br><span class="line">            state.<span class="property">count</span> = n</span><br><span class="line">          <span class="keyword">else</span> </span><br><span class="line">            state.<span class="property">count</span>++</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">actions</span>: &#123;</span><br><span class="line">        increment (&#123; commit &#125;) &#123;</span><br><span class="line">          commit.<span class="title function_">commit</span>(<span class="string">&#x27;increment&#x27;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> <span class="title class_">Vue</span>(&#123;</span><br><span class="line">  <span class="attr">el</span>: <span class="string">&#x27;#app&#x27;</span>,</span><br><span class="line">  store,</span><br><span class="line">  <span class="attr">template</span>: <span class="string">`&lt;div class=&quot;app&quot;&gt;&lt;/div&gt;`</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>vuex-class</code> 之后：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Component</span>, <span class="title class_">Vue</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;vue-property-decorator&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123;</span><br><span class="line">  <span class="title class_">State</span>,</span><br><span class="line">  <span class="title class_">Getter</span>,</span><br><span class="line">  <span class="title class_">Action</span>,</span><br><span class="line">  <span class="title class_">Mutation</span>,</span><br><span class="line">  <span class="keyword">namespace</span></span><br><span class="line">&#125; from &#x27;vuex-class&#x27;</span><br><span class="line"></span><br><span class="line">const <span class="title class_">ModuleState</span> = <span class="keyword">namespace</span>(&#x27;demo&#x27;, <span class="title class_">State</span>)</span><br><span class="line">const <span class="title class_">ModuleAction</span> = <span class="keyword">namespace</span>(&#x27;demo&#x27;, <span class="title class_">Action</span>)</span><br><span class="line">const <span class="title class_">ModuleMutation</span> = <span class="keyword">namespace</span>(&#x27;demo&#x27;, <span class="title class_">Mutation</span>)</span><br><span class="line"></span><br><span class="line">@<span class="title class_">Component</span></span><br><span class="line">export class <span class="title class_">MyComp</span> extends <span class="title class_">Vue</span> &#123;</span><br><span class="line">  <span class="meta">@ModuleState</span>(<span class="string">&#x27;count&#x27;</span>) count</span><br><span class="line">  <span class="meta">@ModuleAction</span> increment</span><br><span class="line">  <span class="meta">@ModuleMutation</span>(<span class="string">&#x27;increment&#x27;</span>) mutationIncrement</span><br><span class="line">  <span class="meta">@State</span> name</span><br><span class="line">  </span><br><span class="line">  created () &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> <span class="comment">// -&gt; store.state.name =&gt; linkFly</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">count</span> <span class="comment">// -&gt; store.state.demo.count =&gt; 0</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="title function_">increment</span>() <span class="comment">// -&gt; store.dispatch(&#x27;demo/increment&#x27;)</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="title function_">mutationIncrement</span>(<span class="number">2</span>) <span class="comment">// -&gt; store.commit(&#x27;demo/increment&#x27;, 2)</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="vuex-ts-decorators"><a href="#vuex-ts-decorators" class="headerlink" title="vuex-ts-decorators"></a>vuex-ts-decorators</h2><p>由于使用 <code>vue-class-component</code>，在 Vue 组件中我们已经感受到了装饰器的强大语法糖，于是我们还希望在 Vuex Store 中也能使用装饰器的语法： <a target="_blank" rel="noopener" href="https://github.com/snaptopixel/vuex-ts-decorators">vuex-ts-decorators</a> 就是干这个事情的。</p>
+<p><code>vuex-ts-decorators</code> 可以让你结合装饰器来编写 Vuex Store。</p>
+<p>由于 <code>vuex-ts-decorators</code> 提供的包是未经编译的 <code>*.ts</code> 代码，如果你排除了 <code>node_modules</code> 的编译，则需要在 <code>ts-loader</code> 中单独加上对它的编译：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">test</span>: <span class="regexp">/\.ts$/</span>,</span><br><span class="line">  <span class="attr">loader</span>: <span class="string">&#x27;ts-loader&#x27;</span>,</span><br><span class="line">  <span class="comment">// 加上对 vuex-ts-decorators 这个包的编译</span></span><br><span class="line">  <span class="attr">exclude</span>: [<span class="regexp">/node_modules/</span>, <span class="regexp">/node_modules\/(?!vuex-ts-decorators)/</span>],</span><br><span class="line">  <span class="attr">options</span>: &#123;</span><br><span class="line">    <span class="attr">appendTsSuffixTo</span>: [<span class="regexp">/\.vue$/</span>],</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p>然后就可以愉快使用它来编写 Vuex Store 了。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="variable language_">module</span>, action, mutation &#125; <span class="keyword">from</span> <span class="string">&#x27;mfe-vuex-ts-decorators&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> actions = &#123; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> mutations = &#123;</span><br><span class="line">  <span class="comment">// 定义对应 mutations 的参数类型</span></span><br><span class="line">  <span class="attr">incrementMutation</span>: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">TypedDispatch</span> = &lt;T <span class="keyword">extends</span> keyof actions&gt;<span class="function">(<span class="params"><span class="keyword">type</span>: T, value?: actions[T]</span>) =&gt;</span> <span class="title class_">Promise</span>&lt;<span class="built_in">any</span>[]&gt;;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">TypedCommit</span> = &lt;T <span class="keyword">extends</span> keyof mutations&gt;<span class="function">(<span class="params"><span class="keyword">type</span>: T, value?: mutations[T]</span>) =&gt;</span> <span class="built_in">void</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@module</span>(&#123;</span><br><span class="line">  <span class="attr">store</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">namespaced</span>: <span class="literal">true</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">demo</span> &#123;</span><br><span class="line">  <span class="comment">// 用于类型检查，使 commit/dispatch 的方法可以找到并且可以被类型检查</span></span><br><span class="line">  <span class="attr">dispatch</span>: <span class="title class_">TypedDispatch</span></span><br><span class="line">  <span class="attr">commit</span>: <span class="title class_">TypedCommit</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// state</span></span><br><span class="line">  count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// getter</span></span><br><span class="line">  <span class="keyword">get</span> <span class="title function_">countGetter</span>(): <span class="built_in">string</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">count</span></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// action</span></span><br><span class="line">  <span class="meta">@action</span></span><br><span class="line">  <span class="title function_">increment</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="title function_">commit</span>(<span class="string">&#x27;incrementMutation&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// mutation</span></span><br><span class="line">  <span class="meta">@mutation</span></span><br><span class="line">  <span class="title function_">incrementMutation</span>(<span class="params">payload?: mutations[<span class="string">&#x27;incrementMutation&#x27;</span>]</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (n != <span class="literal">null</span> ) </span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">count</span> = payload</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">count</span>++</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>vuex-ts-decorators</code> 文档没有提及 <code>@module</code> 装饰器的参数：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@module</span>(&#123;</span><br><span class="line">  store?: <span class="built_in">boolean</span> = <span class="literal">false</span>; <span class="comment">// 是否自动挂载到 Vuex Store 下，如果为 false 则</span></span><br><span class="line">  modules?: <span class="title class_">Object</span>; <span class="comment">// 子 modules</span></span><br><span class="line">  namespaced?: <span class="built_in">boolean</span>; <span class="comment">// 命名空间</span></span><br><span class="line">&#125; | (<span class="built_in">any</span>, &#123; <span class="attr">decorators</span>: <span class="built_in">any</span> &#125; =&gt; <span class="built_in">any</span>)) <span class="comment">// 也可以使用函数</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p><code>vuex-ts-decorators</code> 这个项目目前最后一次更新时间是 2017 年 2 月 21 日，原作者说自己正在开发对应的新项目，这个项目已经不再维护，但是目前还没有看到新项目的进展。</p>
+<p>但可以肯定的是，原作者已经不再维护 <code>vuex-ts-decorators</code> 这个项目。</p>
+<p>我们的做法是在这个项目上重新 fork 一个新项目，并且修正了遇到的隐藏 bug。后续我们会自己维护这个项目。(fork 到了内部项目中，后续在这个项目基础上进行二次开发，到时候会公布出来，当然，其实它的功能很简单完全可以自己开发一个)</p>
+<p>目前已知 bug：</p>
+<p>当使用 <code>@module(&#123; store: false &#125;)</code> 后，被包装的 class 会返回处理后的 Vuex Store，结构为： <code>&#123; state: any, getters: any, modules: any, actions: any, mutations: any  &#125;</code>。  </p>
+<p>如果最后 <code>new Vuex.Store(&#123; options: object &#125;)</code> 的时候传递的不是 <code>@module</code> 包装后的 Vuex Store(例如对这个 Vuex Store 做了一层深拷贝)，则会导致 <code>mutations</code> 中 this 丢失。</p>
+<p>bug 点在 <a target="_blank" rel="noopener" href="https://github.com/snaptopixel/vuex-ts-decorators/blob/v0.0.7/src/mutation.ts">这一行</a>，处理办法：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">store.<span class="property">mutations</span>[name] = <span class="function">(<span class="params">state: <span class="built_in">any</span>, ...args: <span class="built_in">any</span>[]</span>) =&gt;</span> &#123;</span><br><span class="line">  method.<span class="title function_">apply</span>(store.<span class="property">state</span>, args); </span><br><span class="line">  <span class="comment">// 替换为</span></span><br><span class="line">  method.<span class="title function_">apply</span>(state, args); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原因是因为 <code>vuex-ts-decorators</code> 一直在自己内部引用着生成的 Vuex Store，如果最终 <code>new Vuex.Store()</code>  的时候没有传递它自己生成的 Vuex Store 就会导致引用不正确。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>围绕 <code>vue-class-component</code> 展开的生态圈，如同一把利剑，通过各种装饰器，能够结合 TypeScript 将 Vue 武装的更加强大。在这篇文章发布之际，很巧的是：<a target="_blank" rel="noopener" href="https://medium.com/the-vue-point/upcoming-typescript-changes-in-vue-2-5-e9bd7e2ecf08">Vue 作者尤雨溪也宣布在 Vue 2.5 以后将全面支持 TypeScript</a>(译文看<a target="_blank" rel="noopener" href="https://juejin.im/post/59daf2df5188250b40076d73">这里</a>)，并且声明<strong>Vue 将尽力做到和 vue-class-component 兼容</strong>。</p>
+<p>前端的场景已经不再像当年一样简单的切图、画简单的样式和写简单的脚本。应用越来越庞大，需求越来越复杂。TypeScript 有一个很好的切入点：从语言的角度解决了大型 Web 应用的静态类型约束痛点。</p>
+<p>相信随着时间的推移，会有越来越多的人和框架加入到 TypeScript 大军。</p>
+<p>至此，我们的 《从 JavaScript 到 TypeScript》 系列文章已经结束。最后，Welcome to TypeScript!</p>
+<p>&nbsp;</p>
+<p>TypeScript 中文网：<a target="_blank" rel="noopener" href="https://tslang.cn/">https://tslang.cn/</a> </p>
+<p>TypeScript 视频教程：《<a target="_blank" rel="noopener" href="https://nodelover.me/course/ts-basic">TypeScript 精通指南</a>》</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/posts/7e42a592/" data-id="cloizszv3001qxww641p6dujj" data-title="从 JavaScript 到 TypeScript 6 - Vue 引入 TypeScript" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/posts/d4d0a06d/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          JavaScript 和 TypeScript 交叉口 —— 类型定义文件(*.d.ts)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/posts/e6877d92/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">从 JavaScript 到 TypeScript 4 - 装饰器和反射</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/article/">article</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/" rel="tag">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Said/" rel="tag">Said</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTPS/" style="font-size: 12.5px;">HTTPS</a> <a href="/tags/JavaScript/" style="font-size: 17.5px;">JavaScript</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/Said/" style="font-size: 15px;">Said</a> <a href="/tags/TypeScript/" style="font-size: 20px;">TypeScript</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/posts/cfe1281/">一段职业生涯的总结</a>
+          </li>
+        
+          <li>
+            <a href="/posts/8127ee4b/">一段旅程</a>
+          </li>
+        
+          <li>
+            <a href="/posts/29a0bec0/">折旧</a>
+          </li>
+        
+          <li>
+            <a href="/posts/75b36508/">一无所知</a>
+          </li>
+        
+          <li>
+            <a href="/posts/688d139e/">TypeScript 中的多种 import 解义</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

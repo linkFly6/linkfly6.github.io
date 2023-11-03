@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>从 JavaScript 到 TypeScript 3 - 引入和编译 | 听说 - 世界很大，风住过这里</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="随着应用的庞大，项目中 JavaScript 的代码也会越来越臃肿，这时候许多 JavaScript 的语言弊端就会愈发明显，而 TypeScript 的出现，就是着力于解决 JavaScript 语言天生的弱势：静态类型。  前端开发 QQ 群：377786580  这篇文章首发于我的个人博客 《听说》，系列目录：  《从 JavaScript 到 TypeScript 1 - 什么是 Type">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 JavaScript 到 TypeScript 3 - 引入和编译">
+<meta property="og:url" content="http://example.com/posts/9699a7a8/index.html">
+<meta property="og:site_name" content="听说 - 世界很大，风住过这里">
+<meta property="og:description" content="随着应用的庞大，项目中 JavaScript 的代码也会越来越臃肿，这时候许多 JavaScript 的语言弊端就会愈发明显，而 TypeScript 的出现，就是着力于解决 JavaScript 语言天生的弱势：静态类型。  前端开发 QQ 群：377786580  这篇文章首发于我的个人博客 《听说》，系列目录：  《从 JavaScript 到 TypeScript 1 - 什么是 Type">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://static.tasaid.com/blogs/e1c340f248b8dad18c05d28c7a462680.png">
+<meta property="og:image" content="http://static.tasaid.com/blogs/ca484d61d09a03e92c816b2539c39767.jpeg">
+<meta property="og:image" content="http://static.tasaid.com/blogs/b3aaefb3dcfacd5a6efd35abd0d5a50a.gif">
+<meta property="article:published_time" content="2017-10-11T15:29:00.000Z">
+<meta property="article:modified_time" content="2019-07-29T09:25:52.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="TypeScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://static.tasaid.com/blogs/e1c340f248b8dad18c05d28c7a462680.png">
+  
+    <link rel="alternate" href="/atom.xml" title="听说 - 世界很大，风住过这里" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">听说 - 世界很大，风住过这里</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-blogs/从JavaScript到TypeScript3-引入和编译" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/posts/9699a7a8/" class="article-date">
+  <time class="dt-published" datetime="2017-10-11T15:29:00.000Z" itemprop="datePublished">2017-10-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tech/">tech</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      从 JavaScript 到 TypeScript 3 - 引入和编译
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>随着应用的庞大，项目中 JavaScript 的代码也会越来越臃肿，这时候许多 JavaScript 的语言弊端就会愈发明显，而 TypeScript 的出现，就是着力于解决 JavaScript 语言天生的弱势：静态类型。</p>
+<blockquote>
+<p>前端开发 QQ 群：377786580</p>
+</blockquote>
+<p>这篇文章首发于我的个人博客 《<a target="_blank" rel="noopener" href="http://tasaid.com/">听说</a>》，系列目录：</p>
+<ul>
+<li>《<a target="_blank" rel="noopener" href="http://tasaid.com/Blog/20171011231943.html">从 JavaScript 到 TypeScript 1 - 什么是 TypeScript</a>》</li>
+<li>《<a target="_blank" rel="noopener" href="http://tasaid.com/Blog/20171011232755.html">从 JavaScript 到 TypeScript 2 - 基础特性和类型推导</a>》</li>
+<li>《从 JavaScript 到 TypeScript 3 - 引入和编译》</li>
+<li>《<a target="_blank" rel="noopener" href="http://tasaid.com/Blog/20171011233014.html">从 JavaScript 到 TypeScript 4 - 装饰器和反射</a>》</li>
+<li>《<a target="_blank" rel="noopener" href="http://tasaid.com/Blog/20171011233051.html">从 JavaScript 到 TypeScript 5 - express 路由进化</a>》</li>
+<li>《<a target="_blank" rel="noopener" href="http://tasaid.com/Blog/20171011233132.html">从 JavaScript 到 TypeScript 6 - vue 引入 TypeScript</a>》</li>
+</ul>
+<p>在上一篇文章 《<a target="_blank" rel="noopener" href="http://tasaid.com/Blog/20171011232755.html">从 JavaScript 到 TypeScript 2 - 基础特性和类型推导</a>》 中我们讨论了一些基本的 TypeScript 类型特性。许多人摩拳擦掌跃跃欲试，这篇文章我们主要介绍如何引入和编译 TypeScript。</p>
+<h2 id="快速使用"><a href="#快速使用" class="headerlink" title="快速使用"></a>快速使用</h2><p>安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm i -g typescript</span></span><br></pre></td></tr></table></figure>
+
+<p>编译：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">tsc helloworld.ts</span></span><br></pre></td></tr></table></figure>
+
+<p>如果我们想快速测试一个文件，可以使用 <a target="_blank" rel="noopener" href="https://github.com/TypeStrong/ts-node">ts-node</a>，<code>ts-node</code> 可以让我们通过命令直接执行 <code>*.ts</code> 文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm i -g ts-node</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">执行当前文件夹下 demo.ts 文件</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">ts-node demo.ts</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">输出的执行结果</span></span><br></pre></td></tr></table></figure>
+
+<p>关于 <code>tsc</code>，一般来说，全局安装的方案并不是很棒，我们可以把 typescript 安装到本地项目目录中：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm i  --save-dev typescript</span></span><br></pre></td></tr></table></figure>
+
+<p>这样在 <code>package.json</code> 的 <code>scripts</code> 中可以引用 <code>tsc</code> 命令：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;tsc&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;devDependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="attr">&quot;typescript&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.4.2&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>npm run build</code> 命令即可启用 <code>tsc</code> 命令编译本地目录，<code>typescript</code> 会去查找目录下的 <code>tsconfig.json</code> 配置文件。</p>
+<p>引入 TypeScript 非常简单，TypeScript 的文件后缀为 <code>ts</code>，迁移 TypeScript 只需要将项目中，业务代码的 <code>*.js</code> 修改为 <code>*.ts</code> 即可。不过在此之后你会看到大量的报错，然后就是按照 TypeScript 的规则，解决这些报错即可:)</p>
+<p><img src="//static.tasaid.com/blogs/e1c340f248b8dad18c05d28c7a462680.png" alt="引入和编译-类型报错"></p>
+<h2 id="tsconfig-json"><a href="#tsconfig-json" class="headerlink" title="tsconfig.json"></a>tsconfig.json</h2><p><code>tsconfig.json</code> 是 TypeScript 的编译选项文件，通过配置它来定制 TypeScript 的编译细节。</p>
+<ul>
+<li>直接调用 <code>tsc</code>，编译器会从当前目录开始去查找 <code>tsconfig.json</code> 文件，逐级向上搜索父目录。</li>
+<li>调用 <code>tsc -p</code>，可以指定一个包含 <code>tsconfig.json</code>文件的目录进行编译。如果没有找到 <code>tsconfig.json</code> 文件，<code>TypeScript</code> 会编译每个文件并在对应文件的同级目录产出。</li>
+</ul>
+<blockquote>
+<p>如果你要编译的是一个 Node 项目，请先安装 Node 编译依赖： <code>npm i @types/node --save-dev</code>，否则会出现 Node 内置模块无法找到的情况。</p>
+</blockquote>
+<p>一个 <code>tsconfig.json</code> 文件描述：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="comment">// 编译选项</span></span><br><span class="line">  <span class="string">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="comment">// 输出目录</span></span><br><span class="line">    <span class="string">&quot;outDir&quot;</span>: <span class="string">&quot;./output&quot;</span>,</span><br><span class="line">    <span class="comment">// 是否包含可以用于 debug 的 sourceMap</span></span><br><span class="line">    <span class="string">&quot;sourceMap&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 以严格模式解析</span></span><br><span class="line">    <span class="string">&quot;strict&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 采用的模块系统</span></span><br><span class="line">    <span class="string">&quot;module&quot;</span>: <span class="string">&quot;esnext&quot;</span>,</span><br><span class="line">    <span class="comment">// 如何处理模块</span></span><br><span class="line">    <span class="string">&quot;moduleResolution&quot;</span>: <span class="string">&quot;node&quot;</span>,</span><br><span class="line">    <span class="comment">// 编译输出目标 ES 版本</span></span><br><span class="line">    <span class="string">&quot;target&quot;</span>: <span class="string">&quot;es5&quot;</span>,</span><br><span class="line">    <span class="comment">// 允许从没有设置默认导出的模块中默认导入</span></span><br><span class="line">    <span class="string">&quot;allowSyntheticDefaultImports&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 将每个文件作为单独的模块</span></span><br><span class="line">    <span class="string">&quot;isolatedModules&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="comment">// 启用装饰器</span></span><br><span class="line">    <span class="string">&quot;experimentalDecorators&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 启用设计类型元数据（用于反射）</span></span><br><span class="line">    <span class="string">&quot;emitDecoratorMetadata&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 在表达式和声明上有隐含的any类型时报错</span></span><br><span class="line">    <span class="string">&quot;noImplicitAny&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="comment">// 不是函数的所有返回路径都有返回值时报错。</span></span><br><span class="line">    <span class="string">&quot;noImplicitReturns&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 从 tslib 导入外部帮助库: 比如__extends，__rest等</span></span><br><span class="line">    <span class="string">&quot;importHelpers&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 编译过程中打印文件名</span></span><br><span class="line">    <span class="string">&quot;listFiles&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 移除注释</span></span><br><span class="line">    <span class="string">&quot;removeComments&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">&quot;suppressImplicitAnyIndexErrors&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 允许编译javascript文件</span></span><br><span class="line">    <span class="string">&quot;allowJs&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 解析非相对模块名的基准目录</span></span><br><span class="line">    <span class="string">&quot;baseUrl&quot;</span>: <span class="string">&quot;./&quot;</span>,</span><br><span class="line">    <span class="comment">// 指定特殊模块的路径</span></span><br><span class="line">    <span class="string">&quot;paths&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;jquery&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;node_modules/jquery/dist/jquery&quot;</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// typescript 语法检测支持的版本库，注意不是 polyfill！只是为了有对应版本的代码特性提示！</span></span><br><span class="line">    <span class="string">&quot;lib&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;es2015&quot;</span>,</span><br><span class="line">      <span class="string">&quot;es2015.promise&quot;</span></span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>完整 <code>tsconfig</code> 配置选项的可以参考 <a target="_blank" rel="noopener" href="https://www.typescriptlang.org/docs/handbook/compiler-options.html">这里</a>，或者 tsconfig 的 <a target="_blank" rel="noopener" href="http://json.schemastore.org/tsconfig">json-schema</a>。</p>
+<p>注意： TypeScript 不会做 <code>Polyfill</code>，例如从 <code>es6</code> 编译到 <code>es5</code>，TypeScript 编译后不会处理 <code>es6</code> 的那些新增的对象的方法，如果需要 <code>polyfill</code> 需要自行处理！</p>
+<p>完整的编译选项请参阅 <a target="_blank" rel="noopener" href="https://tslang.cn/docs/handbook/compiler-options.html">TypeScript 中文网</a> 和 <a target="_blank" rel="noopener" href="http://www.typescriptlang.org/docs/handbook/compiler-options.html">TypeScript 官网</a>。</p>
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><p>大多数前端已经使用各种各样的构建工具，完整构建工具集成列表参见 <a target="_blank" rel="noopener" href="https://tslang.cn/docs/handbook/integrating-with-build-tools.html">这里</a></p>
+<p>对于 Node 项目，建议搭配 <code>gulp</code> 使用。不过个人更喜欢通过 <code>npm scripts</code> 脚本组合命令，然后直接使用 <code>tsc</code> 编译，例如我自己的编译方案。</p>
+<p>项目目录为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">|---output <span class="comment"># 编译输出</span></span><br><span class="line">|---client</span><br><span class="line">|---server <span class="comment"># node ts 文件目录</span></span><br><span class="line">      |--tsconfig.json</span><br><span class="line">|---package.json</span><br></pre></td></tr></table></figure>
+
+<p><code>package.json</code> 中 <code>scripts</code> 脚本如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;dev&quot;</span><span class="punctuation">:</span> <span class="string">&quot;nodemon --ext ts --watch server --exec \&quot;npm run clean &amp;&amp; npm run build:ts &amp;&amp; npm run server\&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;server&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cross-env NODE_ENV=development node ./output/app.js&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;clean&quot;</span><span class="punctuation">:</span> <span class="string">&quot;rm -rf ./output.server&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;build:ts&quot;</span><span class="punctuation">:</span> <span class="string">&quot;tsc -p ./server&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;npm run clean &amp;&amp; npm run build:ts&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用 <code>nodemon</code> 监听整个 <code>server</code> 目录文件改动并执行脚本</li>
+<li><code>npm run clean</code> 用于清空编译输出目录</li>
+<li><code>npm run build:ts</code> 用于编译 <code>server</code> 目录下的 TypeScript 文件</li>
+<li><code>npm run server</code> 用于启动编译后的 node 服务器。</li>
+</ul>
+<p>平常开发只需要 <code>npm run dev</code>，生产使用 <code>npm run build</code> 产出文件即可。</p>
+<h2 id="visual-studio-code-集成和-debug"><a href="#visual-studio-code-集成和-debug" class="headerlink" title="visual studio code 集成和 debug"></a>visual studio code 集成和 debug</h2><h3 id="编译任务"><a href="#编译任务" class="headerlink" title="编译任务"></a>编译任务</h3><p><code>visual studio code</code> 编译 <code>TypeScript</code> 非常简单，根据上面我自己的组合命令，只需要在 <code>vs code</code> 的任务中加入编译脚本即可（<code>npm run build-ts</code>）：</p>
+<p><code>./.vscode/task.json</code> 如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;version&quot;</span>: <span class="string">&quot;2.0.0&quot;</span>,</span><br><span class="line">  <span class="string">&quot;tasks&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="comment">// npm 命令</span></span><br><span class="line">      <span class="string">&quot;type&quot;</span>: <span class="string">&quot;npm&quot;</span>,</span><br><span class="line">      <span class="comment">// npm run 的脚本</span></span><br><span class="line">      <span class="string">&quot;script&quot;</span>: <span class="string">&quot;build-ts&quot;</span>,</span><br><span class="line">      <span class="comment">// 标签</span></span><br><span class="line">      <span class="string">&quot;label&quot;</span>: <span class="string">&quot;build-typescript&quot;</span>,</span><br><span class="line">      <span class="comment">// 默认任务</span></span><br><span class="line">      <span class="string">&quot;group&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;kind&quot;</span>: <span class="string">&quot;build&quot;</span>,</span><br><span class="line">        <span class="string">&quot;isDefault&quot;</span>: <span class="literal">true</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>按 <code>control+shift+B</code> 即可编译。</p>
+<p><img src="//static.tasaid.com/blogs/ca484d61d09a03e92c816b2539c39767.jpeg" alt="编译 Code"></p>
+<h3 id="debug"><a href="#debug" class="headerlink" title="debug"></a>debug</h3><p>在 <code>./.vscode/launch.json</code> 中加入如下代码即可调试，记得要在 <code>tsconfig.json</code> 里打开 <code>sourceMap</code> 选项：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;version&quot;</span>: <span class="string">&quot;0.2.0&quot;</span>,</span><br><span class="line">  <span class="string">&quot;configurations&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="comment">// 调试前运行的任务 (task)，就是上面编译任务中的 label</span></span><br><span class="line">      <span class="string">&quot;preLaunchTask&quot;</span>: <span class="string">&quot;build-typescript&quot;</span>,</span><br><span class="line">      <span class="comment">// 调试任务名称</span></span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;server debug&quot;</span>,</span><br><span class="line">      <span class="string">&quot;env&quot;</span>: &#123;</span><br><span class="line">        <span class="comment">// 传递的参数</span></span><br><span class="line">        <span class="string">&quot;NODE_ENV&quot;</span>: <span class="string">&quot;development&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="comment">// 调试的 node 入口文件，注意 tsconfig.json 里面要打开 sourceMap</span></span><br><span class="line">      <span class="string">&quot;program&quot;</span>: <span class="string">&quot;$&#123;workspaceRoot&#125;/output/app.js&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后在 <code>vs code</code> 中给代码打上断点，按 F5，一步步调试即可。</p>
+<p><img src="//static.tasaid.com/blogs/b3aaefb3dcfacd5a6efd35abd0d5a50a.gif" alt="vscode debug"></p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>我们简单总结一下：</p>
+<ul>
+<li>使用 <code>ts-node</code> 可以让我们直接运行 <code>*.ts</code> 文件（不过只建议临时运行代码或特殊应用场景使用）</li>
+<li>使用 <code>typescript</code> 产出的 <code>tsc</code> 命令来编译 <code>*.ts</code> 文件到 <code>*.js</code>，然后我们运行编译出来的 <code>*.js</code> 文件即可</li>
+<li>使用 <code>tsconfig.json</code> 配置 TypeScript 的编译选项</li>
+</ul>
+<p>在下一篇，我们将了解逐渐盛行的 ECMAScript 特性在 TypeScript 上的应用：《<a target="_blank" rel="noopener" href="http://tasaid.com/Blog/20171011233014.html">从 JavaScript 到 TypeScript 4 - 装饰器和反射</a>》</p>
+<p>&nbsp;</p>
+<p>TypeScript 中文网：<a target="_blank" rel="noopener" href="https://tslang.cn/">https://tslang.cn/</a> </p>
+<p>TypeScript 视频教程：《<a target="_blank" rel="noopener" href="https://nodelover.me/course/ts-basic">TypeScript 精通指南</a>》</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/posts/9699a7a8/" data-id="cloizszv2001cxww6a3948ouf" data-title="从 JavaScript 到 TypeScript 3 - 引入和编译" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/posts/142b503f/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          从 JavaScript 到 TypeScript 5 - 路由进化
+        
+      </div>
+    </a>
+  
+  
+    <a href="/posts/29102f33/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">从 JavaScript 到 TypeScript 2 - 基础特性和类型推导</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/article/">article</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/" rel="tag">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Said/" rel="tag">Said</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTPS/" style="font-size: 12.5px;">HTTPS</a> <a href="/tags/JavaScript/" style="font-size: 17.5px;">JavaScript</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/Said/" style="font-size: 15px;">Said</a> <a href="/tags/TypeScript/" style="font-size: 20px;">TypeScript</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/posts/cfe1281/">一段职业生涯的总结</a>
+          </li>
+        
+          <li>
+            <a href="/posts/8127ee4b/">一段旅程</a>
+          </li>
+        
+          <li>
+            <a href="/posts/29a0bec0/">折旧</a>
+          </li>
+        
+          <li>
+            <a href="/posts/75b36508/">一无所知</a>
+          </li>
+        
+          <li>
+            <a href="/posts/688d139e/">TypeScript 中的多种 import 解义</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

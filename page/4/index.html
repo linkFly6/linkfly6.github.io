@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>听说 - 世界很大，风住过这里</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="听说 - 世界很大，风住过这里">
+<meta property="og:url" content="http://example.com/page/4/index.html">
+<meta property="og:site_name" content="听说 - 世界很大，风住过这里">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="听说 - 世界很大，风住过这里" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">听说 - 世界很大，风住过这里</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-blogs/从HTTP到HTTPS-IIS部署免费HTTPS" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/posts/c316d121/" class="article-date">
+  <time class="dt-published" datetime="2016-10-04T18:49:00.000Z" itemprop="datePublished">2016-10-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tech/">tech</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/posts/c316d121/">从 HTTP 到 HTTPS - IIS 部署免费 HTTPS</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>这篇文章主要讲述 IIS 8 部署免费 HTTPS 。 HTTPS 是互联网 web 大势所趋。<a target="_blank" rel="noopener" href="http://tasaid.com/">TaSaid</a> 最近把机房从香港迁移到青岛，趁着这次机会，观望并折腾了几天，在迁移中顺便完成了 HTTPS 的部署。</p>
+<p>这篇文章收录在《Said - 从 HTTP 到 HTTPS 》系列：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://tasaid.com/Blog/20161003001126.html?sgs=blog20161005024923">从 HTTP 到 HTTPS - 什么是 HTTPS</a></li>
+<li>从 HTTP 到 HTTPS - IIS 部署免费 HTTPS</li>
+<li><a target="_blank" rel="noopener" href="https://tasaid.com/Blog/20161006045104.html?sgs=blog20161005024923">从 HTTP 到 HTTPS - 网站部署 HTTPS 中需要做的事情</a></li>
+</ul>
+<h2 id="有哪些免费证书"><a href="#有哪些免费证书" class="headerlink" title="有哪些免费证书"></a>有哪些免费证书</h2><p>这里只介绍在 <a target="_blank" rel="noopener" href="http://tasaid.com/">TaSaid.com</a> 部署 HTTPS 中尝试的免费证书方案，部署在 IIS8 上。</p>
+<ul>
+<li>Let’s Encrypt</li>
+<li>沃通 (wosign) (不推荐)</li>
+</ul>
+<p>本来在 <a target="_blank" rel="noopener" href="http://tasaid.com/">TaSaid.com</a> 迁移中尝试部署过沃通 (wosign) 的签发的免费证书，但是后来发现了 Mozilla 官网( firefox&#x2F;火狐 背后的开源组织 ) 里列出了 <a target="_blank" rel="noopener" href="https://wiki.mozilla.org/CA:WoSign_Issues">沃通的一系列可疑行为和问题</a>，并且沃通 “秘密” 收购 StartCom（著名的免费 HTTPS 证书 StartSSL 即其旗下产品）行为可疑， Mozilla 基金会正在考虑对沃通以及 StartCom 这两个 CA 机构一年内新签发的所有 SSL 证书进行封杀。</p>
+<p>我在上一篇文章 《<a target="_blank" rel="noopener" href="https://tasaid.com/blog/20161003001126.html">从 HTTP 到 HTTPS - 什么是 HTTPS</a>》 中指出 CA 机构应该是是权威和可信的，但由于沃通当前的陷入的一系列丑闻，信任度降低，所以暂时不推荐使用沃通。并且沃通官网已暂时关闭免费 HTTPS 证书申请。</p>
+<blockquote>
+<p>这一段内容发表于2016年10月5日，如果您在未来某天阅览到这个内容，请即时更新了解沃通最新的动态。</p>
+</blockquote>
+<p>所以我们这次仅推荐 <a target="_blank" rel="noopener" href="https://letsencrypt.org/">Let’s Encrypt</a>。</p>
+<h2 id="Let’s-Encrypt"><a href="#Let’s-Encrypt" class="headerlink" title="Let’s Encrypt"></a>Let’s Encrypt</h2><p>推荐 Let’s Encrypt 理由：</p>
+<ul>
+<li>由 ISRG（Internet Security Research Group，互联网安全研究小组）提供服务，而 ISRG 是来自于美国加利福尼亚州的一个公益组织。Let’s Encrypt 得到了 Mozilla、Cisco、Akamai、Electronic Frontier Foundation 和 Chrome 等众多公司和机构的支持，发展十分迅猛。</li>
+<li>极速申请 - 只要认证的网站通过验证，当时即可颁发证书</li>
+<li>免费和访问速度兼得</li>
+<li>对于域名所有权的验证，支持两种方式：放临时文件进行验证、查询 whois 给域名所有人发邮件验证</li>
+<li>无需注册账户</li>
+<li>关键是稳定，背后的支持的组织很强大</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>一次只能颁发3个月有效期的证书，到期之后需要自己再续上 (仍然是免费的)，这点维护起来比较麻烦，不过我们可以使用工具自动续期。</li>
+<li>不支持通配符泛域名 (*.demo.com)，所以在申请认证是时候，要把域名都 301 跳转到证书里包含的域名上，不然浏览器会弹证书错误。</li>
+</ul>
+<h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><p>默认 Let’s Encrypt 申请证书比较繁琐，所以我们在 windows 下使用工具 <a target="_blank" rel="noopener" href="https://github.com/Lone-Coder/letsencrypt-win-simple">letsencrypt-win-simple</a> 进行部署，简单方便快捷。</p>
+<blockquote>
+<p>2016-12-30 补充，如果你觉得这样还很麻烦的，请直接到本文的 <strong>自动续订</strong> 章节，介绍了 <code>certify</code> 这个软件，可以帮助你自动申请、验证并且续订证书。</p>
+</blockquote>
+<ol>
+<li>下载 <a target="_blank" rel="noopener" href="https://github.com/Lone-Coder/letsencrypt-win-simple">letsencrypt-win-simple</a> </li>
+<li>在服务器中打开CMD，运行letsencrypt-win-simple</li>
+<li>在CMD中根据简单的命令，输入要认证的网站域名和网站文件夹</li>
+<li>letsencrypt-win-simple 自动验证域名所有权</li>
+<li>验证通过后即时颁发证书</li>
+<li>部署</li>
+</ol>
+<h3 id="使用-letsencrypt-win-simple-进行自动化认证和部署"><a href="#使用-letsencrypt-win-simple-进行自动化认证和部署" class="headerlink" title="使用 letsencrypt-win-simple 进行自动化认证和部署"></a>使用 letsencrypt-win-simple 进行自动化认证和部署</h3><p>下载最新版 <a target="_blank" rel="noopener" href="https://github.com/Lone-Coder/letsencrypt-win-simple/releases">letsencrypt-win-simple</a>：</p>
+<p><img src="//static.tasaid.com/blogs/c9a98e290a817d052c0c5e168140f32a.png" alt="github - letsencrypt-win-simple"></p>
+<p>本人在2016年9月15日下到的最新版是：letsencrypt-win-simple.V1.9.1.zip。</p>
+<h3 id="自动化认证"><a href="#自动化认证" class="headerlink" title="自动化认证"></a>自动化认证</h3><p>在服务器解压 <code>letsencrypt-win-simple.V1.9.1</code> 得到文件夹，打开CMD进入到该文件夹下。</p>
+<blockquote>
+<p>第一次运行命令会连接远程服务器更新，并且会让你是否输入邮箱订阅认证信息，可以忽略，然后让做个选择(忘记什么选择了)，选择Y即可，选择N则会中断。</p>
+</blockquote>
+<p><strong>部署单个域名</strong></p>
+<ul>
+<li><p>输入以下命令 </p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">letsencrypt.exe --accepttos --manualhost 你的域名 --webroot 你的网站物理路径(wwwroot路径)</span><br></pre></td></tr></table></figure></li>
+<li><p><code>letsencrypt-win-simple.V1.9.1</code> 会自动生成临时文件并放到网站根目录，然后会让 Let’s Encrypt 服务器会访问这个文件, 用于验证这个网站是否属于你。</p>
+</li>
+<li><p>如果验证不通过，是因为 IIS 需要修改一些配置，具体参见下文的详细说明。</p>
+</li>
+<li><p>验证通过后会实时颁发证书，并且 <code>letsencrypt-win-simple.V1.9.1</code> 会自动把证书添加到服务器中，然后直接在 IIS 中进行HTTPS部署即可。</p>
+</li>
+</ul>
+<p><strong>部署多个域名</strong></p>
+<ul>
+<li>输入命令 <code>letsencrypt.exe --san</code></li>
+<li>输入 <code>M</code> ，表示此次需要认证多个域名</li>
+<li>输入网站的 host</li>
+<li>输入要认证的多个域名，用 <code>,</code> 号分隔，比如<code>tasaid.com,www.tasaid.com,m.tasaid.com</code></li>
+<li>输入网站物理路径，比如 <code>C:\Users\linkFly\Documents\Said\SaidTemp</code></li>
+<li><code>letsencrypt-win-simple.V1.9.1</code> 会自动生成临时文件并放到网站根目录，然后会让 Let’s Encrypt 服务器会访问这个文件, 用于验证这个网站是否属于你。</li>
+<li>如果验证不通过，是因为 IIS 需要修改一些配置，具体参见下文的详细说明。</li>
+<li>验证通过后会实时颁发证书，并且会自动把证书添加到服务器中，然后直接在 IIS 中进行HTTPS部署即可。</li>
+</ul>
+<p>更多命令文档可以 <a target="_blank" rel="noopener" href="https://github.com/Lone-Coder/letsencrypt-win-simple/wiki/How-to-Run">参考这里</a>。</p>
+<h3 id="自动化认证单个域名"><a href="#自动化认证单个域名" class="headerlink" title="自动化认证单个域名"></a>自动化认证单个域名</h3><p>解压 <code>letsencrypt-win-simple.V1.9.1</code> 文件夹，然后点击文件夹，按住<code>shift</code>，再点击右键，选择<code>在此处打开命令窗口</code> (即让控制台打开后直接定位到这个文件夹下)。</p>
+<p>使用下面的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">letsencrypt.exe --accepttos --manualhost 你的域名 --webroot 你的网站路径(wwwroot路径)</span><br></pre></td></tr></table></figure>
+
+<p>比如 <a target="_blank" rel="noopener" href="https://tasaid.com/">https://tasaid.com</a> 部署的命令是这样的：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">letsencrypt.exe --accepttos --manualhost tasaid.com --webroot C:\Users\linkFly\Test</span><br></pre></td></tr></table></figure>
+
+<p><code>letsencrypt-win-simple</code> 会自动生成临时文件并放到网站根目录 (详情可以参考下一章节 <strong>自动化认证多个域名</strong> )，然后会让 Let’s Encrypt 服务器会访问这个文件, 用于验证这个网站是否属于你。</p>
+<p>如果验证通过，直接进入本文的 <strong>部署</strong> 章节即可。如果验证不通过，是因为需要修改 IIS 的一些配置，请参考下一章节 <strong>自动化认证多个域名</strong>。</p>
+<h3 id="自动化认证多个域名"><a href="#自动化认证多个域名" class="headerlink" title="自动化认证多个域名"></a>自动化认证多个域名</h3><p>CMD 进入 <code>letsencrypt-win-simple.V1.9.1</code> 文件夹，运行如下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">letsencrypt.exe --san</span><br></pre></td></tr></table></figure>
+<p>然后会弹出一坨选项：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Let&#x27;s Encrypt (Simple Windows ACME Client)</span><br><span class="line">Renewal Period: 60</span><br><span class="line">Certificate Store: WebHosting</span><br><span class="line"></span><br><span class="line">ACME Server: https://acme-v01.api.letsencrypt.org/</span><br><span class="line">Config Folder: C:\Users\linkFly\AppData\Roaming\letsencrypt-win-simple\htpsacme-v01.api.letsencrypt.org</span><br><span class="line">Certificate Folder: C:\Users\linkFly\AppData\Roaming\letsencrypt-win-simpe\httpsacme-v01.api.letsencrypt.org</span><br><span class="line">Loading Signer from C:\Users\linkFly\AppData\Roaming\letsencrypt-win-simpe\httpsacme-v01.api.letsencrypt.org\Signer</span><br><span class="line"></span><br><span class="line">Getting AcmeServerDirectory</span><br><span class="line">Loading Registration from C:\Users\linkFly\AppData\Roaming\letsencrypt-win-simple\httpsacme-v01.api.letsencrypt.org\Registration</span><br><span class="line"></span><br><span class="line">Scanning IIS Sites</span><br><span class="line">2: SAN - IIS Said (C:\Users\linkFly\Test)</span><br><span class="line">3: SAN - IIS Test (C:\Users\linkFly\Demo)</span><br><span class="line"></span><br><span class="line">W: Generate a certificate via WebDav and install it manually.</span><br><span class="line">S: Generate a single San certificate for multiple sites.</span><br><span class="line">F: Generate a certificate via FTP/ FTPS and install it manually.</span><br><span class="line">M: Generate a certificate manually.</span><br><span class="line">A: Get certificates for all hosts</span><br><span class="line">Q: Quit</span><br><span class="line">Which host do you want to get a certificate for:</span><br></pre></td></tr></table></figure>
+
+<p><code>Scanning IIS Sites</code> 列出了在 IIS 中检测到的当前已发布的网站，然后显示了一系列指令 (W, S, F, M, A)，决定你想要的操作：</p>
+<ul>
+<li>W - 生成一个证书并通过 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/WebDAV">WebDav</a> 来进行安装</li>
+<li>S - 给 IIS 当前已经发布的所有网站都部署一个证书</li>
+<li>F - 生成一个证书通过FTP、FTPS安装。</li>
+<li>M - 通过配置手动生成证书</li>
+<li>A - 给 IIS 当前已经发布的所有网站各自部署上对应的证书</li>
+</ul>
+<p>我们这次要认证手动认证多个域名，输入命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">M</span><br></pre></td></tr></table></figure>
+
+<p>接着出现让你输入host( Enter a host name )。  比如 <a target="_blank" rel="noopener" href="http://tasaid.com/">http://tasaid.com</a> 输入的是<code>tasaid.com</code>。</p>
+<p>然后会让你输入要认证的多个域名 (注意这些域名要可以访问的，因为一会儿会轮流访问这些域名进行验证)，用<code>,</code>号分隔 (Enter all Alternative Names seperated by a comma:)，然后我们输入需要验证的域名即可：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tasaid.com,www.tasaid.com,m.tasaid.com,wap.tasaid.com</span><br></pre></td></tr></table></figure>
+
+<p><img src="//static.tasaid.com/blogs/59a01b74126a4a2491b858bfb537d33f.png" alt="hostname"></p>
+<p>接着输入站点部署的位置 (Enter a site path <the web root of the host for http authentication>)，输入你的网站部署的位置即可：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\linkFly\Documents\Said\SaidTemp</span><br></pre></td></tr></table></figure>
+
+<p><img src="//static.tasaid.com/blogs/f100d43090035add882a0d93067d8f2c.png" alt="hosts"></p>
+<p>然后输入是否要指定使用者 (用户)，输入 <code>N</code>。( 一旦选择了<code>Y</code>，会让你输入用户名和密码，证书会进行用户认证 )。</p>
+<p>接着会在你此次认证的项目根目录下 (wwwroot) ，根据你刚才输入的域名列表，生成对应的临时认证文件， Let’s Encrypt 服务器会访问这个文件，结构大概如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">---- wwwroot(认证的网站根目录)</span><br><span class="line">| -- .well-known</span><br><span class="line">    | -- acme-challenge</span><br><span class="line">            | -- DGz4z_A_VsgO3dilCAB8bkgurpPt-EFpLygmua3L6x8 (一个临时文件，多个域名会有多个临时文件)</span><br></pre></td></tr></table></figure>
+
+<p><img src="//static.tasaid.com/blogs/71506ed3ba57ff98021e71f30c3067dc.png" alt="files"></p>
+<p>然后 Let’s Encrypt 服务器会根据刚才输入的域名列表，用 HTTP 轮流访问这些文件，注意这时候可能存在这个报错：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">******************************************************************************</span><br><span class="line">The ACME server was probably unable to reach http://linkflys.com/.well-known/acme-challenge/DGz4z_A_VsgO3dilCAB8bkgurpPt</span><br><span class="line"></span><br><span class="line">Check in a browser to see if the answer file is being served correctly.</span><br><span class="line"></span><br><span class="line">*****************************************************************************</span><br></pre></td></tr></table></figure>
+<p>出现这个错误表示生成的这个临时文件访问不到，验证不通过。</p>
+<p>原因是因为 <code>.well-know</code> 这个文件夹带了前缀<code>.</code>，IIS会认为是不可识别的 MIMEType ，只需要在网站根目录下临时加上 <code>mimeMap</code> 配置即可：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">system.webServer</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">staticContent</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">mimeMap</span> <span class="attr">fileExtension</span>=<span class="string">&quot;.&quot;</span> <span class="attr">mimeType</span>=<span class="string">&quot;text/plain&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">staticContent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">system.webServer</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>记得验证通过后，如果你的网站不需要这个 <code>mimeMap</code> 配置，要记得删除。</p>
+<p>如果验证通过，会显示下图，这时候恭喜你验证通过。</p>
+<p><img src="//static.tasaid.com/blogs/f14fe354f89d2f7859e18e5d6723a558.png" alt="success"></p>
+<h3 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h3><p>打开 IIS，选择对应的网站，右键 <code>编辑绑定</code>，点击 <code>新增</code>， <strong>类型</strong> 选择<code>https</code>，则会弹出如下界面：</p>
+<p><img src="//static.tasaid.com/blogs/fc941a2f0475123d076eb452ba6a8dd5.png" alt="iis"></p>
+<p>输入要绑定的域名，然后选择颁发的证书即可。<code>域名 日期 上午/下午</code>这种格式就是 <code>Let&#39;s Encrypt </code> 此次颁发的证书。</p>
+<p>这个时候，使用 https 协议访问你的域名就可以啦，比如：<a target="_blank" rel="noopener" href="https://tasaid.com/">https://tasaid.com</a>。</p>
+<h3 id="自动续订"><a href="#自动续订" class="headerlink" title="自动续订"></a>自动续订</h3><blockquote>
+<p>2016-12-29 更新， 距我首次为 IIS 部署到近日，刚好满了 90 天，今天发现自己的证书已经过期，并且没有自动续订，于是又小小了折腾了一下。</p>
+</blockquote>
+<p>按照 <code>letsencrypt-win-simple</code> 项目中介绍的用法和查阅的一些资料， 使用：<code>letsencrypt --renew</code> 命令即可以自动设立定时任务并自动更新，详情请参考<a target="_blank" rel="noopener" href="https://weblog.west-wind.com/posts/2016/feb/22/using-lets-encrypt-with-iis-on-windows">这里</a> 和 <a target="_blank" rel="noopener" href="http://superuser.com/questions/1043761/managing-letsencrypt-certificate-expiration-and-auto-renewals">这里</a>。</p>
+<p>我执行了这条命令，然而现在并没有什么卵用，也没有自动续订证书，查了半天也没有查到原因，于是特意来分享另外一种方案。</p>
+<p>在网上找到了一个自动续订的 GUI 软件，叫做 <a target="_blank" rel="noopener" href="http://certify.webprofusion.com/">certify</a>，按照原作者的说法是可以自动配置、创建和自动续订证书，并且到快要续订的时候会自动发邮件给你。当然，这里我也只能等三个月之后才能确认是否如此。</p>
+<p>首先先去<a target="_blank" rel="noopener" href="http://certify.webprofusion.com/"> 官网下载 certify</a> ，然后在服务器上安装。注意，<code>certify</code> 要求以管理员权限运行，并且要求服务器安装了 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/PowerShell">PowerShell 4.0</a>。 <code>PowerShell 4.0</code> 默认集成在 <a target="_blank" rel="noopener" href="https://www.microsoft.com/zh-CN/download/details.aspx?id=40855">Windows Management Framework 4.0</a> 中，而 <code>Windows Management Framework 4.0</code> 又依赖 <a target="_blank" rel="noopener" href="https://www.microsoft.com/zh-CN/download/details.aspx?id=30653">Microsoft .NET Framework 4.5</a> (坑爹啊)。</p>
+<p>可以查看下自己的服务器是否具备这些环境，然后按需更新即可。更新之后安装 <code>certify</code> 运行。</p>
+<p>点击 <code>New Contact</code> 按钮，创建一个联系人，这个联系人会在证书快要过期的时候收到续订证书的提醒邮件，输入自己常用的 email 即可。</p>
+<p><img src="//static.tasaid.com/blogs/401c6a39491e4fa5840bf73913d3cf4b.png" alt="certify"></p>
+<p>然后点击 <code>New Certificate</code>，<code>certify</code> 会自动扫描 IIS 中的站点，然后选择你要申请证书的域名。</p>
+<p><img src="//static.tasaid.com/blogs/0f0ff61da0ad8fe6565c4289059c5ff8.png" alt="certify"></p>
+<p>点击 <code>Request Certificate</code> 获取证书，<code>certify</code> 会在网站根目录下生成 <code>.well-known</code> 文件夹，并且会自动配置 <code>web.config</code>，自动验证证书。</p>
+<p>验证完成后会弹窗显示证书已安装。然后你就可以看到自己已经申请的证书详细信息了，并且 IIS 中也已经自动给你配置好了证书。</p>
+<p><img src="//static.tasaid.com/blogs/e2fbd8ffd3a82081aff76e8e011bb819.png" alt="certify"></p>
+<p>吐个槽，感觉这篇文章介绍的所有的东西，都被 <code>certify</code> 给搞定了…</p>
+<p>在 <code>certify</code> 官网上作者说这个软件还出于 <code>beta/alpha</code> 阶段，所以某些地方可能会出问题，如果发现证书没有续订或者没有生效，点击一下 <code>Auto Apply</code> 就可以了。</p>
+<p>最后记得把网站根目录下的 <code>.well-known</code> 目录给删掉，保持网站目录清洁。</p>
+<h2 id="查看证书"><a href="#查看证书" class="headerlink" title="查看证书"></a>查看证书</h2><h3 id="在服务器中查看证书"><a href="#在服务器中查看证书" class="headerlink" title="在服务器中查看证书"></a>在服务器中查看证书</h3><p>在服务器中，<code>Win + R</code> 打开运行，输入 <code>MMC</code>，打开 <code>控制台</code> 界面。</p>
+<p>点击顶部菜单栏 <code>文件</code>，然后点击 <code>添加/删除管理单元</code></p>
+<p>弹出的窗口中，在左侧的 <strong>可用的管理单元</strong> 中点击 <code>证书</code>，然后点中间的 <code>添加</code>，会弹出如下界面：</p>
+<p><img src="//static.tasaid.com/blogs/c71524fa6b8cebf4f7fd30e035f49cf6.png" alt="certificate"></p>
+<p>选择 <code>计算机账户</code>，然后默认下一步完成，点击 <code>确定</code>，即可看到证书列表。</p>
+<p>展开 <code>证书</code>，再展开 <code>中间证书颁发机构</code>，选择 <code>证书</code>，即可看到 <code>Let&#39;s Encrypt </code> 颁发的证书：</p>
+<p><img src="//static.tasaid.com/blogs/ef81b98d7016b743cef38928d77e8720.png" alt="certificate"></p>
+<h3 id="在chrome中查看证书"><a href="#在chrome中查看证书" class="headerlink" title="在chrome中查看证书"></a>在chrome中查看证书</h3><p>使用 HTTPS 访问网址，点击地址栏的小 <code>绿锁</code>，然后点击 <code>详细信息</code>，这时候会弹出 chrome 调试工具，点击 <code>View certificate</code>：</p>
+<p><img src="//static.tasaid.com/blogs/7877188c2c81cf621a50edcb3691826b.png" alt="chrome certificate"></p>
+<p>就会看到证书的详细信息：</p>
+<p><img src="//static.tasaid.com/blogs/2b56f415a0dfaca105d228b447816fce.png" alt="chrome certificate"></p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="IIS-配置-web-config-实现自动-HTTPS-跳转"><a href="#IIS-配置-web-config-实现自动-HTTPS-跳转" class="headerlink" title="IIS 配置 web.config 实现自动 HTTPS 跳转"></a>IIS 配置 web.config 实现自动 HTTPS 跳转</h3><p>为了保证域名统一，将访问 <code>http://www.tasaid.com</code>、<code>http://tasaid.com</code>、<code>https://www.tasaid.com</code> 的域名都跳转到 <code>https://tasaid.com</code>，IIS 可以进行如下配置 (需要安装 <a target="_blank" rel="noopener" href="https://www.iis.net/downloads/microsoft/url-rewrite">IIS UrlRewrite</a> 模块，代码注释是为了方便理解，部署到线上请删除中文注释)：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">system.webServer</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rewrite</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">rules</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">rule</span> <span class="attr">name</span>=<span class="string">&quot;HostNameRule1&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">match</span> <span class="attr">url</span>=<span class="string">&quot;(.*)&quot;</span> /&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--匹配所有条件--&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">conditions</span> <span class="attr">logicalGrouping</span>=<span class="string">&quot;MatchAny&quot;</span>&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--当不是使用https协议访问的时候--&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">add</span> <span class="attr">input</span>=<span class="string">&quot;&#123;HTTPS&#125;&quot;</span> <span class="attr">pattern</span>=<span class="string">&quot;^OFF$&quot;</span> /&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--并且访问的host不是tasaid.com这种，例如www.tasaid.com--&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">add</span> <span class="attr">input</span>=<span class="string">&quot;&#123;HTTP_HOST&#125;&quot;</span> <span class="attr">pattern</span>=<span class="string">&quot;^tasaid\.com$&quot;</span> <span class="attr">negate</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">conditions</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--跳转到https--&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">action</span> <span class="attr">type</span>=<span class="string">&quot;Redirect&quot;</span> <span class="attr">url</span>=<span class="string">&quot;https://tasaid.com/&#123;R:1&#125;&quot;</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">rule</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">rule</span> <span class="attr">name</span>=<span class="string">&quot;HTTPS redirect&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">match</span> <span class="attr">url</span>=<span class="string">&quot;(.*)&quot;</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">conditions</span>&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--当使用HTTPS协议访问--&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">add</span> <span class="attr">input</span>=<span class="string">&quot;&#123;HTTPS&#125;&quot;</span> <span class="attr">pattern</span>=<span class="string">&quot;^ON$&quot;</span> /&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--当访问 https://www.tasaid.com的时候 --&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">add</span> <span class="attr">input</span>=<span class="string">&quot;&#123;HTTP_HOST&#125;&quot;</span> <span class="attr">pattern</span>=<span class="string">&quot;^tasaid\.com$&quot;</span> <span class="attr">negate</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">conditions</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--跳转到HTTPS--&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">action</span> <span class="attr">type</span>=<span class="string">&quot;Redirect&quot;</span> <span class="attr">url</span>=<span class="string">&quot;https://tasaid.com/&#123;R:1&#125;&quot;</span> <span class="attr">redirectType</span>=<span class="string">&quot;SeeOther&quot;</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">rule</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">rules</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">rewrite</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">system.webServer</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里需要注意，想让 <a target="_blank" rel="noopener" href="https://www.tasaid.com/">https://www.tasaid.com</a> 也可以跳转到 <a target="_blank" rel="noopener" href="https://tasaid.com/">https://tasaid.com</a>，在申请 HTTPS 证书的时候，要把 <code>www.tasaid.com</code> 这种域名也给申请上，否则浏览器会解析不出 <code>https://www.tasaid.com</code>，因为在进行 HTTPS 加密握手的时候就会认证失败。</p>
+<h3 id="chrome-调试中发现-HTTPS-改动不生效"><a href="#chrome-调试中发现-HTTPS-改动不生效" class="headerlink" title="chrome 调试中发现 HTTPS 改动不生效"></a>chrome 调试中发现 HTTPS 改动不生效</h3><p>HTTPS 第一次连接域名的时候会和证书颁发机构进行 HTTPS 证书认证，后续的连接会缓存起来，清缓存就好了</p>
+<h2 id="参考和引用"><a href="#参考和引用" class="headerlink" title="参考和引用"></a>参考和引用</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://letsencrypt.org/">Let’s Encrypt</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Lone-Coder/letsencrypt-win-simple">github - letsencrypt-win-simple</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/51042407">如何看待 Mozilla 决定停止信任沃通 (WoSign) 和 StartCom 颁发的证书？</a></li>
+<li><a target="_blank" rel="noopener" href="https://imququ.com/post/letsencrypt-certificate.html">屈屈 - Let’s Encrypt，免费好用的 HTTPS 证书</a></li>
+<li><a target="_blank" rel="noopener" href="https://imququ.com/post/ecc-certificate.html">屈屈 - 开始使用 ECC 证书</a></li>
+<li><a target="_blank" rel="noopener" href="https://linuxtoy.org/archives/lets-encrypt.html">Let’s Encrypt 试用记</a></li>
+<li><a target="_blank" rel="noopener" href="http://tech.smallya.net/2016/07/07/%E4%BD%BF%E7%94%A8-ssl-for-free-%E7%94%A2%E7%94%9F-lets-encrypt-ssl-%E6%86%91%E8%AD%89%E4%B8%8A%E5%82%B3%E7%B5%A6-iis-%E7%AB%99%E5%8F%B0%E4%BD%BF%E7%94%A8/">使用 SSL For Free 產生 Let’s Encrypt SSL 憑證上傳給 IIS 站台使用</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.sofast.info/2016/05/iis-lets-encrypt-ssl-free-certificates/">IIS 使用 Let’s Encrypt 的 SSL 免費憑證</a></li>
+<li><a target="_blank" rel="noopener" href="https://program-think.blogspot.com/2016/09/About-WoSign.html">聊聊“沃通&#x2F;WoSign”的那些破事儿</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/posts/c316d121/" data-id="cloizszv00010xww60h7u0gul" data-title="从 HTTP 到 HTTPS - IIS 部署免费 HTTPS" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTPS/" rel="tag">HTTPS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-blogs/从HTTP到HTTPS-什么是HTTPS" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/posts/98c3a65b/" class="article-date">
+  <time class="dt-published" datetime="2016-10-02T16:11:00.000Z" itemprop="datePublished">2016-10-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tech/">tech</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/posts/98c3a65b/">从 HTTP 到 HTTPS - 什么是 HTTPS</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>HTTPS是互联网 web 大势所趋。各大网站都已陆续部署了 HTTPS，Said 近期也迁移到了 HTTPS。这篇文章我们来探讨什么是HTTPS以及为什么要部署HTTPS。</p>
+<p>这篇文章收录在《Said - 从 HTTP 到 HTTPS 》系列：</p>
+<ul>
+<li>从 HTTP 到 HTTPS - 什么是 HTTPS</li>
+<li><a target="_blank" rel="noopener" href="https://tasaid.com/Blog/20161005024923.html?sgs=blog20161003001126">从 HTTP 到 HTTPS - IIS 部署免费 HTTPS</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://tasaid.com/Blog/20161006045104.html?sgs=blog20161003001126">从 HTTP 到 HTTPS - 网站部署 HTTPS 中需要做的事情</a></li>
+</ul>
+<h2 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h2><p>当你在浏览器输入一个网址 (例如 <a target="_blank" rel="noopener" href="http://tasaid.com/">http://tasaid.com</a>)的时候，浏览器发起一个 HTTP 请求，带着请求信息 (参见 <a target="_blank" rel="noopener" href="http://kb.cnblogs.com/page/92320/">HTTP Headers</a>)，连接到服务器，把请求信息递给服务器，服务器收到信息之后，解析相关的信息，然后进行处理，再返回浏览器请求的数据。</p>
+<p>简单来说是这么一个流程：</p>
+<ol>
+<li><strong>小明</strong> 跟 <strong>浏览器爸爸</strong> 说我想要去中关村某个店家拿一些东西 (发起请求)</li>
+<li><strong>浏览器爸爸</strong> 就把 <strong>小明</strong> 要的东西记在一张清单上 (生成HTTP协议)</li>
+<li>然后 <strong>浏览器爸爸</strong> 派出一个 <strong>线程小弟</strong>，噌噌噌跑到中关村的店里，把清单递给 <strong>店家</strong>，说小明要这些东西 (进行传输)</li>
+<li><strong>店家</strong> 让 <strong>线程小弟</strong> 稍等，然后去屋子里面拿小明的这些东西 (服务器收到请求)</li>
+<li><strong>店家</strong> 把东西拿出来后，并且也打印了一份清单，让 <strong>线程小弟</strong> 带着清单和东西一起拿回去 (服务器处理请求完毕)</li>
+<li>然后 <strong>线程小弟</strong> 回到 <strong>浏览器爸爸</strong> 那边，把服务器给的清单和物品交给浏览器爸爸，浏览器爸爸根据清单核对物品 (浏览器处理响应)</li>
+<li>然后把物品打包交给了 <strong>小明</strong> (浏览器渲染并呈现界面)</li>
+</ol>
+<p>看图说话：</p>
+<p><img src="//static.tasaid.com/blogs/c392c086083b2bc202f66a7659da7ec0.png" alt="http"></p>
+<p>这其中有个问题，浏览器爸爸和服务器都没有验证清单信息的有效性和对方的身份。万一有人在中间把线程小哥拦下来，暴揍一顿，然后把物品清单给换了怎么办？或者有人把线程小哥在半路上暴揍一顿，拿了清单换了另外一个小哥怎么办？</p>
+<p>这是个很严肃的问题：假如服务器要把一些东西锁在柜子里，需要小明给密码才可以打开柜子。然后小明把密码写在清单上让浏览器爸爸交给服务器。这时候，如果这张清单被人拦截下来，不就得到了小明的密码？</p>
+<p>简单来说，传输的信息中包含用户密码，被拦截了怎么办？</p>
+<h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><p>正因为HTTP请求有这些安全性的问题，所以HTTPS诞生了，致力于解决了这些安全性问题，我们进行一下对比：</p>
+<table>
+<thead>
+<tr>
+<th align="center">安全性</th>
+<th align="left">HTTP</th>
+<th align="left">HTTPS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">窃听风险</td>
+<td align="left">传递的信息是明文的，可能会被有心人拦截下来窃听</td>
+<td align="left">信息加密传播</td>
+</tr>
+<tr>
+<td align="center">篡改风险</td>
+<td align="left">传递的信息可能会被篡改</td>
+<td align="left">信息校验，一旦被篡改立刻就会被发现</td>
+</tr>
+<tr>
+<td align="center">伪装风险</td>
+<td align="left">没有验证通信另外一头对方的身份，可能遭遇伪装</td>
+<td align="left">身份校验</td>
+</tr>
+</tbody></table>
+<p>那么HTTPS是如何做到更安全的呢？</p>
+<p>简单来说，HTTPS 即是在 HTTP 下加入了一层 SSL 加密，所以被称为HTTP<strong>S</strong>。具体的加密过程则是 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%85%AC%E5%BC%80%E5%AF%86%E9%92%A5%E5%8A%A0%E5%AF%86">公匙加密法</a>：</p>
+<ul>
+<li>客户端向服务器索要公匙，然后使用公匙加密信息</li>
+<li>服务器收到加密后的信息，用自己的私匙解密</li>
+</ul>
+<p>公匙密码和算法都是公开的，而私匙则是保密的。加密使用的公匙和解码使用的密匙都是不相同的，因此这是一个 <strong>非对称加密</strong> 算法。</p>
+<h2 id="数字证书"><a href="#数字证书" class="headerlink" title="数字证书"></a>数字证书</h2><p>提及 HTTPS ，就会听到大家说需要证书才能部署，那么什么是证书呢？ </p>
+<p>因为互联网不安全，公匙也是信息的一部分，也是会有被篡改的风险的。所以引入了互联网权威机构 - CA 机构，又称为证书授权 (Certificate Authority) 机构，浏览器会内置这些”受信任的根证书颁发机构” (即 CA)。</p>
+<p>服务端向权威的身份鉴定 CA 机构申请数字证书，CA 机构验证了网站之后，会把网站录入到内部列表，采用 Hash 把服务端的一些相关信息生成摘要，然后 CA 机构用自己的私匙，把服务端的公匙和相关信息一起加密，然后给申请证书的服务端颁发数字证书，用于其他客户端 (比如浏览器) 认证这个网站的公匙。</p>
+<p>客户端通过服务端下发的证书，找到对应的 CA，然后向 CA 验证这个证书是否有效，CA 验证通过之后，下发服务端的公匙。</p>
+<p>因为 CA 是权威并且可信的，所以客户端 (浏览器) 信任 CA，而 CA 又信任经过认证的服务端 ，所以客户端 (浏览器) 也信任这个服务端，这就是<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Chain_of_trust">信任链 (Chain Of Trust)</a>。</p>
+<p>而 CA 颁发的数字证书，一般包含这些信息：</p>
+<p> <img src="//static.tasaid.com/blogs/f743e508e14c7ba5e55eb0de9726d146.png" alt="CA info"></p>
+<p>简单来说：为了保证公匙是安全的，所以通过数字证书验证公匙。</p>
+<h2 id="加密通信"><a href="#加密通信" class="headerlink" title="加密通信"></a>加密通信</h2><p>一条完整的HTTPS请求应该是这样的：</p>
+<ol>
+<li>客户端 (浏览器) 发起 HTTP 请求，请求连接服务端，发送支持的加密通信协议 (和版本)，并且生成一个随机数，后续用于生成”对话密钥”。</li>
+<li>服务端确认加密通信协议 (和版本)，同时也生成一个随机数，后续用于生成”对话密匙”，并且将 CA 颁发的数字证书，一起发送给客户端。</li>
+<li>客户端收到数字证书后，检测内置的”受信任的根证书颁发机构”，查看解开数字证书的公匙是否在。</li>
+<li>如果解开数字证书的公匙存在，则使用它解开数字证书，得到正确的服务器公匙，同时再次生成一个随机数，用于服务器公匙加密，并发送给服务器。</li>
+<li>此时本地和服务器同时将三个随机数，根据约定的加密方法进行加密，各自生成本次会话的所使用的同一把 “会话密匙” 。</li>
+<li>到这里，认证阶段已经完毕，数据传输从 <strong>非对称加密</strong> 换成了 <strong>对称加密</strong> (因为考虑到性能)，接下来所有的数据传输都是使用HTTP协议进行传输，只不过使用了 “会话密匙” 来加密内容。</li>
+</ol>
+<p>见下图：</p>
+<p><img src="//static.tasaid.com/blogs/942de9919ce8c98491e682780aa041c3.png" alt="https"></p>
+<h2 id="参考和引用"><a href="#参考和引用" class="headerlink" title="参考和引用"></a>参考和引用</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://cattail.me/tech/2015/11/30/how-https-works.html">HTTPS 工作原理</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html">阮一峰 - 数字签名是什么</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html">阮一峰 - SSL&#x2F;TLS协议运行机制的概述</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/posts/98c3a65b/" data-id="cloizszv00013xww68gz61pjq" data-title="从 HTTP 到 HTTPS - 什么是 HTTPS" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTPS/" rel="tag">HTTPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-blogs/co-js-让异步代码同步化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/posts/6d6a869c/" class="article-date">
+  <time class="dt-published" datetime="2016-09-30T16:42:00.000Z" itemprop="datePublished">2016-10-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tech/">tech</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/posts/6d6a869c/">co.js - 让异步代码同步化</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://github.com/tj/co">co</a> 是 <a target="_blank" rel="noopener" href="https://github.com/tj">TJ</a> 大神所编写的 JavaScript 异步解决方案的库，用于让异步的代码 “同步化”。</p>
+<p>它构建在以下两个基础上，这篇文章不会详细讲解这 2 个知识点：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Iterators_and_Generators">ES6 - generator</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/linkFly6/Promise">ES6 - Promise</a></li>
+</ul>
+<h2 id="Generator-和-co"><a href="#Generator-和-co" class="headerlink" title="Generator 和 co"></a>Generator 和 co</h2><p>首先我们简单了解下 <code>generator</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义一个 generators</span></span><br><span class="line"><span class="keyword">function</span>* <span class="title function_">foo</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">yield</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;bar&quot;</span>);</span><br><span class="line">    <span class="keyword">yield</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;baz&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> g = <span class="title function_">foo</span>();</span><br><span class="line">g.<span class="title function_">next</span>(); <span class="comment">// prints &quot;bar&quot;</span></span><br><span class="line">g.<span class="title function_">next</span>(); <span class="comment">// prints &quot;baz&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>简单来说，<code>generator</code> 实现了状态暂停&#x2F;函数暂停 —— 通过 <code>yield</code> 关键字暂停函数，并返回当前函数的状态。</p>
+<p><code>co</code> 实现了 <code>generator</code> 的 <strong>自动执行</strong>，我们使用 <code>co</code> 和 <code>Promise</code> 修改上面的代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> co = <span class="built_in">require</span>(<span class="string">&#x27;co&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span>* <span class="title function_">foo</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">yield</span> <span class="title class_">Promise</span>.<span class="title function_">resolve</span>(<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;bar&quot;</span>));</span><br><span class="line">    <span class="keyword">yield</span> <span class="title class_">Promise</span>.<span class="title function_">resolve</span>(<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;baz&quot;</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> co = <span class="built_in">require</span>(<span class="string">&#x27;co&#x27;</span>);</span><br><span class="line"><span class="title function_">co</span>(foo);</span><br></pre></td></tr></table></figure>
+
+<p>有人可能要说 “我自己写个循环执行 next 不也可以么？ 为什么一个循环还要依赖一个库？”</p>
+<p><code>co</code> 有个使用条件：<code>generator</code> 函数的 <code>yield</code> 命令后面，只能是 <a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2015/05/thunk.html">Thunk</a> 函数或 <code>Promise</code> 对象。</p>
+<p>正是这个条件，让 <code>co</code> 强悍无比。</p>
+<h2 id="Callback"><a href="#Callback" class="headerlink" title="Callback"></a>Callback</h2><p>我们一步一步来看异步，首先使用 <code>回调函数/Callback</code> 的方式封装一个常见的 <code>ajax</code> 异步任务：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">ajax</span>(<span class="params">q, callback</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> xhr = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br><span class="line">    xhr.<span class="property">onreadystatechange</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (xhr.<span class="property">readyState</span> == <span class="number">4</span> &amp;&amp; xhr.<span class="property">status</span> == <span class="number">200</span>) &#123;</span><br><span class="line">            <span class="title function_">callback</span>(xhr.<span class="property">responseText</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    xhr.<span class="title function_">open</span>(<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;query?q=&quot;</span> + q);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>我们使用 <code>回调函数</code> 的方式连续发  2 条请求：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">ajax</span>(<span class="string">&#x27;foo&#x27;</span>, <span class="keyword">function</span> (<span class="params">foo</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(foo);</span><br><span class="line">    <span class="title function_">ajax</span>(<span class="string">&#x27;bar&#x27;</span>, <span class="keyword">function</span> (<span class="params">bar</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(bar);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>这是 js 中最典型的异步处理方案。</p>
+<h2 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h2><p>再使用 Promise 封装异步 ajax，让回调函数扁平化：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">ajax</span>(<span class="params">q, callback</span>) &#123;</span><br><span class="line">    <span class="comment">// 使用 Promise 封装</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="keyword">function</span> (<span class="params">resolve</span>) &#123;</span><br><span class="line">        <span class="keyword">var</span> xhr = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br><span class="line">        xhr.<span class="property">onreadystatechange</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (xhr.<span class="property">readyState</span> == <span class="number">4</span> &amp;&amp; xhr.<span class="property">status</span> == <span class="number">200</span>) &#123;</span><br><span class="line">                <span class="title function_">resolve</span>(xhr.<span class="property">responseText</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        xhr.<span class="title function_">open</span>(<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;query?q=&quot;</span> + q);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后修改请求代码，扁平化异步代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">ajax</span>(<span class="string">&#x27;foo&#x27;</span>)</span><br><span class="line">    .<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">foo</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(foo);</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_">ajax</span>(<span class="string">&#x27;bar&#x27;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    .<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">bar</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(bar);</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="co"><a href="#co" class="headerlink" title="co"></a>co</h2><p>最后，让我们见一下 <code>co</code> 的强悍之处吧。我们使用 <code>co.js</code> 来修改请求代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> co = <span class="built_in">require</span>(<span class="string">&#x27;co&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="title function_">co</span>(<span class="keyword">function</span>* () &#123;</span><br><span class="line">    <span class="keyword">var</span> foo = <span class="keyword">yield</span> <span class="title function_">ajax</span>(<span class="string">&#x27;foo&#x27;</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(foo);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> bar = <span class="keyword">yield</span> <span class="title function_">ajax</span>(<span class="string">&#x27;bar&#x27;</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(bar);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>最终我们的异步任务，在代码中同步化了。</p>
+<p>对于异步代码来说，回调函数是最基础的方案，带来的弊端也显而易见。<code>Promise</code> 让代码扁平化，而 <code>co</code> 让代码同步化。</p>
+<h2 id="参考和引用"><a href="#参考和引用" class="headerlink" title="参考和引用"></a>参考和引用</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/linkFly6/Promise">Promise.js</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/tj/co">Github - TJ Holowaychuk - co.js</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2015/05/co.html">co 函数库的含义和用法</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2015/05/thunk.html">Thunk 函数的含义和用法</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Iterators_and_Generators">MDN - 迭代器和生成器</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/posts/6d6a869c/" data-id="cloizszuz000pxww673hv2npa" data-title="co.js - 让异步代码同步化" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-articles/太空三部曲-上帝的脸" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/posts/10ec34b2/" class="article-date">
+  <time class="dt-published" datetime="2016-09-29T15:07:00.000Z" itemprop="datePublished">2016-09-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/article/">article</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/posts/10ec34b2/">太空三部曲-上帝的脸</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>这篇文章是歌曲 《 A Lovely Wedding - Snow and Sky 》的歌词，歌词来源于 <a target="_blank" rel="noopener" href="http://music.163.com/#/song?id=4425889">网易云音乐 - A Lovely Wedding - Snow and Sky</a>，歌曲有开始 2 分多钟的铺垫：海浪声、鸟鸣声、风声。去看过歌曲 MV 才知道这 2 分钟里，演绎了 “<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-cn/%E6%8C%91%E6%88%98%E8%80%85%E5%8F%B7%E8%88%AA%E5%A4%A9%E9%A3%9E%E6%9C%BA%E7%81%BE%E9%9A%BE">挑战者号</a>“ 在万众瞩目中发射，然后在空中解体，所有人悲怆而又绝望的看着天空中如同烟花一般的 “挑战者号”，机上 7 名机组人员全部丧生。失事当晚，美国总统里根发表了关于 “挑战者” 号航天飞机失事的演说。歌词正来自里根总统的这次演说。</p>
+</blockquote>
+<p>&nbsp;</p>
+<p>Ladies and Gentlemen,</p>
+<p>女士们先生们，</p>
+<p>&nbsp;</p>
+<p>I‘d planned to speak to you tonight to report on the state of the Union, but the events of earlier today have led me to change those plans.</p>
+<p>我本来打算今晚向你们宣读国情咨文，但今天早些时候发生的事件让我改变了计划。</p>
+<p>&nbsp;</p>
+<p>Today is a day for mourning and remembering. Nancy and I are pained to the core by the tragedy of the shuttle Challenger.</p>
+<p>今天是哀悼和怀念的日子。南希和我为“挑战者号”航天飞机的悲剧感到至为痛心。</p>
+<p>&nbsp;</p>
+<p>We know we share this pain with all of the people of our country. This is truly a national loss.</p>
+<p>我们知道全体国人人同此心。这真正是全国人的损失。</p>
+<p>&nbsp;</p>
+<p>Nineteen years ago, almost to the day, we lost three astronauts in a terrible accident on the ground.</p>
+<p>十九年前，几乎就在今天，在一次可怕的地面事故中，我们丧失了三名宇航员。</p>
+<p>&nbsp;</p>
+<p>But, we‘ve never lost an astronaut in flight. We‘ve never had a tragedy like this.</p>
+<p>然而我们从未在飞行中丧失过宇航员。我们从未经历过这样的灾难。</p>
+<p>&nbsp;</p>
+<p>And perhaps we‘ve forgotten the courage it took for the crew of the shuttle.</p>
+<p>也许我们已经忘记，航天飞机机组人员需要多么大的勇气。</p>
+<p>&nbsp;</p>
+<p>But they, the Challenger Seven, were aware of the dangers, but overcame them and did their jobs brilliantly.</p>
+<p>但是挑战者的七位宇航员深知其中的危险，他们坚忍不拔地克服了困难并出色地履行了自己的职责。</p>
+<p>&nbsp;</p>
+<p>We mourn seven heroes: Michael Smith, Dick Scobee, Judith Resnik, Ronald McNair, Ellison Onizuka, Gregory Jarvis, and Christa McAuliffe.</p>
+<p>我们悼念这七位英雄：迈克尔·史密斯、迪克·斯科比、朱迪恩·伦斯尼克、罗纳德·卖克奈尔、埃利森·奥尼祖卡、格雷戈里·贾维斯、克丽斯塔·麦考利夫。</p>
+<p>&nbsp;</p>
+<p>We mourn their loss as a nation together.</p>
+<p>我们举国哀悼失去的英雄。</p>
+<p>&nbsp;</p>
+<p>For the families of the seven, we cannot bear, as you do, the full impact of this tragedy.</p>
+<p>对于这七位英雄的家人，我们不能百分之百地像你们那样的感受这场灾难的打击。</p>
+<p>&nbsp;</p>
+<p>But we feel the loss, and we‘re thinking about you so very much.</p>
+<p>但是我们感受到了损失，我们认为你们一定也是这样。</p>
+<p>&nbsp;</p>
+<p>Your loved ones were daring and brave, and they had that special grace, that special spirit that says, “Give me a challenge, and I‘ll meet it with joy.”</p>
+<p>你们的亲人勇敢无畏，他们的特殊姿态和特殊精神告诉我们：“把挑战给我,我要满怀喜悦的去迎。”</p>
+<p>&nbsp;</p>
+<p>They had a hunger to explore the universe and discover its truths. They wished to serve, and they did. They served all of us.</p>
+<p>他们渴望探索宇宙，渴望揭开宇宙的奥秘。他们希望尽职，他们做到了。他们为我们所有人尽了职。</p>
+<p>&nbsp;</p>
+<p>We‘ve grown used to wonders in this century.</p>
+<p>这个世纪，我们对奇迹已习以为常。</p>
+<p>&nbsp;</p>
+<p>It‘s hard to dazzle us. But for twenty-five years the United States space program has been doing just that.</p>
+<p>很难有什么会使我们赞叹不已。但是美国航天计划二十五年来做的正是如此。</p>
+<p>&nbsp;</p>
+<p>We‘ve grown used to the idea of space, and, perhaps we forget that we‘ve only just begun.</p>
+<p>我们对太空计划已经习以为常，也许已经忘了我们不过刚刚起步。</p>
+<p>&nbsp;</p>
+<p>We‘re still pioneers.</p>
+<p>我们仍然是开拓者。</p>
+<p>&nbsp;</p>
+<p>They, the members of the Challenger crew, were pioneers.</p>
+<p>他们——挑战者号全体机组人员是开拓者。</p>
+<p>&nbsp;</p>
+<p>And I want to say something to the schoolchildren of America who were watching the live coverage of the shuttle‘s take-off.</p>
+<p>我要对观看航天飞机发射直播的美国学童说几句话。</p>
+<p>&nbsp;</p>
+<p>I know it‘s hard to understand, but sometimes painful things like this happen.</p>
+<p>我知道后者难以理解，但有时像这样令人痛苦的事确实会发生。</p>
+<p>&nbsp;</p>
+<p>It‘s all part of the process of exploration and discovery.</p>
+<p>这些都是探索和发现过程的一部分。</p>
+<p>&nbsp;</p>
+<p>It‘s all part of taking a chance and expanding man‘s horizons.</p>
+<p>这些都是承担风险、拓展人类世界范围的一部分。</p>
+<p>&nbsp;</p>
+<p>The future doesn‘t belong to the fainthearted; it belongs to the brave.</p>
+<p>未来不属于弱者，未来属于强者。</p>
+<p>&nbsp;</p>
+<p>The Challenger crew was pulling us into the future, and we‘ll continue to follow them.</p>
+<p>挑战者号全体人员把我们推向未来，我们将继续追随他们。</p>
+<p>&nbsp;</p>
+<p>I‘ve always had great faith in and respect for our space program.</p>
+<p>我一直对我们的航天计划充满信心，并怀抱敬意。</p>
+<p>&nbsp;</p>
+<p>And what happened today does nothing to diminish it. We don‘t hide our space program.</p>
+<p>今天发生的悲剧决不会削弱它。我们不会就此停止我们的航天计划。</p>
+<p>&nbsp;</p>
+<p>We don‘t keep secrets and cover things up. We do it all up front and in public.</p>
+<p>我们没有保密和隐瞒。我们堂堂正正地公开实施它。</p>
+<p>&nbsp;</p>
+<p>That‘s the way freedom is, and we wouldn‘t change it for a minute.</p>
+<p>这正是自由的方式，我们一分钟也不会改变它。</p>
+<p>&nbsp;</p>
+<p>We‘ll continue our quest in space.</p>
+<p>我们将继续探索太空。</p>
+<p>&nbsp;</p>
+<p>There will be more shuttle flights and more shuttle crews and, yes, more volunteers, more civilians, more teachers in space.</p>
+<p>我们将有更多次航天飞行，有更多宇航员，更多志愿，,更多平民，更多教师进入太空。</p>
+<p>&nbsp;</p>
+<p>Nothing ends here; our hopes and our journeys continue.</p>
+<p>一切都不会到此为止；我们的希望和我们的旅程不会停步。</p>
+<p>&nbsp;</p>
+<p>I want to add that I wish I could talk to every man and woman who works for NASA, or who worked on this mission and tell them:</p>
+<p>我还想说，我希望能和为国家航空航天局，或者为完成此次使命而工作的每一个人谈话，告诉他们：</p>
+<p>&nbsp;</p>
+<p>“Your dedication and professionalism have moved and impressed us for decades. And we know of your anguish. We share it.”</p>
+<p>“几十年来，你们的奉献和敬业精神令我们感动,让我们铭记在心。我们了解你们的痛苦。并且我们感同身受。”</p>
+<p>&nbsp;</p>
+<p>There‘s a coincidence today.</p>
+<p>今天还有一个巧合。</p>
+<p>&nbsp;</p>
+<p>On this day 390 years ago, the great explorer Sir Francis Drake died aboard ship off the coast of Panama. In his lifetime the great frontiers were the oceans, and a historian later said,</p>
+<p>三百九十年前的今天，伟大的探险家佛朗西斯·德雷克勋爵在巴拿马附近海面的一条船上死去。在他生活的时代，最大的疆界就是海洋，后来一位历史学家说：</p>
+<p>&nbsp;</p>
+<p>“He lived by the sea, died on it, and was buried in it.” Well, today, we can say of the Challenger crew: Their dedication was, like Drake‘s, complete.</p>
+<p>“他生在海边，死在海上，葬在海里。”今天我们同样可以对挑战者号乘员说：像德雷克一样，他们的奉献是毫无保留的。</p>
+<p>&nbsp;</p>
+<p>The crew of the space shuttle Challenger honored us by the manner in which they lived their lives.</p>
+<p>挑战者号航天飞机乘员的生命历程给我们带来荣耀。</p>
+<p>&nbsp;</p>
+<p>We will never forget them, nor the last time we saw them, this morning, as they prepared for their journey and waved goodbye and “slipped the surly bonds of earth” to “touch the face of God.”</p>
+<p>我们永远不会忘记他们，也不会忘记今天早上最后一次见到他们，那时他们正准备上路，挥手告别，“挣脱大地粗暴的束缚，去触摸上帝的脸。”</p>
+<p>&nbsp;</p>
+<p>Thank you.</p>
+<p>谢谢各位。</p>
+<p><img src="//static.tasaid.com/articles/a464e604cbf89a54d20035795582df2d.jpeg" alt="hero"></p>
+<p>挑战者号 7 名机组人员</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/posts/10ec34b2/" data-id="cloizszv90038xww61q2tanzp" data-title="太空三部曲-上帝的脸" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-articles/行者的背囊" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/posts/c31ee924/" class="article-date">
+  <time class="dt-published" datetime="2016-09-29T14:48:00.000Z" itemprop="datePublished">2016-09-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/article/">article</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/posts/c31ee924/">行者的背囊</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>新的音乐播放器每天都会推许多歌曲给我，每周总能在上百首歌曲里找到一两首喜欢的歌曲。</p>
+<p>前些日子把老的音乐播放器中的歌单和新的音乐播放器中的歌单对比，老的歌单某个收藏列表中 1400 首歌曲，而新的歌单只有 900 首。</p>
+<p>这是从老的歌单迁移数据到新的歌单上面的。</p>
+<p>这两天又听那些听了许久的音乐，它们一如既往的让人喜爱。</p>
+<p>有些音乐，过些日子，落点灰尘，再拾回，同样让人无比的悸动，我把这些音乐奉为自己心中不朽的经典。</p>
+<p>某个时间点，突然又再追忆到一些过去的自己和音乐。时光匆匆，世界喧嚣，会不会你也和我一样，已经忘记了最初的自己？</p>
+<p>迢长路远，行者匆匆，不断获得，不断丢失，不断重拾。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/posts/c31ee924/" data-id="cloizszvc0042xww60w3p0f9p" data-title="行者的背囊" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-articles/在空中" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/posts/b4ea1707/" class="article-date">
+  <time class="dt-published" datetime="2016-09-29T14:32:00.000Z" itemprop="datePublished">2016-09-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/article/">article</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/posts/b4ea1707/">在空中</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>当我茫然的见到一些人离开之后，后来我也终于离开。</p>
+<p>见的越多，越觉得自己渺小。</p>
+<p>终其一生的劳碌为了什么？未来你又会成为谁呢？</p>
+<p>在秋天，在远方，在空中，在梦中。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/posts/b4ea1707/" data-id="cloizszv90034xww6eiyl3tgn" data-title="在空中" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-blogs/JavaScript下的setTimeout0意味着什么？" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/posts/ba9f9eb8/" class="article-date">
+  <time class="dt-published" datetime="2016-09-07T09:09:00.000Z" itemprop="datePublished">2016-09-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tech/">tech</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/posts/ba9f9eb8/">JavaScript 下的 setTimeout(fn, 0) 意味着什么？</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>近期在研究异步编程的我对于 setTimeout 之类的东西异常敏感。在 SegmentFault 上看到了一个问题《关于SetTimeout时间设为0时》：提问者读了一篇文章，原文解释 setTimeout 延迟时间为 0 时会发生的事情，提问者提出了几个文章中的几个疑点。读了那篇文章之后发现原文的作者对于 setTimeout 的理解和自己的认知有点出入，于是编写了相关测试的代码以求答案。最终编写了这篇文章。</p>
+<blockquote>
+<p><strong>JavaScript - 前端开发交流群：377786580</strong></p>
+</blockquote>
+<h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>上午在SegmentFault上看到了这个问题 《<a target="_blank" rel="noopener" href="http://segmentfault.net/q/1010000002590298">关于SetTimeout 时间设为 0 时</a>》 ，原提问者注明了问题来源：《<a target="_blank" rel="noopener" href="http://blog.csdn.net/lsk_jd/article/details/6080772">JS setTimeout 延迟时间为 0 的详解</a>》。这个问题来源也是转载的，我后来找到了 <a target="_blank" rel="noopener" href="http://www.cnblogs.com/xieex/archive/2008/07/11/1241137.html">出处</a>。</p>
+<p>在问题来源的那篇的文章中（后者），讲述了JS是单线程引擎：它把任务放到队列中，不会同步去执行，必须在完成一个任务后才开始另外一个任务。</p>
+<p>而后，转载的那篇文章列出并补充了原文的栗子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">HTML</span> <span class="keyword">PUBLIC</span> <span class="string">&quot;-//W3C//DTD HTML 4.01//EN&quot;</span> <span class="string">&quot;http://www.w3.org/TR/html4/strict.dtd&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;Content-Type&quot;</span> <span class="attr">content</span>=<span class="string">&quot;text/html; charset=UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>setTimeout<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">function</span> <span class="title function_">get</span>(<span class="params">id</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">return</span> <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(id);</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">window</span>.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="comment">//第一个例子：未使用setTimeout</span></span></span><br><span class="line"><span class="language-javascript">            <span class="title function_">get</span>(<span class="string">&#x27;makeinput&#x27;</span>).<span class="property">onmousedown</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">var</span> input = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;input&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;type&#x27;</span>, <span class="string">&#x27;text&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;value&#x27;</span>, <span class="string">&#x27;test1&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                <span class="title function_">get</span>(<span class="string">&#x27;inpwrapper&#x27;</span>).<span class="title function_">appendChild</span>(input);</span></span><br><span class="line"><span class="language-javascript">                input.<span class="title function_">focus</span>();</span></span><br><span class="line"><span class="language-javascript">                input.<span class="title function_">select</span>();</span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">            <span class="comment">//第二个例子：使用setTimeout</span></span></span><br><span class="line"><span class="language-javascript">            <span class="title function_">get</span>(<span class="string">&#x27;makeinput2&#x27;</span>).<span class="property">onmousedown</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">var</span> input = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;input&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;type&#x27;</span>, <span class="string">&#x27;text&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;value&#x27;</span>, <span class="string">&#x27;test1&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                <span class="title function_">get</span>(<span class="string">&#x27;inpwrapper2&#x27;</span>).<span class="title function_">appendChild</span>(input);</span></span><br><span class="line"><span class="language-javascript">                <span class="comment">//setTimeout</span></span></span><br><span class="line"><span class="language-javascript">                <span class="built_in">setTimeout</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">                    input.<span class="title function_">focus</span>();</span></span><br><span class="line"><span class="language-javascript">                    input.<span class="title function_">select</span>();</span></span><br><span class="line"><span class="language-javascript">                &#125;, <span class="number">0</span>);</span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">            <span class="comment">//第三个例子，onkeypress输入的时候少了一个值</span></span></span><br><span class="line"><span class="language-javascript">            <span class="title function_">get</span>(<span class="string">&#x27;input&#x27;</span>).<span class="property">onkeypress</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="title function_">get</span>(<span class="string">&#x27;preview&#x27;</span>).<span class="property">innerHTML</span> = <span class="variable language_">this</span>.<span class="property">value</span>;</span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span><span class="tag">&lt;<span class="name">code</span>&gt;</span>setTimeout<span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span>1、未使用 <span class="tag">&lt;<span class="name">code</span>&gt;</span>setTimeout<span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;makeinput&quot;</span>&gt;</span>生成 input<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">id</span>=<span class="string">&quot;inpwrapper&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span>2、使用 <span class="tag">&lt;<span class="name">code</span>&gt;</span>setTimeout<span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;makeinput2&quot;</span>&gt;</span>生成 input<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">id</span>=<span class="string">&quot;inpwrapper2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span>3、另一个例子<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">id</span>=<span class="string">&quot;input&quot;</span> <span class="attr">value</span>=<span class="string">&quot;&quot;</span> /&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">&quot;preview&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这是代码实例：</p>
+<iframe width="100%" height="300" src="//jsrun.net/drKKp/embedded/all/light/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<p>原文中有这么一段话，描述的有点抽象：</p>
+<blockquote>
+<p> JavaScript引擎在执行 onmousedown 时，由于没有多线程的同步执行，不可能同时去处理刚创建元素的 focus 和 select 方法，由于这两个方法都不在队列中，在完成 onmousedown 后，JavaScript 引擎已经丢弃了这两个任务，正如第一种情况。而在第二种情况中，由于setTimeout 可以把任务从某个队列中跳脱成为新队列，因而能够得到期望的结果。 </p>
+</blockquote>
+<p>我看到这里就觉得非常不对劲了。因为按照这种任务会被丢弃的说法，那么只要在事件触发的函数中再触发其他的事件都会被丢弃，浏览器是绝对不会这么做的，于是我编写了测试代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">//第一个例子：未使用setTimeout</span></span><br><span class="line">    <span class="title function_">get</span>(<span class="string">&#x27;makeinput&#x27;</span>).<span class="property">onmousedown</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">var</span> input = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;input&#x27;</span>);</span><br><span class="line">        input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;type&#x27;</span>, <span class="string">&#x27;text&#x27;</span>);</span><br><span class="line">        input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;value&#x27;</span>, <span class="string">&#x27;test1&#x27;</span>);</span><br><span class="line">        <span class="title function_">get</span>(<span class="string">&#x27;inpwrapper&#x27;</span>).<span class="title function_">appendChild</span>(input);</span><br><span class="line">        <span class="comment">//按照文中的理论，这里的click不会被触发，但它却成功触发了</span></span><br><span class="line">        <span class="title function_">get</span>(<span class="string">&#x27;inpwrapper&#x27;</span>).<span class="title function_">click</span>();<span class="comment">//触发了inpwrapper的onclick事件</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">get</span>(<span class="string">&#x27;inpwrapper&#x27;</span>).<span class="property">onclick</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="title function_">alert</span>(<span class="string">&#x27;linkFly&#x27;</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面的 onclick() 最终是执行了：弹出了 “linkFly”。</p>
+<p>而在转载的文中为了引人深思，又提出了第三个例子：</p>
+<blockquote>
+<p>在此，你可以看看例子 3，它的任务是实时更新输入的文本，现在请试试，你会发现预览区域总是落后一拍，比如你输 a, 预览区并没有出现 a, 在紧接输入 b 时，a 才不慌不忙地出现。</p>
+</blockquote>
+<p>而文中最后留给大家的思考的问题，解决方案就是使用 setTimeout 再次调整浏览器的代码任务运行队列。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> domInput = <span class="title function_">get</span>(<span class="string">&#x27;input&#x27;</span>);</span><br><span class="line">domInput.<span class="property">onkeypress</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="comment">//第三个例子的问题就这样就会被解决</span></span><br><span class="line">        <span class="title function_">get</span>(<span class="string">&#x27;preview&#x27;</span>).<span class="property">innerHTML</span> = domInput.<span class="property">value</span>;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原文和转载的文章中都对 setTimeout(fn,0) 进行了思考，但原文指出的问题本质漏洞百出，所以才出了这篇文章，我们的正文，现在开始。</p>
+<h2 id="单线程的JavaScript"><a href="#单线程的JavaScript" class="headerlink" title="单线程的JavaScript"></a>单线程的JavaScript</h2><p>首先我们来看浏览器下的 JavaScript：</p>
+<p>浏览器的内核是多线程的，它们在内核制控下相互配合以保持同步，一个浏览器至少实现三个常驻线程：javascript 引擎线程，GUI 渲染线程，浏览器事件触发线程。</p>
+<blockquote>
+<ul>
+<li>javascript 引擎是基于事件驱动单线程执行的，JS 引擎一直等待着任务队列中任务的到来，然后加以处理，浏览器无论什么时候都只有一个JS线程在运行 JS 程序。</li>
+<li>GUI 渲染线程负责渲染浏览器界面，当界面需要重绘 (Repaint) 或由于某种操作引发回流 (reflow) 时,该线程就会执行。但需要注意 GUI 渲染线程与 JS 引擎是互斥的，当 JS 引擎执行时 GUI 线程会被挂起，GUI 更新会被保存在一个队列中等到 JS 引擎空闲时立即被执行。</li>
+<li>事件触发线程，当一个事件被触发时该线程会把事件添加到待处理队列的队尾，等待 JS 引擎的处理。这些事件可来自 JavaScript 引擎当前执行的代码块如 setTimeOut 、也可来自浏览器内核的其他线程如鼠标点击、AJAX 异步请求等，但由于 JS 的单线程关系所有这些事件都得排队等待 JS 引擎处理。（当线程中没有执行任何同步代码的前提下才会执行异步代码）</li>
+</ul>
+</blockquote>
+<p>js的单线程在这一段面试代码中尤为明显（理解即可，请不要尝试…浏览器会假死的）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> isEnd = <span class="literal">true</span>;</span><br><span class="line"><span class="variable language_">window</span>.<span class="built_in">setTimeout</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    isEnd = <span class="literal">false</span>;<span class="comment">//1s后，改变isEnd的值</span></span><br><span class="line">&#125;, <span class="number">1000</span>);</span><br><span class="line"><span class="comment">//这个while永远的占用了js线程，所以setTimeout里面的函数永远不会执行</span></span><br><span class="line"><span class="keyword">while</span> (isEnd);</span><br><span class="line"><span class="comment">//alert也永远不会弹出</span></span><br><span class="line"><span class="title function_">alert</span>(<span class="string">&#x27;end&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<p>在我工作中对 js 的认识，个人认为 js 的任务单位是函数。即，一个函数表示着一个任务，这个函数没有执行结束，则在浏览器中当前的任务即没有结束。</p>
+<p>上面的代码中，当前任务因为 while 的执行而造成永远无法执行，所以后面的 setTimeout 也永远不会被执行。它在浏览器的任务队列中如图所示：</p>
+<p><img src="//static.tasaid.com/blogs/5a35c42e2b2e99c46bc55c54e0208bba.png" alt="Browser Event"></p>
+<h2 id="setTimeout背后意味着什么"><a href="#setTimeout背后意味着什么" class="headerlink" title="setTimeout背后意味着什么"></a>setTimeout背后意味着什么</h2><p>这篇文章一直在使用 setTimeout 为我们展现和理解js单线程的设计，只是它错误的使用了 Event 来进行演示，并过度解读了 Event。<br>这里原文和转载的文章忽略了这些基础的事件触发，而且也偏偏挑了两套本身设计就比较复杂的API：onmouseXXX 系列和 onkeyXXX 系列。</p>
+<p>onKeyXXX 系列的API触发顺序如图：</p>
+<p><img src="//static.tasaid.com/blogs/5557c3e7198b9c0e8b62635fff5a1a61.png" alt="onKeyXXX"></p>
+<p>而我个人所理解它们对应的功能：</p>
+<blockquote>
+<ul>
+<li>onkeydown - 主要获取和处理当前按下按键，例如按下 Enter 后进行提交。在这一层，并没有更新相关 DOM 元素的值。</li>
+<li>onkeypress - 主要获取和处理长按键，因为 onkeypress 在长按键盘的情况下会反复触发直到释放，这里并没有更新相关 DOM 元素的值，值得注意的是：keypress 之后才会更新值，所以在长按键盘反复触发 onkeypress 事件的时候，后一个触发的 onkeypress 能得到上一个onkeypress 的值。所以出现了 onkeypress 每次取值都会是上一次的值而不是最新值。</li>
+<li>onkeyup - 触发 onkeyup 的 DOM 元素的值在这里已经更新，可以拿到最新的值，所以这里主要处理相关 DOM 元素的值。</li>
+</ul>
+</blockquote>
+<p>流程就是上面的图画的那样：</p>
+<blockquote>
+<p>onkeydown &#x3D;&gt;  onkeypress &#x3D;&gt; onkeyup</p>
+</blockquote>
+<p>使用了setTimeout之后，流程应该是下面这样子的：</p>
+<blockquote>
+<p>onkeydown &#x3D;&gt; onkeypress &#x3D;&gt; function &#x3D;&gt; onkeyup</p>
+</blockquote>
+<p>使用 setTimeout(fn,0) 之后，在 onkeypress 后面插入了我们的函数 function。上面所说，浏览器在 onkeypress 之后就会更新相关 DOM 元素的状态 (input[type&#x3D;text] 的 value)，所以我们的 function 里面可以拿到最新的值。</p>
+<p>所以我们在 onkeypress 里面挂起 setTimeout 能拿到正确的值，下面的代码可以测试使用 setTimeout(fn,0) 之后的流程：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> domInput = <span class="title function_">get</span>(<span class="string">&#x27;input&#x27;</span>), view = <span class="title function_">get</span>(<span class="string">&#x27;preview&#x27;</span>);</span><br><span class="line">    <span class="comment">//onkeypress兼容性和说明：http://www.w3school.com.cn/jsref/jsref_events.asp</span></span><br><span class="line">    domInput.<span class="property">onkeypress</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="built_in">setTimeout</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">            <span class="comment">//这个函数在keypress之后，keyup之前执行</span></span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;linkFly&#x27;</span>);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;;</span><br><span class="line">    domInput.<span class="property">onkeyup</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;up&#x27;</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们再来谈谈原代码中的示例 1 和示例 2，示例 1 和示例 2 的区别在这里：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//示例1</span></span><br><span class="line">input.<span class="title function_">focus</span>();</span><br><span class="line">input.<span class="title function_">select</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">//示例2</span></span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    input.<span class="title function_">focus</span>();</span><br><span class="line">    input.<span class="title function_">select</span>();</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<p>原文章中说示例 1 的 focus() 和 select() 在 onmousedown 事件中被丢弃，从而导致了没有选中，但原文的作者忽略了他注册的事件是： onmousedown。</p>
+<p>我们暂且不讨论 onmouseXXX 系的其他 API，我们仅关注和点击相关的，它们的执行顺序是：</p>
+<blockquote>
+<ul>
+<li>mousedown - 鼠标按钮按下</li>
+<li>mouseup - 鼠标按钮释放</li>
+<li>click - 完成单击</li>
+</ul>
+</blockquote>
+<p>我们在 onmousedown 里面新建了 input ，并且选中 input 的值（调用了 input.focus(), input.select()）。<br>那么为什么没有被选中呢？这样，我们来做一次测试，看看我们的 onfocus 到底是被丢弃了，还是触发了。我们把原文的代码进行改写：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> makeBtn = <span class="title function_">get</span>(<span class="string">&#x27;makeinput&#x27;</span>);</span><br><span class="line">    <span class="comment">//观察onmouseXXX系完成整个单击的顺序</span></span><br><span class="line">    makeBtn.<span class="property">onmousedown</span> = <span class="keyword">function</span> (<span class="params">e</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(e.<span class="property">type</span>);</span><br><span class="line">        <span class="keyword">var</span> input = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;input&#x27;</span>);</span><br><span class="line">        input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;type&#x27;</span>, <span class="string">&#x27;text&#x27;</span>);</span><br><span class="line">        input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;value&#x27;</span>, <span class="string">&#x27;test1&#x27;</span>);</span><br><span class="line">        <span class="title function_">get</span>(<span class="string">&#x27;inpwrapper&#x27;</span>).<span class="title function_">appendChild</span>(input);</span><br><span class="line">        input.<span class="property">onfocus</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;<span class="comment">//观察我们新生成的input什么时候获取焦点的，或者它有没有像原文作者说的那样被丢弃了</span></span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">info</span>(<span class="string">&#x27;input focus&#x27;</span>);</span><br><span class="line">        &#125;;</span><br><span class="line">        input.<span class="title function_">focus</span>();</span><br><span class="line">        input.<span class="title function_">select</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    makeBtn.<span class="property">onclick</span> = <span class="keyword">function</span> (<span class="params">e</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(e.<span class="property">type</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">    makeBtn.<span class="property">onmouseup</span> = <span class="keyword">function</span> (<span class="params">e</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(e.<span class="property">type</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">    makeBtn.<span class="property">onfocus</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;<span class="comment">//观察我们生成按钮什么时候获取焦点的</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;makeBtn focus&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>代码运行的结果是这样的：<br><img src="//static.tasaid.com/blogs/2d470b0a4239a7da491bd9ab9bb68fe5.png" alt="onmouseXXX &amp; focus"></p>
+<p>我们的 input focus 执行了——那么它为什么没有获取到焦点呢？我们再看看后面执行的函数：我们点击的按钮，在 mousedown 之后，才获得焦点，也就是说：我们的 input 本来已经得到了 focus()，但在 onmousedown 之后，我们点击的按钮才迟迟触发了自己的 onfocus()，导致我们的 input 被覆盖。<br>我们再加上 setTimeout 进行测试：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> makeBtn = <span class="title function_">get</span>(<span class="string">&#x27;makeinput&#x27;</span>);</span><br><span class="line">    makeBtn.<span class="property">onmousedown</span> = <span class="keyword">function</span> (<span class="params">e</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(e.<span class="property">type</span>);</span><br><span class="line">        <span class="keyword">var</span> input = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;input&#x27;</span>);</span><br><span class="line">        input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;type&#x27;</span>, <span class="string">&#x27;text&#x27;</span>);</span><br><span class="line">        input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;value&#x27;</span>, <span class="string">&#x27;test1&#x27;</span>);</span><br><span class="line">        <span class="title function_">get</span>(<span class="string">&#x27;inpwrapper&#x27;</span>).<span class="title function_">appendChild</span>(input);</span><br><span class="line">        input.<span class="property">onfocus</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">info</span>(<span class="string">&#x27;input focus&#x27;</span>);</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">//我们加上setTimeout，看看会发生什么</span></span><br><span class="line">        <span class="built_in">setTimeout</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">            input.<span class="title function_">focus</span>();</span><br><span class="line">            input.<span class="title function_">select</span>();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    makeBtn.<span class="property">onclick</span> = <span class="keyword">function</span> (<span class="params">e</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(e.<span class="property">type</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">    makeBtn.<span class="property">onmouseup</span> = <span class="keyword">function</span> (<span class="params">e</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(e.<span class="property">type</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">    makeBtn.<span class="property">onfocus</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;makeBtn focus&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>执行结果是这样：<br><img src="//static.tasaid.com/blogs/8a126fe4c8ca10319f20f31aa6a21f4b.png" alt="onmouseXXX and settimeout"></p>
+<p>可以看见当我们点击 “生成” 按钮的时候，按钮的 focus 正确的执行了，然后才执行了 input focus。<br>在示例 1 中，我们在 onmousedown() 中执行了 input.focus() 导致 input 得到焦点，而 onmousedown 之后，我们点击的按钮才迟迟得到了自己的焦点，造成了我们 input 刚拿到手还没焐热的焦点被转移。</p>
+<p>而示例 2 中的代码，我们延迟了焦点，当按钮获得焦点之后，我们的 input 再把焦点抢过来，所以，使用 setTimeout(fn,0) 之后，我们的 input 可以得到焦点并选中文本。<br>这里值得思考的 focus() 的执行时机，根据这次测试观察，发现 focus 事件好像挂载在 mousedown 之内的最后面，而不是直接挂在 mousedown 的后面。它和 mousedown 仿佛是一体的。<br>我们使用 setTimeout 之前的任务流程是这样的（-&gt;表示在上一个任务中，&#x3D;&gt;表示在上一个任务后）：</p>
+<blockquote>
+<p>onmousedown -&gt; onmousedown中执行了input.focus() -&gt; button.onfocus &#x3D;&gt; onmouseup &#x3D;&gt; onclick</p>
+</blockquote>
+<p><img src="//static.tasaid.com/blogs/6ba3d8bb53b4e99d98b71c4b32221ece.png" alt="onmouseXXX事件流程"></p>
+<p>而我们使用了 setTimeout 之后的任务流程是这样的：</p>
+<blockquote>
+<p>onmousedown -&gt; button.onfocus &#x3D;&gt; input.focus &#x3D;&gt; onmouseup &#x3D;&gt; onclick</p>
+</blockquote>
+<p><img src="//static.tasaid.com/blogs/fac72a4cc4eaa7752123906a09959db9.png" alt="onmouseXXX+setTimeout事件流程"></p>
+<p>而从上面的流程上我们得知了另外的消息，我们还可以把 input.focus 挂在 mouseup 和 click 下，因为在这些事件之前，我们的按钮已经得到过焦点了，不会再抢我们的焦点了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">makeBtn.<span class="property">click</span> = <span class="keyword">function</span> (<span class="params">e</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(e.<span class="property">type</span>);</span><br><span class="line">    <span class="keyword">var</span> input = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;input&#x27;</span>);</span><br><span class="line">    input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;type&#x27;</span>, <span class="string">&#x27;text&#x27;</span>);</span><br><span class="line">    input.<span class="title function_">setAttribute</span>(<span class="string">&#x27;value&#x27;</span>, <span class="string">&#x27;test1&#x27;</span>);</span><br><span class="line">    <span class="title function_">get</span>(<span class="string">&#x27;inpwrapper&#x27;</span>).<span class="title function_">appendChild</span>(input);</span><br><span class="line">    input.<span class="property">onfocus</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;<span class="comment">//观察我们新生成的input什么时候获取焦点的</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">info</span>(<span class="string">&#x27;input focus&#x27;</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">    input.<span class="title function_">focus</span>();</span><br><span class="line">    input.<span class="title function_">select</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们应该认识到，利用 setTimeout(fn,0) 的特性，可以帮助我们在某些极端场景下，修正浏览器的下一个任务。</p>
+<p>到了这里，我们已经可以否定原文所说的： “JavaScript引擎已经丢弃了这两个任务”。</p>
+<p>我仍然相信，浏览器是爱我们的（除了 IE6 和移动端一些 XXOO 的浏览器！！！！）浏览器并不会平白无故的丢弃我们辛劳写下的代码，多数时候，只是因为我们没有看见背后的真相而已。</p>
+<p>当我们踏进计算机的世界写下 “hello world” 的时候就应该坚信，这个二进制的世界里，永远存在真相。</p>
+<h2 id="参考和引用"><a href="#参考和引用" class="headerlink" title="参考和引用"></a>参考和引用</h2><ul>
+<li><a target="_blank" rel="noopener" href="http://www.cnblogs.com/zhaodongyu/p/3922961.html">JavaScript异步机制</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2013/10/event_loop://www.cnblogs.com/zhaodongyu/p/3922961.html">什么是 Event Loop</a></li>
+<li><a target="_blank" rel="noopener" href="http://blog.csdn.net/kongls08/article/details/6996518">javascript线程解释</a></li>
+</ul>
+<blockquote>
+<p><strong>JavaScript - 前端开发交流群：377786580</strong></p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/posts/ba9f9eb8/" data-id="cloizszut0001xww6g0y1dzk1" data-title="JavaScript 下的 setTimeout(fn, 0) 意味着什么？" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-blogs/JavaScript-如果-没有方法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/posts/8b08fc90/" class="article-date">
+  <time class="dt-published" datetime="2016-09-07T08:27:00.000Z" itemprop="datePublished">2016-09-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tech/">tech</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/posts/8b08fc90/">JavaScript - 如果...没有方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>这篇文章源于我上一周所读的一篇 12 年的文章。原作者提出了一个问题，如果 js 没有原生方法 Math.round() ，我们如何去实现呢？<br>对此我和我的基友进行了小小探讨，并给出了一些有意思的答案。</p>
+<blockquote>
+<p>JavaScript - 前端开发交流群：377786580</p>
+</blockquote>
+<h2 id="如果…没有方法"><a href="#如果…没有方法" class="headerlink" title="如果…没有方法"></a>如果…没有方法</h2><p>这篇文章源于上周所读的一篇2012年的文章（为了强行塞点文章篇幅，所以把该文链接放到最后的引用了…希望原作者和读者体谅下….）。</p>
+<p>原作者在使用了 <code>Math.round()</code> 方法之后，突然产生了一个小念头。</p>
+<blockquote>
+<p> 如果，js 没有 <code>Math.round()</code> 方法，我们又该如何去实现呢？</p>
+</blockquote>
+<p>为此展开了一些探讨。我知道发表这么一篇文章肯定小有争议，但仍需要注明的是这篇文章仅供娱乐，或者说——玩玩代码，不会太在意性能、健壮、逻辑严谨性等 XXOO 的东西。</p>
+<p><code>Math.round()</code> 就是传说中的四舍五入啦…</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Math</span>.<span class="title function_">round</span>(<span class="number">12.1</span>);<span class="comment">//12</span></span><br><span class="line"><span class="title class_">Math</span>.<span class="title function_">round</span>(<span class="number">12.8</span>);<span class="comment">//13</span></span><br><span class="line"><span class="title class_">Math</span>.<span class="title function_">round</span>(-<span class="number">12.1</span>);<span class="comment">//-12</span></span><br><span class="line"><span class="title class_">Math</span>.<span class="title function_">round</span>(-<span class="number">12.8</span>);<span class="comment">//-13</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="开拓思路"><a href="#开拓思路" class="headerlink" title="开拓思路"></a>开拓思路</h2><p>原作者提供了这么些思路：</p>
+<blockquote>
+<p>例如数字 <code>6.2</code> ，先把 <code>6.2</code> 转换为字符串，然后通过 <code>String.prototype.split()</code> 方法来分割字符串，判定字符串索引为 1 的值是否大于 5 ，再处理索引为 0 的值，代码如下：</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//num===6.2</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">round</span>(<span class="params">num</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> nums = <span class="title class_">String</span>(num).<span class="title function_">split</span>(<span class="string">&quot;.&quot;</span>),<span class="comment">//[6,2]</span></span><br><span class="line">        num0 = nums[<span class="number">0</span>],<span class="comment">//6</span></span><br><span class="line">        num1 = nums[<span class="number">1</span>];<span class="comment">//2</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">parseInt</span>(num1.<span class="title function_">substring</span>(<span class="number">0</span>, <span class="number">1</span>)) &lt; <span class="number">5</span>) &#123; <span class="comment">//2&lt;5</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">parseInt</span>(num0);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (num0 &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">parseInt</span>(num0) + <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;<span class="comment">//负数</span></span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">parseInt</span>(num0) - <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>原作者并不满意上面的解决方案，提出了如果连js原生方法都不使用呢？什么 <code>String()</code> 、 <code>parseInt()</code> 都不使用该怎么去做呢？<br>于是提出了第二种解决方案：</p>
+<blockquote>
+<p>这个问题的关键在于判定小数点后的数字是否大于 5 ，所以我们把传递进来的数字 <code>6.2*10%10</code> 即可得到小数点后的数字，这时候再判定这个小数是否大于 5 即可。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//num===6.2</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">round</span>(<span class="params">num</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> round_x = (((<span class="number">10</span> * num) % <span class="number">10</span>) &gt; <span class="number">0</span>) ?</span><br><span class="line">        ((<span class="number">10</span> * num) % <span class="number">10</span>) : <span class="comment">//正数</span></span><br><span class="line">        -((<span class="number">10</span> * num) % <span class="number">10</span>);<span class="comment">//负数</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (round_x &lt; <span class="number">5</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> num - (num % <span class="number">1</span>);<span class="comment">//把小数点后的的数字干掉</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> (num &gt; <span class="number">0</span> ?</span><br><span class="line">            (num - (num % <span class="number">1</span>) + <span class="number">1</span>) : <span class="comment">//正数</span></span><br><span class="line">            num - (num % <span class="number">1</span>) - <span class="number">1</span>); <span class="comment">//负数</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原文只讲述到这里，后来我跟基友聊到了这篇文章，我的基友给出了另外一点思路：</p>
+<blockquote>
+<p>因为是四舍五入原理，所以给当前的数字 +0.5，得到的值直接丢弃小数点后面的部分转换为整数（类似 parseInt ），原来的数字也转换为整数丢弃小数点后面的部分，这两个数如果相差 &lt;1，表示取原来数字的整数，否则取新数字的整数。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">round</span>(<span class="params">num</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> value = num &gt; <span class="number">0</span> ?</span><br><span class="line">        num + <span class="number">0.5</span> :     <span class="comment">//正数</span></span><br><span class="line">        -(num - <span class="number">0.5</span>);   <span class="comment">//负数</span></span><br><span class="line">    value = value - value % <span class="number">1</span>;<span class="comment">//得到新数的整数部分</span></span><br><span class="line">    <span class="comment">//如果相差&lt;1</span></span><br><span class="line">    <span class="keyword">return</span> value - num &lt; <span class="number">1</span> ?</span><br><span class="line">            num - num % <span class="number">1</span> :</span><br><span class="line">            value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>至此，稍微正常点的解决方案介绍完毕，下面我们来感受下什么叫做玩代码。</p>
+<h2 id="脑洞大开"><a href="#脑洞大开" class="headerlink" title="脑洞大开"></a>脑洞大开</h2><p>听到基友的思路我表示非常赞非常好人民需要你代码需要你下一个图灵目测就是你了小伙子要不要买本 《颈椎病康复指南》 看看决定如何拯救世界？</p>
+<p>然后给他感受了一下这个世界森森的恶意——也就是原文评论里的代码。</p>
+<p>下面是欣赏代码时间，分析代码之类的肯定要放在后面。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//@Gray Zhang的&quot;给跪版&quot;，不支持负数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">round</span>(<span class="params">x</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> ~~(x + <span class="number">0.5</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//@Gray Zhang的&quot;给跪加深版&quot;，支持正负数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">round</span>(<span class="params">x</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> ~~(x &gt; <span class="number">0</span> ? (x + <span class="number">0.5</span>) : (x - <span class="number">0.5</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//@强子~Developer的&quot;请收下我的膝盖版&quot;</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">round</span>(<span class="params">x</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> (x &gt; <span class="number">0</span> ? x + <span class="number">0.5</span> : x - <span class="number">0.5</span>) | <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看到这些代码当时我就给跪了，突然有种回家找家影楼给别人撒撒花，扬扬裙摆，送送快递的想法。好吧，我承认我的位运算就是个渣。</p>
+<p>当然，你以为我们的思考仅限于此？no no no，我们觉得用这些什么 <code>if</code> 、 <code>else</code> 、 <code>三目运算符</code> 实在太 low ，于是我和基友想： 如果连这些运算符都给干掉呢？只通过位运算来实现。<br>在各种恶补位运算的知识下，我的基友提出了另外一种解决方案：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">round</span>(<span class="params">x</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> ~~(x + <span class="number">0.5</span> + (x &gt;&gt; <span class="number">30</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="简单的分析"><a href="#简单的分析" class="headerlink" title="简单的分析"></a>简单的分析</h2><p>觉得上面的代码逼格十足？那么让我们”粗略”的分析一下吧（详细计算、补码之类的知识请拉到参考引用）。<br>这些代码都运用了位运算——我们重点关照下 <code>~(按位取反运算)</code> 和 <code>&gt;&gt;(有符号右偏移运算)</code> 。</p>
+<p>首先，偷点基础资料来：</p>
+<h3 id="重温整数"><a href="#重温整数" class="headerlink" title="重温整数"></a>重温整数</h3><blockquote>
+<p>ECMAScript 整数有两种类型，即有符号整数（允许用正数和负数）和无符号整数（只允许用正数）。在 ECMAScript 中，所有整数字面量默认都是有符号整数。<br>有符号整数使用 31 位表示整数的数值，用第 32 位表示整数的符号，0 表示正数，1 表示负数。数值范围从 -2147483648 到 2147483647。见下图：</p>
+</blockquote>
+<p><img src="//static.tasaid.com/blogs/67e00279e9e80ff460ba27a88431ee2c.gif" alt="js_integer_binary_signed_32bits"></p>
+<p>js中 <code>toString()</code> 方法可以 to 出二进制，而 <code>parsetInt()</code> 方法的第二个参数可以指定转换进制：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(<span class="number">18</span>).<span class="title function_">toString</span>(<span class="number">2</span>) <span class="comment">//&quot;10010&quot;</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="number">10010</span>,<span class="number">2</span>) <span class="comment">//18</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="的运算过程"><a href="#的运算过程" class="headerlink" title="~的运算过程"></a>~的运算过程</h3><p><code>~</code> 就是按位取反，类似： <code>00111</code> ，取反则为 <code>11000</code> 。<br>取反会干掉小数，<code>~</code> 运算符的运算过程可以戳 <a target="_blank" rel="noopener" href="http://bclary.com/2004/11/07/#a-9.5">这里</a>，我们看到调用了 <code>ToInt32()</code> ：</p>
+<p><img src="//static.tasaid.com/blogs/4c2a54849d0e44d242487020c8d2de33.png" alt="ToInt32"></p>
+<p>根据上面所解释的 <code>~</code> 运算符，所以我们可以这么来实现小数转整数：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">~~<span class="number">18.5</span>          <span class="comment">//18 - 等同于parseInt(18)</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="number">18.5</span>)  <span class="comment">//18</span></span><br></pre></td></tr></table></figure>
+
+<p><code>~~</code> 是按位取反再取反，本质上就是一个干掉小数的过程。</p>
+<h3 id="有符号右移运算符"><a href="#有符号右移运算符" class="headerlink" title="&gt;&gt;有符号右移运算符"></a>&gt;&gt;有符号右移运算符</h3><p><code>&gt;&gt;</code> 是有符号右移运算符由两个大于号表示（&gt;&gt;）。它把 32 位数字中的所有数位整体右移，同时保留该数的符号（正号或负号）。有符号右移运算符恰好与左移运算相反。</p>
+<p>我们来解析一下这段代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-<span class="number">2</span>&gt;&gt;<span class="number">30</span> <span class="comment">// -1 （感谢群里的@Superior和@Jeff Xiao提供）</span></span><br></pre></td></tr></table></figure>
+<p>过程如下：</p>
+<blockquote>
+<ul>
+<li>1 0000000000000000000000000000010 &#x2F;&#x2F;-2二进制</li>
+<li>1 1111111111111111111111111111110 &#x2F;&#x2F;-2进行补码</li>
+<li>1 1111111111111111111111111111111 &#x2F;&#x2F;向右移动30，高位以符号位（第32位）补全</li>
+<li>1 0000000000000000000000000000001 &#x2F;&#x2F;因为符号位为符号，所以是负数，则补码形式存储，还原为-1</li>
+</ul>
+</blockquote>
+<p>&nbsp;&nbsp;</p>
+<p>我们再来看看我的基佬提供的代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~~(x + <span class="number">0.5</span> + (x &gt;&gt; <span class="number">30</span>))</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ul>
+<li>假设X是-12.5</li>
+<li>首先，-12.5+0.5&#x3D;&#x3D;&#x3D;-12</li>
+<li>-12.5&#62;&#62;30：上面我们说过，ECMAScript有符号整数使用<code>31</code>位表示整数的数值，所以在ECMAScript中，任何一个数右移30位得到的结果只能是2种：正数得到0，负数得到-1。</li>
+<li>-12-1&#x3D;&#x3D;&#x3D;-13</li>
+</ul>
+</blockquote>
+<p>由此完成了我们的运算，不得不说这个 <code>+0.5</code> 和 <code>&gt;&gt;30</code> 很是精髓（虽然我基佬也是查了半天资料才搞出来 &#x3D; &#x3D;）。</p>
+<p>再次声明，这篇文章和代码，纯属娱乐。对于上面看的迷迷糊糊，位运算之类的东西还搞不明白的童鞋可以看看下面的参考。</p>
+<p>代码总是很有意思的，没事玩玩代码放松一下自己也是好的，顺便还可以涨姿势，何乐而不为呢？顺便说一下，我和基佬商量着以后要是当了面试官就准备这个问题问一下别人 —— 当然，只是娱乐娱乐。再次感谢群里的 &#64;Superior 和 &#64;Jeff Xiao 为我细心的讲解。</p>
+<p>最后，向原文和前辈致敬：<a target="_blank" rel="noopener" href="http://www.cnblogs.com/xiao-yao/archive/2012/09/11/2680424.html">《JS，如果没有方法。。。（不借助任何JS方法实现round方法）》</a>。</p>
+<blockquote>
+<p>JavaScript - 前端开发交流群：377786580</p>
+</blockquote>
+<h2 id="参考和引用"><a href="#参考和引用" class="headerlink" title="参考和引用"></a>参考和引用</h2><ul>
+<li><a target="_blank" rel="noopener" href="http://www.cnblogs.com/xiao-yao/archive/2012/09/11/2680424.html">JS，如果没有方法。。。（不借助任何JS方法实现round方法）</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.w3school.com.cn/js/pro_js_operators_bitwise.asp">ECMAScript 位运算符</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.creatshare.com/learning-much-javascript-one-line-code.html">【译】从一行代码来学习JavaScript</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.cnblogs.com/lonny/p/4282055.html#3127616">javascript 中 !~ 什么意思</a></li>
+<li><a target="_blank" rel="noopener" href="http://blog.csdn.net/zhongjling/article/details/8004103">按位与（&amp;）按位或（|）按位异或（^）按位取反（~）左移（&lt;&lt;）右移(&gt;&gt;) </a></li>
+<li><a target="_blank" rel="noopener" href="http://www.cnblogs.com/kkun/archive/2012/01/30/2332309.html">Javascript小技巧,去掉小数位并且不会四舍五入</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.cnblogs.com/acheng99/archive/2009/09/02/1559037.html">补码与求补运算(最基本也最容易忽略的东西)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/parseInt">MDN - parseInt</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/posts/8b08fc90/" data-id="cloizszur0000xww6fa3ohzjc" data-title="JavaScript - 如果...没有方法" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-blogs/Said-转载授权说明" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/posts/d4ff5612/" class="article-date">
+  <time class="dt-published" datetime="2016-09-06T15:13:00.000Z" itemprop="datePublished">2016-09-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tech/">tech</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/posts/d4ff5612/">Said 转载授权说明</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>引流转载无需联系作者</p>
+<p>全文转载需要联系作者授权</p>
+<p>已授权的网站无需联系作者即可按照作者的授权转载</p>
+<p>一句话简述转载的要求：</p>
+<blockquote>
+<p>本站内容，引流转载无需联系作者，全文转载需要联系作者授权，已授权的网站无需联系作者即可按照作者的授权转载。</p>
+</blockquote>
+<h2 id="为什么要设定授权"><a href="#为什么要设定授权" class="headerlink" title="为什么要设定授权"></a>为什么要设定授权</h2><p>这篇文章描述了 Said 中所有文章的授权规则，初衷有2：</p>
+<ol>
+<li>在互联网上，尤其是技术系文章，经常会被一些网站删除原作者信息进行转载，创作这些文章很耗费精力，要好的时机触发灵感，还需要花时间去了解规划，然后在工作之余挤出时间来编写。</li>
+<li>这些删除原作者信息进行转载的网站广告漫天飞，严重影响阅读体验，而且搜索引擎收录太多，一搜相关的文章，搜索结果里全都是同样的转载的内容。</li>
+</ol>
+<h2 id="联系方式"><a href="#联系方式" class="headerlink" title="联系方式"></a>联系方式</h2><ul>
+<li>email : <a href="mailto:&#x6c;&#x69;&#110;&#107;&#x46;&#x6c;&#x79;&#54;&#x40;&#x6c;&#x69;&#118;&#101;&#46;&#99;&#111;&#x6d;">&#x6c;&#x69;&#110;&#107;&#x46;&#x6c;&#x79;&#54;&#x40;&#x6c;&#x69;&#118;&#101;&#46;&#99;&#111;&#x6d;</a></li>
+<li>github :  <a target="_blank" rel="noopener" href="https://github.com/linkFly6">https://github.com/linkFly6</a></li>
+<li>segmentfault : <a target="_blank" rel="noopener" href="https://segmentfault.com/u/linkfly">linkFly</a></li>
+</ul>
+<h2 id="转载授权"><a href="#转载授权" class="headerlink" title="转载授权"></a>转载授权</h2><p>本站所有未注明特殊授权规则，或协议的文章或内容，都按照如下规则进行：</p>
+<ul>
+<li><p>引流转载，无需联系作者<br>引流转载是指：</p>
+<blockquote>
+<p>显示一段摘要&#x2F;点评，然后通过标题或者醒目的“阅读全文”链接直接指向原文地址，即为引流转载，典型的网站如 <a target="_blank" rel="noopener" href="http://gold.xitu.io/?form=said">掘金</a>：  </p>
+</blockquote>
+<p>  <img src="//static.tasaid.com/blogs/9b1c41deff68f4507729857a05a643de.png" alt="掘金"></p>
+</li>
+<li><p>全文转载必须联系作者授权：在你的网站或其他场合，转载内容的全部，或半数以上内容，都必须联系作者授权。</p>
+</li>
+<li><p>已授权的网站 <strong>无需联系作者</strong> 即可按照作者的授权转载：已授权的网站作者会告知授权范围，例如授权自由转载 Blog、授权自由转载 Said、允许自由转载本站所有内容。</p>
+</li>
+</ul>
+<h2 id="当前已授权网站"><a href="#当前已授权网站" class="headerlink" title="当前已授权网站"></a>当前已授权网站</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/u/linkfly">segmentfault</a> - 允许自由转载所有 blog</li>
+</ul>
+<p><strong>强烈谴责和禁止 CSDN 用户转载我的任何内容！</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/posts/d4ff5612/" data-id="cloizszux000bxww6dlmudk6f" data-title="Said 转载授权说明" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Said/" rel="tag">Said</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="blog-blogs/Said-更新日志" class="h-entry article article-type-blog" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/posts/undefined/" class="article-date">
+  <time class="dt-published" datetime="2016-09-06T14:22:00.000Z" itemprop="datePublished">2016-09-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tech/">tech</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/posts/undefined/">Said 更新日志</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>这篇博客用于记录Said重要的更新日志</p>
+</blockquote>
+<h2 id="2018-08-23-v2-1"><a href="#2018-08-23-v2-1" class="headerlink" title="2018-08-23 v2.1"></a>2018-08-23 v2.1</h2><p>随着工作和家庭渐忙，业余开发时间越来越来少，said 经过半年零散的时间开发，终于彻底完善了。截止目前已经把 said 所有的模块开发完毕，后续应该很少会再开发新功能，主要是优化和 bug fix 了。</p>
+<ul>
+<li>评论模块开发完成，现在可以畅所欲言在文章底部进行技术讨论了</li>
+<li>新增了关于页</li>
+<li>少量优化和 bug fix</li>
+</ul>
+<h2 id="2018-03-06-v2-0"><a href="#2018-03-06-v2-0" class="headerlink" title="2018-03-06 - v2.0"></a>2018-03-06 - v2.0</h2><p>said 经历三个月时间重写上线，目前功能尚未完全迁移完毕。</p>
+<ul>
+<li><p>服务层重构</p>
+<ul>
+<li>使用 <code>nodejs</code> 作为服务层</li>
+<li>使用 <code>mongodb</code> 存储数据</li>
+</ul>
+</li>
+<li><p>后台 </p>
+<ul>
+<li>使用 <code>react</code> + <code>tsx</code> 编写后台</li>
+<li>使用 <code>antd</code> 作为后台 UI 框架</li>
+<li>使用 <code>codemirror</code> 作为编辑器</li>
+</ul>
+</li>
+<li><p>使用 <code>typescript</code></p>
+</li>
+<li><p>使用 <code>stylus</code></p>
+</li>
+<li><p>使用 <code>greenlock-express</code> 自动续订 HTTPS</p>
+</li>
+<li><p>应用层和静态资源分离</p>
+<blockquote>
+<p>said 现在自身不存储任何静态资源，所有的静态资源都存储在七牛云存储服务上</p>
+</blockquote>
+</li>
+<li><p>启用 HTTP&#x2F;2</p>
+</li>
+</ul>
+<p>本次重构更多请参考 《<a target="_blank" rel="noopener" href="//tasaid.com/blog/2018030802104378.html">Said 2.0 的一些开发经验</a>》</p>
+<blockquote>
+<p>下面都是 said 1.x 开发，1.x 使用的 c# 开发</p>
+</blockquote>
+<h2 id="2017-03-09-v1-02"><a href="#2017-03-09-v1-02" class="headerlink" title="2017-03-09 - v1.02"></a>2017-03-09 - v1.02</h2><ul>
+<li><p>加入友盟第三方统计</p>
+</li>
+<li><p>回复和评论加入 Email 通知</p>
+</li>
+<li><p>优化</p>
+<ul>
+<li>log 加入 traceId</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/linkFly6/Said/issues/12">DbContext 底层重写，在 v1.0 中提交</a></li>
+<li>大幅度优化 Said 性能，加入 Cache</li>
+</ul>
+</li>
+</ul>
+<h2 id="2016-09-28-迁移机房"><a href="#2016-09-28-迁移机房" class="headerlink" title="2016-09-28 - 迁移机房"></a>2016-09-28 - 迁移机房</h2><ul>
+<li>Said 从香港机房迁移到了青岛机房，备案了 20 多天</li>
+<li>部署了 HTTPS</li>
+</ul>
+<h2 id="2016-09-06-加入-Blog-模块"><a href="#2016-09-06-加入-Blog-模块" class="headerlink" title="2016-09-06 - 加入 Blog 模块"></a>2016-09-06 - 加入 Blog 模块</h2><p>新增 <a target="_blank" rel="noopener" href="http://tasaid.com/Blog">Blog</a> 模块，技术心得分享</p>
+<h2 id="2016-02-04-发布"><a href="#2016-02-04-发布" class="headerlink" title="2016-02-04 - 发布"></a>2016-02-04 - 发布</h2><p>Said 发布上线，有如下功能：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://tasaid.com/">首页</a></li>
+<li><a target="_blank" rel="noopener" href="http://tasaid.com/said">听说</a> - 杂想和音乐</li>
+<li><a target="_blank" rel="noopener" href="http://tasaid.com/about">关于</a> - 关于我和我的作品</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/posts/undefined/" data-id="cloizszux000axww6b9qt40cb" data-title="Said 更新日志" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Said/" rel="tag">Said</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/article/">article</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/" rel="tag">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Said/" rel="tag">Said</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTPS/" style="font-size: 12.5px;">HTTPS</a> <a href="/tags/JavaScript/" style="font-size: 17.5px;">JavaScript</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/Said/" style="font-size: 15px;">Said</a> <a href="/tags/TypeScript/" style="font-size: 20px;">TypeScript</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/posts/cfe1281/">一段职业生涯的总结</a>
+          </li>
+        
+          <li>
+            <a href="/posts/8127ee4b/">一段旅程</a>
+          </li>
+        
+          <li>
+            <a href="/posts/29a0bec0/">折旧</a>
+          </li>
+        
+          <li>
+            <a href="/posts/75b36508/">一无所知</a>
+          </li>
+        
+          <li>
+            <a href="/posts/688d139e/">TypeScript 中的多种 import 解义</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>从 HTTP 到 HTTPS - 网站部署 HTTPS 中需要做的事情 | 听说 - 世界很大，风住过这里</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="这篇文章是基于我在迁移 https:&#x2F;&#x2F;tasaid.com 的时候，和在公司跟进部署 HTTPS 的一些经验所编写。 这篇文章收录在《Said - 从 HTTP 到 HTTPS 》系列：  从 HTTP 到 HTTPS - 什么是 HTTPS 从 HTTP 到 HTTPS - IIS 部署免费 HTTPS  从 HTTP 到 HTTPS - 网站部署 HTTPS 中需要做的事情  部署到 HTT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 HTTP 到 HTTPS - 网站部署 HTTPS 中需要做的事情">
+<meta property="og:url" content="http://example.com/posts/e4cbea3f/index.html">
+<meta property="og:site_name" content="听说 - 世界很大，风住过这里">
+<meta property="og:description" content="这篇文章是基于我在迁移 https:&#x2F;&#x2F;tasaid.com 的时候，和在公司跟进部署 HTTPS 的一些经验所编写。 这篇文章收录在《Said - 从 HTTP 到 HTTPS 》系列：  从 HTTP 到 HTTPS - 什么是 HTTPS 从 HTTP 到 HTTPS - IIS 部署免费 HTTPS  从 HTTP 到 HTTPS - 网站部署 HTTPS 中需要做的事情  部署到 HTT">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://static.tasaid.com/blogs/f0687df23eff6415284680c06dfec76f.png">
+<meta property="og:image" content="http://static.tasaid.com/blogs/7b3c80c0f6b690087ffd960e555736cc.jpeg">
+<meta property="article:published_time" content="2016-10-05T20:51:00.000Z">
+<meta property="article:modified_time" content="2018-03-08T03:47:22.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="HTTPS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://static.tasaid.com/blogs/f0687df23eff6415284680c06dfec76f.png">
+  
+    <link rel="alternate" href="/atom.xml" title="听说 - 世界很大，风住过这里" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">听说 - 世界很大，风住过这里</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-blogs/从HTTP到HTTPS-网站部署HTTPS中需要做的事情" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/posts/e4cbea3f/" class="article-date">
+  <time class="dt-published" datetime="2016-10-05T20:51:00.000Z" itemprop="datePublished">2016-10-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tech/">tech</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      从 HTTP 到 HTTPS - 网站部署 HTTPS 中需要做的事情
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>这篇文章是基于我在迁移 <a target="_blank" rel="noopener" href="https://tasaid.com/">https://tasaid.com</a> 的时候，和在公司跟进部署 HTTPS 的一些经验所编写。</p>
+<p>这篇文章收录在《Said - 从 HTTP 到 HTTPS 》系列：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://tasaid.com/Blog/20161003001126.html?sgs=blog20161006045104">从 HTTP 到 HTTPS - 什么是 HTTPS</a></li>
+<li><a target="_blank" rel="noopener" href="https://tasaid.com/Blog/20161005024923.html?sgs=blog20161006045104">从 HTTP 到 HTTPS - IIS 部署免费 HTTPS</a> </li>
+<li>从 HTTP 到 HTTPS - 网站部署 HTTPS 中需要做的事情</li>
+</ul>
+<h2 id="部署到-HTTPS-会发生什么"><a href="#部署到-HTTPS-会发生什么" class="headerlink" title="部署到 HTTPS 会发生什么"></a>部署到 HTTPS 会发生什么</h2><p>HTTP 协议和 HTTPS 协议是不兼容的，即 HTTPS 和 HTTP 是不可互相访问的 (混合资源)，当 HTTPS 页面中包含 HTTP 内容的时候，浏览器会向用户抛出警告，这个网页是加密的，但是却包含不安全的元素，即混合资源 (Mixed Content)。</p>
+<p><img src="//static.tasaid.com/blogs/f0687df23eff6415284680c06dfec76f.png" alt="混合资源"></p>
+<p>随着 chrome 的 <a target="_blank" rel="noopener" href="https://sites.google.com/a/chromium.org/dev/Home/chromium-security/deprecating-powerful-features-on-insecure-origins">安全计划</a>，今后以下的 API 只能在 <a target="_blank" rel="noopener" href="https://w3c.github.io/webappsec-secure-contexts/">安全环境</a> 中使用：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Geolocation/Using_geolocation">Geolocation</a> - 获取用户地理位置</li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Detecting_device_orientation">Devicemotion &#x2F; orientation</a> - 设备方向和运动信息</li>
+<li><a target="_blank" rel="noopener" href="https://www.w3.org/TR/encrypted-media/">Encrypted Media Extensions&#x2F;EME</a> - 加密媒体扩展</li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/MediaDevices/getUserMedia">getUserMedia</a> - 采集摄像头&#x2F;音频&#x2F;屏幕信息</li>
+</ul>
+<p>实测中，当前获取用户地理位置 API <code>navigator.geolocation.getCurrentPosition</code> 已经只能在安全环境 (可以理解为 HTTPS 环境)中使用，在chrome下，非安全环境使用该 API 会显示警告：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getCurrentPosition() and watchPosition() no longer work on insecure origins. To use this feature, you should consider switching your application to a secure origin, such as HTTPS. See https://goo.gl/rStTGz for more details.</span><br></pre></td></tr></table></figure>
+
+<h2 id="做哪些事"><a href="#做哪些事" class="headerlink" title="做哪些事"></a>做哪些事</h2><h3 id="自适应协议资源路径"><a href="#自适应协议资源路径" class="headerlink" title="自适应协议资源路径"></a>自适应协议资源路径</h3><p>传统的资源路径会一般会写成绝对路径和相对路径：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;/static/bar.jpg&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://tasaid.com/static/bar.jpg&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>绝对路径的资源建议使用 <code>//</code> 语法让它兼容 HTTP&#x2F;HTTPS，<code>//</code>语法表示这个资源的访问协议和当前页面保持一致，如果当前页面是 HTTPS 的，则会采用 HTTPS 协议访问，如果是 HTTP 的，则使用 HTTP 协议访问。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;//tasaid.com/static/bar.jpg&quot;</span> /&gt;</span><span class="comment">&lt;!--https://tasaid.com 中会访问 https://tasaid.com/static/bar.jpg--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="异步请求"><a href="#异步请求" class="headerlink" title="异步请求"></a>异步请求</h3><p>相对路径下的异步请求没有问题，绝对路径的请求会有问题：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$.<span class="title function_">ajax</span>(<span class="string">&#x27;http://tasaid.com/user/get&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>如果请求的 url 是兼容 HTTPS 的话，则可以在 HTTPS 环境下使用 <code>https://</code> 访问，否则需要服务器做一个 <strong>HTTPS包装跳转</strong>，将原 url 的请求在自己的服务器做一层转发，表单提交同理。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$.<span class="title function_">ajax</span>(<span class="string">&#x27;/httpsRedirect?url=http%3A%2F%2Flinkflys.com%2Fuser%2Fget&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="iframe"><a href="#iframe" class="headerlink" title="iframe"></a>iframe</h3><p>iframe 只能是被嵌入的 url 也同样支持 HTTPS，目前本人并未找到合适的方案。当然如果你们服务端真心 NB 的话也可以像某大型搜索引擎一样把需要内嵌 iframe 的站点抓到自己的服务器上。</p>
+<h3 id="HTTP严格传输安全协议"><a href="#HTTP严格传输安全协议" class="headerlink" title="HTTP严格传输安全协议"></a>HTTP严格传输安全协议</h3><p>HTTP 严格传输安全协议（ HTTP Strict Transport Security，简称 HSTS ）是 互联网工程任务小组 (Internet Engineering Task Force，简称IETF) 发布的互联网安全策略，后者负责互联网标准的开发和推动。网站可以选择使用 HSTS 策略，让浏览器强制使用 HTTPS 协议访问。</p>
+<p>为什么要强制访问呢？ 因为传统的 HTTP 跳到 HTTPS 都依赖服务端 301&#x2F;302 跳转，例如访问 <code>http://tasaid.com</code> 跳转到 <code>https://tasaid.com</code>，而这次强制跳转的通信，是基于 HTTP 的，所以是可能被劫持的。</p>
+<p>设置 HSTS 之后，浏览器会在本地替换协议为 HTTPS 然后访问服务器，而不用再依赖服务器跳转，可以更多的减少会话劫持攻击。</p>
+<p>HSTS 是一个响应头，只能用于 HTTPS 响应，HTTP 环境下会忽略掉这个响应头：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Strict-Transport-Security: max-age=expireTime [; includeSubDomains] [; preload]</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="left">释义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">max-age</td>
+<td align="left">指定的时间内 (单位是秒)，网站必须使用 HTTPS 协议来访问</td>
+</tr>
+<tr>
+<td align="center">includeSubDomains</td>
+<td align="left">子域名也必须通过 HTTPS 协议来访问</td>
+</tr>
+<tr>
+<td align="center">preload</td>
+<td align="left">让浏览器由安全域名列表 (Preload List) 决定是否本地替换为 HTTPS 请求</td>
+</tr>
+</tbody></table>
+<p>最后这个 <code>preload</code> 可能有点抽象，就是各大浏览器厂商 (Chrome&#x2F;Firefox&#x2F;IE&#x2F;Safari&#x2F;Edge) 共同维护的一个域名列表 (Preload List)，你可以 <a target="_blank" rel="noopener" href="https://hstspreload.appspot.com/">在这里查询</a> ，chrome 浏览器可以直接在本地访问 <code>chrome://net-internals/#hsts</code> 查询。</p>
+<p>设定 <code>preload</code> 参数，浏览器会 <a target="_blank" rel="noopener" href="https://hstspreload.appspot.com/?domain=imlonghao.com#submission-requirements">根据当前网站满足的条件</a> 尝试把网站加入这个域名列表 (Preload List)，其他用户再访问这个网站的时候，如果这个网站域名存在于这个域名列表中，则自动启用 HTTPS 访问。</p>
+<p>当用户第一次访问一个从来没访问过的网站时，本地是没有 HSTS 信息的，所以这个第一次的会话仍然是可能被劫持的。<code>preload</code> 就是为了解决这个第一次会话劫持的问题的。</p>
+<blockquote>
+<p>值得注意的是：一旦 HSTS 生效，在 <code>max-age</code> 指定的时间内，你再想把网站重定向为 HTTP，之前的老用户会被无限重定向。而且一旦网站证书错误，用户无法选择忽略。</p>
+</blockquote>
+<p>HSTS 是个大招，不要随便开，不然技能冷却时间内出了麻烦那就糟糕了。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>至此，《Said - 从 HTTP 到 HTTPS 》 系列已经完结。当今互联网上多数站点都陆续部署上或者正在部署 HTTPS，主要是因为 HTTPS 的安全性，以及当前主流的浏览器支持的 HTTP&#x2F;2.0 需要 HTTPS 为基础。同时，百度也正在 <a target="_blank" rel="noopener" href="http://zhanzhang.baidu.com/wiki/494">积极推动 HTTPS的收录</a>，而 google 也声明了 <a target="_blank" rel="noopener" href="https://support.google.com/webmasters/answer/6073543?hl=zh-Hans">HTTPS 会提升一点点的网站排名，但变化不会很明显</a>。</p>
+<p>最简单直观的一个情况，常见的流量劫持 —— 比如你的手机访问某个网站，网页中被某些不良的运营商劫持，强行插入了一些广告：</p>
+<p><img src="//static.tasaid.com/blogs/7b3c80c0f6b690087ffd960e555736cc.jpeg" alt="流量劫持"></p>
+<p>web 发展迅猛，技术日新月异层出不穷。web 的安全性同样是一场持久的攻防战。而 HTTPS 的普及，为 web 通信构建了更加良好和安全的根基。尽快给你的网站也部上 HTTPS 吧，迎接更好的 web 时代。</p>
+<h2 id="参考和引用"><a href="#参考和引用" class="headerlink" title="参考和引用"></a>参考和引用</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://imququ.com/post/moving-to-https-asap.html">屈屈 - 为什么我们应该尽快升级到 HTTPS？</a> </li>
+<li><a target="_blank" rel="noopener" href="http://mrpeak.cn/blog/http2/">HTTP 2.0的那些事</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/HTTP%E4%B8%A5%E6%A0%BC%E4%BC%A0%E8%BE%93%E5%AE%89%E5%85%A8">维基百科 - HTTP严格传输安全</a></li>
+<li><a target="_blank" rel="noopener" href="https://imlonghao.com/33.html">将域名加入 HSTS Preload List</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/posts/e4cbea3f/" data-id="cloizszv10016xww6177vbfdj" data-title="从 HTTP 到 HTTPS - 网站部署 HTTPS 中需要做的事情" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTPS/" rel="tag">HTTPS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/posts/9e003dbb/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          很久很久说
+        
+      </div>
+    </a>
+  
+  
+    <a href="/posts/c316d121/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">从 HTTP 到 HTTPS - IIS 部署免费 HTTPS</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/article/">article</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/" rel="tag">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Said/" rel="tag">Said</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTPS/" style="font-size: 12.5px;">HTTPS</a> <a href="/tags/JavaScript/" style="font-size: 17.5px;">JavaScript</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/Said/" style="font-size: 15px;">Said</a> <a href="/tags/TypeScript/" style="font-size: 20px;">TypeScript</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/posts/cfe1281/">一段职业生涯的总结</a>
+          </li>
+        
+          <li>
+            <a href="/posts/8127ee4b/">一段旅程</a>
+          </li>
+        
+          <li>
+            <a href="/posts/29a0bec0/">折旧</a>
+          </li>
+        
+          <li>
+            <a href="/posts/75b36508/">一无所知</a>
+          </li>
+        
+          <li>
+            <a href="/posts/688d139e/">TypeScript 中的多种 import 解义</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

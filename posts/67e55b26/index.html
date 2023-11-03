@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Said 2.0 的一些开发经验 | 听说 - 世界很大，风住过这里</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Said 在三个月内使用了新的技术进行了重写，这三个月收获丰厚，和大家分享一下此次架构的一些心路历程。  JavaScript - 前端开发交流群：377786580  Said 1.x 的痛点Said 于两年前（2016-02-04）上线，而因为自己磨蹭，第一版开发了很久，开发的同时正是前端技术各种爆发的时候，经过了几次技术选型，最终选定了服务层使用 C#，数据存储使用和 C# 的技术生态融合一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Said 2.0 的一些开发经验">
+<meta property="og:url" content="http://example.com/posts/67e55b26/index.html">
+<meta property="og:site_name" content="听说 - 世界很大，风住过这里">
+<meta property="og:description" content="Said 在三个月内使用了新的技术进行了重写，这三个月收获丰厚，和大家分享一下此次架构的一些心路历程。  JavaScript - 前端开发交流群：377786580  Said 1.x 的痛点Said 于两年前（2016-02-04）上线，而因为自己磨蹭，第一版开发了很久，开发的同时正是前端技术各种爆发的时候，经过了几次技术选型，最终选定了服务层使用 C#，数据存储使用和 C# 的技术生态融合一">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://static.tasaid.com/blogs/bae67beb70e48011c7e352b842a4dc71.png">
+<meta property="og:image" content="http://static.tasaid.com/blogs/1f8c6a7af0c3d638e1b118ce5ca031ee.png">
+<meta property="article:published_time" content="2018-03-07T18:10:00.000Z">
+<meta property="article:modified_time" content="2018-11-10T18:43:18.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Said">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://static.tasaid.com/blogs/bae67beb70e48011c7e352b842a4dc71.png">
+  
+    <link rel="alternate" href="/atom.xml" title="听说 - 世界很大，风住过这里" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">听说 - 世界很大，风住过这里</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-blogs/Said2-0的一些开发经验" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/posts/67e55b26/" class="article-date">
+  <time class="dt-published" datetime="2018-03-07T18:10:00.000Z" itemprop="datePublished">2018-03-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tech/">tech</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Said 2.0 的一些开发经验
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Said 在三个月内使用了新的技术进行了重写，这三个月收获丰厚，和大家分享一下此次架构的一些心路历程。</p>
+<blockquote>
+<p>JavaScript - 前端开发交流群：377786580</p>
+</blockquote>
+<h2 id="Said-1-x-的痛点"><a href="#Said-1-x-的痛点" class="headerlink" title="Said 1.x 的痛点"></a>Said 1.x 的痛点</h2><p><code>Said</code> 于两年前（2016-02-04）上线，而因为自己磨蹭，第一版开发了很久，开发的同时正是前端技术各种爆发的时候，经过了几次技术选型，最终选定了服务层使用 <code>C#</code>，数据存储使用和 <code>C#</code> 的技术生态融合一体的 <code>Sql Server</code>（毕竟都是微软亲儿子）。因为自己以前做过 <code>C#</code>，同时希望自己在做前端的时候，后端的技术也不要被遗弃。</p>
+<p>在前端部分的选型，考虑到前台站点主要突出轻与快，于是直接上 <code>jQuery</code>。</p>
+<p>而后台的前端部分，考虑到交互频繁和表单复杂，当时选择了 <code>bootstrap</code> 和司徒正美的 <code>avalon</code>，为什么当初没有选择 <code>vue</code>？ 因为在后台快开发完的时候 <code>vue</code> 才发第一版。</p>
+<p>在开发中逐渐遇到了很多问题。</p>
+<p>首先是后台是通过 <code>.net mvc</code> 的 <code>razor</code> 视图引擎渲染出了页面，然后把数据注入到页面中，<code>js</code> 去读取数据，还原数据并渲染。前后端不纯粹没有分离，其实后台这种项目非常适合做单页使用前后端分离，因为前后端揉合在一起十分痛苦。后台也没有引入类似 <code>npm</code> 的包管理，导致引用的第三库都是自己下载然后 copy 到项目中。好处就是可以自定义开发，例如引入了 <code>showdown.js</code> 来解析 <code>markdown</code>，针对 <code>showdown.js</code> 自己做了很多定制化开发。缺点十分明显，一切靠手动，升级更痛苦。</p>
+<p>同样，也没有完善的模块切割和打包机制，导致后来进行功能改造的时候十分痛苦，改一处牵连多处。</p>
+<p>前台部分（也就是 <code>https://tasaid.com</code>），使用传统的 <code>jquery</code>。同样没有引入版本控制，兼容性自己把控。<code>css</code> 方面使用了 <code>sass</code>，但是是通过 <a target="_blank" rel="noopener" href="http://koala-app.com/index-zh.html">koala</a> 工具进行的编译，没有和项目融合在一起。</p>
+<p>这其中，<code>js</code> 的打包压缩是个痛点，不过后来发现了 <code>.net mvc</code> 的 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/xwgli/p/3296809.html">Bundle</a> 能够在项目运行时自动压缩打包文件，这个问题才解决了。</p>
+<p>以上痛点基本上忍一忍就可以，但是后端服务层的问题不能忍，后端服务层出现的问题才让我决定了此次的升级。</p>
+<p>服务层（也可以叫后端服务）是使用 <code>C#</code> 进行编写的，引入了大名鼎鼎的　<code>entity framework</code> 框架，让我全程不用关心数据库只需要定义 Model 写业务即可，但由于是第一次使用 <code>entity framework</code> ，在后续出现了很多的问题，最大一次问题是 <a target="_blank" rel="noopener" href="https://github.com/linkFly6/said/issues/12">某些情况下连两个并发可能都扛不住</a>。遇到这些问题的时候，由于精力有限不是主攻这个方向的，解决起来难度系数比较大。而且由于国内 <code>C#</code> 使用率的问题，在人脉圈找人帮忙解决问题都很难。</p>
+<p>之后 <code>Said</code> 又部署了 HTTPS，部署完了之后产出了这篇影响还不错的文章： 《<a target="_blank" rel="noopener" href="https://tasaid.com/blog/20161005024923.html">从 HTTP 到 HTTPS - IIS 部署免费 HTTPS</a>》，本以为就此安心了，结果分分钟被打脸。在某些地方 HTTPS 访问 <a target="_blank" rel="noopener" href="https://tasaid.com/">https://tasaid.com</a> 的时候，会出现 <code>403 - 禁止访问: 访问被拒绝</code>。</p>
+<p>这种问题十分头疼，因为有些用户 HTTPS 访问是没有问题的， 而另外一些用户 HTTPS 却访问不了，例如我家里的电脑访问没有问题，公司的电脑访问就 <code>403</code> 了，而在公司用手机访问又没有问题。这一问题排查了近一个月，社区大佬也问了一圈没有人知道为什么，各种配置都查了根本没有头绪，导致了此次升级的诱因之一。</p>
+<p>另外一个问题是某些情况下会出现移动端访问变成 PC 端页面，<code>Said</code> 是使用 <code>.net mvc</code> 提供的 <code>MVC Display Mode</code> 来针对不同的设备显示不同页面，然后这一问题查了许久也成了玄学问题。</p>
+<p>后面还有各项问题，例如服务器前期比较稳定，在后来平均每 15 天内存就会被耗尽，只能重启服务器来解决，问题也懒得排查了。在去年双十一观望了下服务器的活动，发现活动还挺不错，横向比较了下 <code>Windows Server</code> 和 <code>Linux Server</code>， <code>Windows Server</code> 吃资源还是太厉害了，于是直接订了一年的服务器，然后开始着手准备 <code>Said</code> 的重构。</p>
+<p>大体来说，痛点集中在这些：</p>
+<ul>
+<li>前后端没有分离，导致混合编写维护十分不便</li>
+<li>没有良好的包管理系统，导致第三方库升级艰难</li>
+<li>模块系统没有控制好，同样导致维护成本很高</li>
+<li>社区不够庞大，导致问题很难被解决</li>
+</ul>
+<h2 id="凤凰涅槃"><a href="#凤凰涅槃" class="headerlink" title="凤凰涅槃"></a>凤凰涅槃</h2><p><code>Said</code> 在重构之初本来考虑着要不要使用 <code>.net core</code> (.net 跨平台) 技术来重构，后来思索再三，考虑到项目语言风格的一体性（编码体验一致），前端的蓬勃发展（遇到的问题都可以在社区找到解决方案），以及对自己前端发展技术的一次总结和试验，决定了技术架构如下：</p>
+<ul>
+<li>语言使用 <a target="_blank" rel="noopener" href="https://tslang.cn/">TypeScript</a>。2017 年中旬我已经实验过 <code>TypeScript</code>，爱不释手感觉自己快要不会写 js 了。</li>
+<li>服务层使用 <a target="_blank" rel="noopener" href="http://nodejs.cn/">nodejs</a>。本质上 <code>TypeScript</code> 编译到 <code>nodejs</code>。</li>
+<li>使用 <a target="_blank" rel="noopener" href="https://www.mongodb.com/">mongodb</a> 存储数据。<code>Said</code> 的数据关系并不复杂，使用 <code>mongodb</code> 更方便迅捷。</li>
+<li>使用 <a target="_blank" rel="noopener" href="https://www.npmjs.com/">npm</a> 作为包管理工具。<code>npm</code> 已经确定是整个 <code>nodejs/js</code> 生态圈王牌地位了。</li>
+<li>后台使用 <a target="_blank" rel="noopener" href="https://doc.react-china.org/">reactjs</a> + <a target="_blank" rel="noopener" href="https://tslang.cn/docs/handbook/jsx.html">tsx</a> 作为基本框架和语言。<code>tsx</code> 是 <code>TypeScript</code> 专门针对 <code>jsx</code> 所定制的语言，强化了 <code>jsx</code> 的静态类型，比起 <code>vue</code> 来说和 <code>TypeScript</code> 结合的体验简直不要太爽。</li>
+<li>后台使用 <a target="_blank" rel="noopener" href="https://ant.design/docs/react/introduce-cn">antd</a> 作为 <code>UI</code> 框架。<code>antd</code> 也是使用 <code>tsx</code> 来编写的。</li>
+<li><code>icon font</code> 全部使用 <a target="_blank" rel="noopener" href="http://www.iconfont.cn/">阿里巴巴矢量图标库</a>。 利用阿里巴巴矢量图标库收集和在线生成字体文件。</li>
+<li>使用 <a target="_blank" rel="noopener" href="http://stylus-lang.com/">stylus</a> 作为 <code>css</code> 预处理器。</li>
+<li>使用七牛存储静态文件。</li>
+</ul>
+<h3 id="基础架构"><a href="#基础架构" class="headerlink" title="基础架构"></a>基础架构</h3><p>语言层面，选用 <code>TypeScript</code> 是因为它的静态类型让 js 有了质的飞跃。这一点可以参考我的 《<a target="_blank" rel="noopener" href="https://tasaid.com/blog/20171011231943.html">从 JavaScript 到 TypeScript 系列</a>》，强烈推荐 <code>TypeScript</code>。</p>
+<p>数据存储方面，因为 <code>mongodb</code> 上手简单方便，结构化数据存储非常适合 <code>Said</code> 的应用场景，并且和 <code>nodejs</code> 结合浑然天成。存储数据只需要声明一组 JSON 然后保存，非常简便。</p>
+<p>而<code>npm</code> 的包管理直接解决了过去引入第三方库，升级不方便的痛点，现在可以跟着社区的主流针对包进行升级，维护成本非常低。</p>
+<p>最后，选用七牛云存储是因为 <code>Said</code> 过去都是自己存储和处理静态资源，浪费服务器资源和流量。而七牛云存储的价格不算贵，配置起来也十分方便，所以直接将静态文件扔上去然后走七牛的 CDN 服务加快速度。现在的 <code>Said</code> 不会存储任何静态资源，所有的资源都上传到了 CDN，管理十分方便。很低的价格和良好的服务就能够享受到 CDN 服务。</p>
+<h3 id="后台技术"><a href="#后台技术" class="headerlink" title="后台技术"></a>后台技术</h3><p>后台本质上是一个单页应用，使用了 <code>webpack</code> 打包成单页。部署前会把 <code>js/css</code> 通过脚本全部上传到七牛云上，然后在服务层只需要输出打包后的 <code>html</code> 即可。</p>
+<p>技术层面，后台主要使用了 <code>react</code>，同时结合了 <a target="_blank" rel="noopener" href="http://cn.mobx.js.org/">mbox</a> 做状态管理。服务层(<code>nodejs</code>) 提供接口， <code>mbox</code> 读取接口数据然后自动渲染。为了配合 <code>react</code> 中可以更优雅操作 <code>state</code>， 引入了 <a target="_blank" rel="noopener" href="https://facebook.github.io/immutable-js/">immutable.js</a>。</p>
+<p>UI 则使用了组件丰富的 <code>antd</code>，丰富的组件让开发很迅捷，同时良好的各种细节动画让自己也省心很多。</p>
+<p>后台使用了 <a target="_blank" rel="noopener" href="https://github.com/JedWatson/react-codemirror">react-codemirror</a> 作为 <code>markdown</code> 编辑器，同时服务层使用 <a target="_blank" rel="noopener" href="https://github.com/markedjs/marked">marked</a> 解析 <code>markdown</code>。代码高亮使用传统老牌 <a target="_blank" rel="noopener" href="https://github.com/isagalaev/highlight.js/">highlight.js</a>。</p>
+<h3 id="前台和服务层"><a href="#前台和服务层" class="headerlink" title="前台和服务层"></a>前台和服务层</h3><p>前台的客户端脚本也使用了 <code>webpack</code> 打包， 先把 <code>TypeScript</code> 编译到 <code>js</code>，然后使用 <a target="_blank" rel="noopener" href="https://babeljs.cn/">babel</a> 编译代码到 <code>es5</code>，用于解决代码兼容性问题。之所以还加 <code>babel</code> 是因为 <code>TypeScript</code> 只编译语法特性，而不会附加 <code>polyfill</code>。同 <code>Said 1.x</code> 一样，前台也只引用了 <code>jQuery</code>，迎合 <code>Said</code> 一开始要追求的访问性能 —— 轻而快。前台所有的资源和后台一样，在部署前上传到七牛云，然后修正链接即可。</p>
+<p>服务端直接用 <code>TypeScript</code> 编译产出 <code>es6</code>，因为服务端跑的 <code>node 8</code>，不需要考虑太多兼容性问题。</p>
+<p>过去 <code>Said</code> 会在用户访问的时候往数据库插入记录用于统计，后来这张表存了 4W+ 数据，现在使用 <a target="_blank" rel="noopener" href="https://github.com/log4js-node/log4js-node">log4js</a> 直接写本地日志，后续再单独针对日志做分析即可。</p>
+<p>统计使用 <a target="_blank" rel="noopener" href="https://web.umeng.com/main.php?spm=a211g2.181323.0.0.3cb23604SgRryz&c=user&a=index">cnzz - 友盟统计</a>，国内目前没有找到比 <code>cnzz</code> 更全的统计（也有其他的第三方统计平台心怀鬼胎），同时会根据自己写的 log 做数据分析（基本上只是看一眼….）。</p>
+<p>通过 <a target="_blank" rel="noopener" href="https://github.com/Daplie/greenlock-express">greenlock-express</a> 来部署 <code>HTTPS</code>， <code>greenlock-express</code> 会自动申请&#x2F;续订 <a target="_blank" rel="noopener" href="https://letsencrypt.org/">letsencrypt</a> 的免费证书，从而让站点一直运行 HTTPS（尚未验证，等三个月 <code>letsencrypt</code> 证书到期了之后就可以知道是不是自动续订了）。然后使用 <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/spdy">spdy</a> 部署了 HTTP&#x2F;2。关于这里可以参考 《<a target="_blank" rel="noopener" href="https://tasaid.com/blog/2018031415094468.html">Node.js 部署免费&#x2F;自动续订 HTTPS</a>》。</p>
+<p>服务器上使用了 <a target="_blank" rel="noopener" href="https://github.com/Unitech/pm2">pm2</a> 作为 <code>nodejs</code> 的进程托管。<code>pm2</code> 用于管理和守护 <code>nodejs</code> 的进程，在 <code>nodejs</code> 崩溃的时候可以自动重启服务。<code>Said</code> 在部署的时候，根据服务器 CPU 的个数部署了集群模式 (<code>cluster</code>)，因为 <code>nodejs</code> 是单线程的，同一个 CPU 下同一时间只会跑一个 <code>nodejs</code> 服务，<code>cluster</code> 模式可以充分利用多核资源。</p>
+<p>在部署中遇到了 <code>log4js</code> 不写 log，使用 <code>node</code> 直接运行项目是没问题的，一旦使用 <code>pm2</code> 部署就不写 <code>log</code>，查资料看到了 <a target="_blank" rel="noopener" href="http://blog.yourtion.com/fix-log4js-with-pm2-not-work.html">这个</a>：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">log4js.<span class="title function_">configure</span>(&#123;</span><br><span class="line">  <span class="attr">appenders</span>: &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">categories</span>: &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="attr">pm2</span>: process.<span class="property">env</span>.<span class="property">NODE_ENV</span> === <span class="string">&#x27;production&#x27;</span>,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><p>这是 <code>Said</code> 此次升级后的性能评测报告：</p>
+<p>资源加载时间报告：</p>
+<p><img src="//static.tasaid.com/blogs/bae67beb70e48011c7e352b842a4dc71.png" alt="said 加载时间"></p>
+<p>&nbsp;</p>
+<p>评分报告：</p>
+<p><img src="//static.tasaid.com/blogs/1f8c6a7af0c3d638e1b118ce5ca031ee.png" alt="said 评分 "></p>
+<blockquote>
+<p>评分站点: <a target="_blank" rel="noopener" href="http://www.mmtrix.com/index">http://www.mmtrix.com/index</a></p>
+</blockquote>
+<blockquote>
+<p>2018年11月11日 02:42:45：服务器已经从青岛机房迁移到张家口机房（只是因为便宜…）。</p>
+</blockquote>
+<blockquote>
+<p>JavaScript - 前端开发交流群：377786580</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/posts/67e55b26/" data-id="cloizszuy000gxww6fm847lw2" data-title="Said 2.0 的一些开发经验" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Said/" rel="tag">Said</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/posts/4f3c3fec/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Node.js 部署免费/自动续订 HTTPS
+        
+      </div>
+    </a>
+  
+  
+    <a href="/posts/d4134bcf/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">JavaScript 中的 task queues</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/article/">article</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/" rel="tag">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Said/" rel="tag">Said</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTPS/" style="font-size: 12.5px;">HTTPS</a> <a href="/tags/JavaScript/" style="font-size: 17.5px;">JavaScript</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/Said/" style="font-size: 15px;">Said</a> <a href="/tags/TypeScript/" style="font-size: 20px;">TypeScript</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/posts/cfe1281/">一段职业生涯的总结</a>
+          </li>
+        
+          <li>
+            <a href="/posts/8127ee4b/">一段旅程</a>
+          </li>
+        
+          <li>
+            <a href="/posts/29a0bec0/">折旧</a>
+          </li>
+        
+          <li>
+            <a href="/posts/75b36508/">一无所知</a>
+          </li>
+        
+          <li>
+            <a href="/posts/688d139e/">TypeScript 中的多种 import 解义</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

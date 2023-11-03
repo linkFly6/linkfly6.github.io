@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>从 HTTP 到 HTTPS - 什么是 HTTPS | 听说 - 世界很大，风住过这里</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="HTTPS是互联网 web 大势所趋。各大网站都已陆续部署了 HTTPS，Said 近期也迁移到了 HTTPS。这篇文章我们来探讨什么是HTTPS以及为什么要部署HTTPS。 这篇文章收录在《Said - 从 HTTP 到 HTTPS 》系列：  从 HTTP 到 HTTPS - 什么是 HTTPS 从 HTTP 到 HTTPS - IIS 部署免费 HTTPS   从 HTTP 到 HTTPS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 HTTP 到 HTTPS - 什么是 HTTPS">
+<meta property="og:url" content="http://example.com/posts/98c3a65b/index.html">
+<meta property="og:site_name" content="听说 - 世界很大，风住过这里">
+<meta property="og:description" content="HTTPS是互联网 web 大势所趋。各大网站都已陆续部署了 HTTPS，Said 近期也迁移到了 HTTPS。这篇文章我们来探讨什么是HTTPS以及为什么要部署HTTPS。 这篇文章收录在《Said - 从 HTTP 到 HTTPS 》系列：  从 HTTP 到 HTTPS - 什么是 HTTPS 从 HTTP 到 HTTPS - IIS 部署免费 HTTPS   从 HTTP 到 HTTPS">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://static.tasaid.com/blogs/c392c086083b2bc202f66a7659da7ec0.png">
+<meta property="og:image" content="http://static.tasaid.com/blogs/f743e508e14c7ba5e55eb0de9726d146.png">
+<meta property="og:image" content="http://static.tasaid.com/blogs/942de9919ce8c98491e682780aa041c3.png">
+<meta property="article:published_time" content="2016-10-02T16:11:00.000Z">
+<meta property="article:modified_time" content="2018-03-08T03:47:40.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="HTTPS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://static.tasaid.com/blogs/c392c086083b2bc202f66a7659da7ec0.png">
+  
+    <link rel="alternate" href="/atom.xml" title="听说 - 世界很大，风住过这里" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">听说 - 世界很大，风住过这里</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-blogs/从HTTP到HTTPS-什么是HTTPS" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/posts/98c3a65b/" class="article-date">
+  <time class="dt-published" datetime="2016-10-02T16:11:00.000Z" itemprop="datePublished">2016-10-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tech/">tech</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      从 HTTP 到 HTTPS - 什么是 HTTPS
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>HTTPS是互联网 web 大势所趋。各大网站都已陆续部署了 HTTPS，Said 近期也迁移到了 HTTPS。这篇文章我们来探讨什么是HTTPS以及为什么要部署HTTPS。</p>
+<p>这篇文章收录在《Said - 从 HTTP 到 HTTPS 》系列：</p>
+<ul>
+<li>从 HTTP 到 HTTPS - 什么是 HTTPS</li>
+<li><a target="_blank" rel="noopener" href="https://tasaid.com/Blog/20161005024923.html?sgs=blog20161003001126">从 HTTP 到 HTTPS - IIS 部署免费 HTTPS</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://tasaid.com/Blog/20161006045104.html?sgs=blog20161003001126">从 HTTP 到 HTTPS - 网站部署 HTTPS 中需要做的事情</a></li>
+</ul>
+<h2 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h2><p>当你在浏览器输入一个网址 (例如 <a target="_blank" rel="noopener" href="http://tasaid.com/">http://tasaid.com</a>)的时候，浏览器发起一个 HTTP 请求，带着请求信息 (参见 <a target="_blank" rel="noopener" href="http://kb.cnblogs.com/page/92320/">HTTP Headers</a>)，连接到服务器，把请求信息递给服务器，服务器收到信息之后，解析相关的信息，然后进行处理，再返回浏览器请求的数据。</p>
+<p>简单来说是这么一个流程：</p>
+<ol>
+<li><strong>小明</strong> 跟 <strong>浏览器爸爸</strong> 说我想要去中关村某个店家拿一些东西 (发起请求)</li>
+<li><strong>浏览器爸爸</strong> 就把 <strong>小明</strong> 要的东西记在一张清单上 (生成HTTP协议)</li>
+<li>然后 <strong>浏览器爸爸</strong> 派出一个 <strong>线程小弟</strong>，噌噌噌跑到中关村的店里，把清单递给 <strong>店家</strong>，说小明要这些东西 (进行传输)</li>
+<li><strong>店家</strong> 让 <strong>线程小弟</strong> 稍等，然后去屋子里面拿小明的这些东西 (服务器收到请求)</li>
+<li><strong>店家</strong> 把东西拿出来后，并且也打印了一份清单，让 <strong>线程小弟</strong> 带着清单和东西一起拿回去 (服务器处理请求完毕)</li>
+<li>然后 <strong>线程小弟</strong> 回到 <strong>浏览器爸爸</strong> 那边，把服务器给的清单和物品交给浏览器爸爸，浏览器爸爸根据清单核对物品 (浏览器处理响应)</li>
+<li>然后把物品打包交给了 <strong>小明</strong> (浏览器渲染并呈现界面)</li>
+</ol>
+<p>看图说话：</p>
+<p><img src="//static.tasaid.com/blogs/c392c086083b2bc202f66a7659da7ec0.png" alt="http"></p>
+<p>这其中有个问题，浏览器爸爸和服务器都没有验证清单信息的有效性和对方的身份。万一有人在中间把线程小哥拦下来，暴揍一顿，然后把物品清单给换了怎么办？或者有人把线程小哥在半路上暴揍一顿，拿了清单换了另外一个小哥怎么办？</p>
+<p>这是个很严肃的问题：假如服务器要把一些东西锁在柜子里，需要小明给密码才可以打开柜子。然后小明把密码写在清单上让浏览器爸爸交给服务器。这时候，如果这张清单被人拦截下来，不就得到了小明的密码？</p>
+<p>简单来说，传输的信息中包含用户密码，被拦截了怎么办？</p>
+<h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><p>正因为HTTP请求有这些安全性的问题，所以HTTPS诞生了，致力于解决了这些安全性问题，我们进行一下对比：</p>
+<table>
+<thead>
+<tr>
+<th align="center">安全性</th>
+<th align="left">HTTP</th>
+<th align="left">HTTPS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">窃听风险</td>
+<td align="left">传递的信息是明文的，可能会被有心人拦截下来窃听</td>
+<td align="left">信息加密传播</td>
+</tr>
+<tr>
+<td align="center">篡改风险</td>
+<td align="left">传递的信息可能会被篡改</td>
+<td align="left">信息校验，一旦被篡改立刻就会被发现</td>
+</tr>
+<tr>
+<td align="center">伪装风险</td>
+<td align="left">没有验证通信另外一头对方的身份，可能遭遇伪装</td>
+<td align="left">身份校验</td>
+</tr>
+</tbody></table>
+<p>那么HTTPS是如何做到更安全的呢？</p>
+<p>简单来说，HTTPS 即是在 HTTP 下加入了一层 SSL 加密，所以被称为HTTP<strong>S</strong>。具体的加密过程则是 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%85%AC%E5%BC%80%E5%AF%86%E9%92%A5%E5%8A%A0%E5%AF%86">公匙加密法</a>：</p>
+<ul>
+<li>客户端向服务器索要公匙，然后使用公匙加密信息</li>
+<li>服务器收到加密后的信息，用自己的私匙解密</li>
+</ul>
+<p>公匙密码和算法都是公开的，而私匙则是保密的。加密使用的公匙和解码使用的密匙都是不相同的，因此这是一个 <strong>非对称加密</strong> 算法。</p>
+<h2 id="数字证书"><a href="#数字证书" class="headerlink" title="数字证书"></a>数字证书</h2><p>提及 HTTPS ，就会听到大家说需要证书才能部署，那么什么是证书呢？ </p>
+<p>因为互联网不安全，公匙也是信息的一部分，也是会有被篡改的风险的。所以引入了互联网权威机构 - CA 机构，又称为证书授权 (Certificate Authority) 机构，浏览器会内置这些”受信任的根证书颁发机构” (即 CA)。</p>
+<p>服务端向权威的身份鉴定 CA 机构申请数字证书，CA 机构验证了网站之后，会把网站录入到内部列表，采用 Hash 把服务端的一些相关信息生成摘要，然后 CA 机构用自己的私匙，把服务端的公匙和相关信息一起加密，然后给申请证书的服务端颁发数字证书，用于其他客户端 (比如浏览器) 认证这个网站的公匙。</p>
+<p>客户端通过服务端下发的证书，找到对应的 CA，然后向 CA 验证这个证书是否有效，CA 验证通过之后，下发服务端的公匙。</p>
+<p>因为 CA 是权威并且可信的，所以客户端 (浏览器) 信任 CA，而 CA 又信任经过认证的服务端 ，所以客户端 (浏览器) 也信任这个服务端，这就是<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Chain_of_trust">信任链 (Chain Of Trust)</a>。</p>
+<p>而 CA 颁发的数字证书，一般包含这些信息：</p>
+<p> <img src="//static.tasaid.com/blogs/f743e508e14c7ba5e55eb0de9726d146.png" alt="CA info"></p>
+<p>简单来说：为了保证公匙是安全的，所以通过数字证书验证公匙。</p>
+<h2 id="加密通信"><a href="#加密通信" class="headerlink" title="加密通信"></a>加密通信</h2><p>一条完整的HTTPS请求应该是这样的：</p>
+<ol>
+<li>客户端 (浏览器) 发起 HTTP 请求，请求连接服务端，发送支持的加密通信协议 (和版本)，并且生成一个随机数，后续用于生成”对话密钥”。</li>
+<li>服务端确认加密通信协议 (和版本)，同时也生成一个随机数，后续用于生成”对话密匙”，并且将 CA 颁发的数字证书，一起发送给客户端。</li>
+<li>客户端收到数字证书后，检测内置的”受信任的根证书颁发机构”，查看解开数字证书的公匙是否在。</li>
+<li>如果解开数字证书的公匙存在，则使用它解开数字证书，得到正确的服务器公匙，同时再次生成一个随机数，用于服务器公匙加密，并发送给服务器。</li>
+<li>此时本地和服务器同时将三个随机数，根据约定的加密方法进行加密，各自生成本次会话的所使用的同一把 “会话密匙” 。</li>
+<li>到这里，认证阶段已经完毕，数据传输从 <strong>非对称加密</strong> 换成了 <strong>对称加密</strong> (因为考虑到性能)，接下来所有的数据传输都是使用HTTP协议进行传输，只不过使用了 “会话密匙” 来加密内容。</li>
+</ol>
+<p>见下图：</p>
+<p><img src="//static.tasaid.com/blogs/942de9919ce8c98491e682780aa041c3.png" alt="https"></p>
+<h2 id="参考和引用"><a href="#参考和引用" class="headerlink" title="参考和引用"></a>参考和引用</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://cattail.me/tech/2015/11/30/how-https-works.html">HTTPS 工作原理</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html">阮一峰 - 数字签名是什么</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html">阮一峰 - SSL&#x2F;TLS协议运行机制的概述</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/posts/98c3a65b/" data-id="cloizszv00013xww68gz61pjq" data-title="从 HTTP 到 HTTPS - 什么是 HTTPS" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTPS/" rel="tag">HTTPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/posts/c316d121/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          从 HTTP 到 HTTPS - IIS 部署免费 HTTPS
+        
+      </div>
+    </a>
+  
+  
+    <a href="/posts/6d6a869c/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">co.js - 让异步代码同步化</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/article/">article</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/" rel="tag">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Said/" rel="tag">Said</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTPS/" style="font-size: 12.5px;">HTTPS</a> <a href="/tags/JavaScript/" style="font-size: 17.5px;">JavaScript</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/Said/" style="font-size: 15px;">Said</a> <a href="/tags/TypeScript/" style="font-size: 20px;">TypeScript</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/posts/cfe1281/">一段职业生涯的总结</a>
+          </li>
+        
+          <li>
+            <a href="/posts/8127ee4b/">一段旅程</a>
+          </li>
+        
+          <li>
+            <a href="/posts/29a0bec0/">折旧</a>
+          </li>
+        
+          <li>
+            <a href="/posts/75b36508/">一无所知</a>
+          </li>
+        
+          <li>
+            <a href="/posts/688d139e/">TypeScript 中的多种 import 解义</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

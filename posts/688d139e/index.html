@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>TypeScript 中的多种 import 解义 | 听说 - 世界很大，风住过这里</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="JavaScript 中有多种 export 的方式，而 TypeScript 中针对这种情况做了多种 import 语法，最常见的就是 import * as path from &#39;path&#39; 这种。这篇文章主要来讲解 TypeScript 中不同的 import 具有什么意义。  前端开发 QQ 群：377786580  从 export 说起有很多朋友都问过我关于 TypeS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TypeScript 中的多种 import 解义">
+<meta property="og:url" content="http://example.com/posts/688d139e/index.html">
+<meta property="og:site_name" content="听说 - 世界很大，风住过这里">
+<meta property="og:description" content="JavaScript 中有多种 export 的方式，而 TypeScript 中针对这种情况做了多种 import 语法，最常见的就是 import * as path from &#39;path&#39; 这种。这篇文章主要来讲解 TypeScript 中不同的 import 具有什么意义。  前端开发 QQ 群：377786580  从 export 说起有很多朋友都问过我关于 TypeS">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://static.tasaid.com/blogs/8035be46ea1725ebdaa8fce316bee8f6.png">
+<meta property="og:image" content="http://static.tasaid.com/blogs/f1dcddc2b63a2f08cac178d2e577c4f9.png">
+<meta property="og:image" content="http://static.tasaid.com/blogs/43c0afaacd3bf0b8ef5b525257878654.png">
+<meta property="og:image" content="http://static.tasaid.com/blogs/15692299e770aefce2ce731ad2dbf50c.gif">
+<meta property="og:image" content="http://static.tasaid.com/blogs/61b5ce0ab48d64bf27936ef294e269fb.png">
+<meta property="article:published_time" content="2019-02-20T09:45:00.000Z">
+<meta property="article:modified_time" content="2019-02-20T09:51:27.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="TypeScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://static.tasaid.com/blogs/8035be46ea1725ebdaa8fce316bee8f6.png">
+  
+    <link rel="alternate" href="/atom.xml" title="听说 - 世界很大，风住过这里" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">听说 - 世界很大，风住过这里</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-blogs/TypeScript中的多种import解义" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/posts/688d139e/" class="article-date">
+  <time class="dt-published" datetime="2019-02-20T09:45:00.000Z" itemprop="datePublished">2019-02-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tech/">tech</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      TypeScript 中的多种 import 解义
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>JavaScript 中有多种 <code>export</code> 的方式，而 TypeScript 中针对这种情况做了多种 <code>import</code> 语法，最常见的就是 <code>import * as path from &#39;path&#39;</code> 这种。这篇文章主要来讲解 TypeScript 中不同的 import 具有什么意义。</p>
+<blockquote>
+<p>前端开发 QQ 群：377786580</p>
+</blockquote>
+<h2 id="从-export-说起"><a href="#从-export-说起" class="headerlink" title="从 export 说起"></a>从 export 说起</h2><p>有很多朋友都问过我关于 TypeScript 中不同 <code>import</code>  的含义，最典型的就是下面的 <code>import</code> 语法：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> path <span class="keyword">from</span> <span class="string">&#x27;path&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>不少人疑问这句代码究竟是什么意思，这里我们要先从 js 的 <code>export</code> 开始说。</p>
+<p>首先，JavaScript 的模块化方案，在历史的演进中，有多种导出模块的方式：<code>exports</code>、<code>module.exports</code>、<code>export</code>、<code>export default</code>。</p>
+<p>在 nodejs 中内置的模块遵循的都是 <a target="_blank" rel="noopener" href="http://javascript.ruanyifeng.com/nodejs/module.html">CommonJS</a> 规范，语法为 <code>module.exports</code> 和 <code>exports</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 模块中的 exports 变量指向 module.exports</span></span><br><span class="line"><span class="comment">// 这篇文章不会深入讲解 module.exports 和 exports 的关系</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123; &#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">exports</span>.<span class="property">site</span> = <span class="string">&#x27;https://tasaid.com&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span>.<span class="property">name</span> = <span class="string">&#x27;linkFly&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>例如 <code>nodejs</code> 内置的 <a target="_blank" rel="noopener" href="https://github.com/nodejs/node/blob/v8.0.0/lib/events.js#L29">events</a> 模块的源码：</p>
+<p><img src="//static.tasaid.com/blogs/8035be46ea1725ebdaa8fce316bee8f6.png" alt="alt"></p>
+<p>在 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/export">ECMAScript 6</a> 中又新增了语法 <code>export</code> 和 <code>export default</code>:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> (<span class="params"></span>) &#123; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> site = <span class="string">&#x27;https://tasaid.com&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> name = <span class="string">&#x27;linkFly&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>到这里画风还比较正常，而大名鼎鼎的 JavaScript 转码编译器 babel 针对 ECMAScript 6 新增的 <code>export default</code> 语法，搞了个 <a target="_blank" rel="noopener" href="https://babeljs.io/docs/en/babel-plugin-transform-es2015-modules-commonjs">babel-plugin-transform-es2015-modules-commonjs</a> 的转换插件，用于将 ECMAScript 6 转码为 CommonJs 规范的语法：</p>
+<p>源码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="number">42</span>;</span><br></pre></td></tr></table></figure>
+
+<p>编译后：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(<span class="built_in">exports</span>, <span class="string">&quot;__esModule&quot;</span>, &#123;</span><br><span class="line">  <span class="attr">value</span>: <span class="literal">true</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">exports</span>.<span class="property">default</span> = <span class="number">42</span>;</span><br></pre></td></tr></table></figure>
+
+<p>到这里，我们看到有三种 <code>export</code> 默认值的语法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// commonjs</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// babel 转码</span></span><br><span class="line"><span class="built_in">exports</span>.<span class="property">default</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// es6</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="TypeScript-中的-import"><a href="#TypeScript-中的-import" class="headerlink" title="TypeScript 中的 import"></a>TypeScript 中的 import</h2><p>在 TypeScript 中，也有多种 <code>import</code> 的方式。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// commonjs 模块</span></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> xx <span class="keyword">from</span> <span class="string">&#x27;xx&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// es6 模块</span></span><br><span class="line"><span class="keyword">import</span> xx <span class="keyword">from</span> <span class="string">&#x27;xx&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// commonjs 模块，类型声明为 export = xx</span></span><br><span class="line"><span class="keyword">import</span> xx = <span class="built_in">require</span>(<span class="string">&#x27;xx&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 没有类型声明，默认导入 any 类型</span></span><br><span class="line"><span class="keyword">const</span> xx = <span class="built_in">require</span>(<span class="string">&#x27;xx&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>tsconfig.json</code> 中，<code>allowSyntheticDefaultImports</code> 会影响到 import 语法的类型检查规则，这个下面再说。</p>
+<h3 id="import-as-xx-from-‘xx’"><a href="#import-as-xx-from-‘xx’" class="headerlink" title="import * as xx from ‘xx’"></a>import * as xx from ‘xx’</h3><p><code>import * as xx from &#39;xx&#39;</code> 的语法来一般都是用来导入使用 <code>module.exports</code> 导出的模块。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> path <span class="keyword">from</span> <span class="string">&#x27;path&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>因为 nodejs 中的模块大部分都是通过 <code>module.exports</code>、<code>exports.xx</code>  语法进行导出的。</p>
+<h3 id="import-xx-from-‘xx’"><a href="#import-xx-from-‘xx’" class="headerlink" title="import xx from ‘xx’"></a>import xx from ‘xx’</h3><p>默认情况下，<code>import xx from &#39;xx&#39;</code> 的语法只适用于 ECMAScript 6 的 <code>export default</code> 导出：</p>
+<p>模块 foo：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> (<span class="params"></span>) &#123; </span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;https://tasaid.com&#x27;</span>) </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>ES6 模块的导入：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> foo <span class="keyword">from</span> <span class="string">&#x27;./foo&#x27;</span></span><br><span class="line"><span class="title function_">foo</span>()</span><br></pre></td></tr></table></figure>
+
+<p>而前面我们说了，<code>babel</code> 会将 es6 的模块的 <code>export default </code> 语法编译为 <code>exports.default</code> 语法。</p>
+<p>而 TypeScript 默认是不识别这种语法的，如果一个模块的导出是 <code>exports.default</code> 导出，如果使用 <code>import xx from &#39;xx&#39;</code> 的语法导入是会报错的。</p>
+<p><img src="//static.tasaid.com/blogs/f1dcddc2b63a2f08cac178d2e577c4f9.png" alt="alt"></p>
+<p>所以在 <code>tsconfig.json</code>  中，有个 <code>allowSyntheticDefaultImports</code> 选项，就是针对这种语法做兼容。</p>
+<p>如果设定 <code>allowSyntheticDefaultImports</code> 为 <code>true</code>，则检测导入的模块是否是 ES6 模块，如果不是，则查找模块中是否有 <code>exports.default</code> 导出。</p>
+<p>从而达到针对 <code>exports.default</code> 的兼容。</p>
+<p><img src="//static.tasaid.com/blogs/43c0afaacd3bf0b8ef5b525257878654.png" alt="alt"></p>
+<p>效果参见这个动画：</p>
+<p><img src="//static.tasaid.com/blogs/15692299e770aefce2ce731ad2dbf50c.gif" alt="alt"></p>
+<p>我个人是不推荐打开 <code>allowSyntheticDefaultImports</code> 选项的，一般情况下我采取的方式是将 deafult 重新命名：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="keyword">default</span> <span class="keyword">as</span> foo &#125; <span class="keyword">from</span> <span class="string">&#x27;foo&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="import-xx-require-‘xx’"><a href="#import-xx-require-‘xx’" class="headerlink" title="import xx &#x3D; require(‘xx’)"></a>import xx &#x3D; require(‘xx’)</h3><p><code>import xx = require(&#39;xx&#39;)</code>  是用来导入 commonjs 模块的库，特殊的地方在于这个库的类型声明是 <code>export = xx</code> 这种方式导出的：</p>
+<p>foo.js 源码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = <span class="function">() =&gt;</span> &#123; </span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;https://tasaid.com&#x27;</span>) </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>foo.d.ts 类型声明文件源码：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params"></span>): <span class="built_in">void</span>;</span><br><span class="line"><span class="keyword">export</span> = foo</span><br></pre></td></tr></table></figure>
+
+<p>bar.ts 引用：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> foo = <span class="built_in">require</span>(<span class="string">&#x27;./foo&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="title function_">foo</span>()</span><br></pre></td></tr></table></figure>
+
+<p><img src="//static.tasaid.com/blogs/61b5ce0ab48d64bf27936ef294e269fb.png" alt="alt"></p>
+<p>我在 《<a target="_blank" rel="noopener" href="https://tasaid.com/blog/20171102225101.html#module-exports">JavaScript 和 TypeScript 交叉口 —— 类型定义文件(*.d.ts)
+</a>》中讲述过 TypeScript 类型声明文件对导入导出的影响。</p>
+<h3 id="const-xx-require-‘xx’"><a href="#const-xx-require-‘xx’" class="headerlink" title="const xx &#x3D; require(‘xx’)"></a>const xx &#x3D; require(‘xx’)</h3><p>当一个模块没有类型声明文件的时候，可以使用 commonjs 原始的 <code>require()</code> 方式来导入模块，这样会默认该模块为 any。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>最后我们整体总结下，在 TypeScript 中，有多种 import 的方式，分别对应了 JavaScript 中不同的 export。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// commonjs 模块</span></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> xx <span class="keyword">from</span> <span class="string">&#x27;xx&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 标准 es6 模块</span></span><br><span class="line"><span class="keyword">import</span> xx <span class="keyword">from</span> <span class="string">&#x27;xx&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// commonjs 模块，类型声明为 export = xx</span></span><br><span class="line"><span class="keyword">import</span> xx = <span class="built_in">require</span>(<span class="string">&#x27;xx&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 没有类型声明，默认导入 any 类型</span></span><br><span class="line"><span class="keyword">const</span> xx = <span class="built_in">require</span>(<span class="string">&#x27;xx&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>针对 <code>babel</code> 编译出来的 <code>exports.default</code> 语法，ts 提供了 <code>allowSyntheticDefaultImports</code> 选项可以支持，只不过个人不太推荐。</p>
+<p>个人建议将 <code>default</code> 重命名。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="keyword">default</span> <span class="keyword">as</span> foo &#125; <span class="keyword">from</span> <span class="string">&#x27;foo&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>关于 TypeScript 中类型声明文件(*.d.ts) 对 import 和 export 的影响，可以参考我之前写的 《<a target="_blank" rel="noopener" href="https://tasaid.com/blog/20171102225101.html#import-dao-ru-he-export-dao-chu">JavaScript 和 TypeScript 交叉口 —— 类型定义文件
+</a>》。</p>
+<blockquote>
+<p>前端开发 QQ 群：377786580</p>
+</blockquote>
+<h2 id="引用和参考"><a href="#引用和参考" class="headerlink" title="引用和参考"></a>引用和参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/Microsoft/TypeScript/issues/10895">Github - allowSyntheticDefaultImports should be the default?</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000010426778">exports、module.exports和export、export default到底是咋回事</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/posts/688d139e/" data-id="cloizszuz000mxww6gu8a0qko" data-title="TypeScript 中的多种 import 解义" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/posts/75b36508/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          一无所知
+        
+      </div>
+    </a>
+  
+  
+    <a href="/posts/cc45a7f4/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">使用 TypeScript 编写一个完善包含测试、文档和持续集成的库</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/article/">article</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/" rel="tag">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Said/" rel="tag">Said</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTPS/" style="font-size: 12.5px;">HTTPS</a> <a href="/tags/JavaScript/" style="font-size: 17.5px;">JavaScript</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/Said/" style="font-size: 15px;">Said</a> <a href="/tags/TypeScript/" style="font-size: 20px;">TypeScript</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/posts/cfe1281/">一段职业生涯的总结</a>
+          </li>
+        
+          <li>
+            <a href="/posts/8127ee4b/">一段旅程</a>
+          </li>
+        
+          <li>
+            <a href="/posts/29a0bec0/">折旧</a>
+          </li>
+        
+          <li>
+            <a href="/posts/75b36508/">一无所知</a>
+          </li>
+        
+          <li>
+            <a href="/posts/688d139e/">TypeScript 中的多种 import 解义</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
